@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_application_project/core/themes/primary_theme.dart';
 class CustomFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -39,28 +39,24 @@ class CustomFooter extends StatelessWidget {
                       style: TextStyle(color: Colors.white70, fontSize: 14),
                     ),
                     SizedBox(height: 12),
-                    // Gradient Button
                     ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.zero, // Align gradient properly
+                        padding: EdgeInsets.zero, 
+                        minimumSize: Size(80, 32),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       child: Ink(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFFA59DFF), Color(0xFF73E4EA)], // Gradient colors
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ),
+                          gradient: PrimaryTheme.buttonPrimary, 
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Container(
                           constraints: BoxConstraints(
                             minHeight: 40,
-                            minWidth: 120,
+                            minWidth: 80,
                           ),
                           alignment: Alignment.center,
                           child: Text(
@@ -68,6 +64,7 @@ class CustomFooter extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontSize: 12,
                             ),
                           ),
                         ),
@@ -77,14 +74,13 @@ class CustomFooter extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 16),
-              // Quick Menu Section
               Expanded(
                 flex: 1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Quick Menu',
+                      'Menu',
                       style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -102,8 +98,6 @@ class CustomFooter extends StatelessWidget {
                       children: [
                         'About',
                         'Services',
-                        'Approach',
-                        'Sustainability',
                         'News',
                         'Careers',
                       ].map((item) {
