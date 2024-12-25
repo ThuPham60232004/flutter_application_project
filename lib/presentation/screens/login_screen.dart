@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_project/core/widgets/customAppbar.dart';
+import 'package:flutter_application_project/core/widgets/custom_appbar.dart';
 import 'package:flutter_application_project/app.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);

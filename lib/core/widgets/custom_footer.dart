@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
+import 'package:flutter_application_project/core/themes/primary_text.dart';
 class CustomFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black, 
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -22,28 +23,19 @@ class CustomFooter extends StatelessWidget {
                   children: [
                     Text(
                       'About',
-                      style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      foreground: Paint()
-                        ..shader = LinearGradient(
-                          colors: [Color(0xFFA59DFF), Color(0xFF73E4EA)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                      style: PrimaryText.primaryTextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
+                    const SizedBox(height: 8),
+                    const Text(
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Repellat quos rem ullam, placeat amet.',
                       style: TextStyle(color: Colors.white70, fontSize: 14),
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero, 
-                        minimumSize: Size(80, 32),
+                        minimumSize: const Size(80, 32),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -54,12 +46,12 @@ class CustomFooter extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Container(
-                          constraints: BoxConstraints(
+                          constraints: const BoxConstraints(
                             minHeight: 40,
                             minWidth: 80,
                           ),
                           alignment: Alignment.center,
-                          child: Text(
+                          child: const Text(
                             'Đọc ở đây',
                             style: TextStyle(
                               color: Colors.white,
@@ -73,26 +65,17 @@ class CustomFooter extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Expanded(
                 flex: 1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                      Text(
                       'Menu',
-                      style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      foreground: Paint()
-                        ..shader = LinearGradient(
-                          colors: [Color(0xFFA59DFF), Color(0xFF73E4EA)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                      style: PrimaryText.primaryTextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -105,7 +88,7 @@ class CustomFooter extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Text(
                             item,
-                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                            style: const TextStyle(color: Colors.white70, fontSize: 14),
                           ),
                         );
                       }).toList(),
@@ -113,7 +96,7 @@ class CustomFooter extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               // Categories Section
               Expanded(
                 flex: 1,
@@ -122,18 +105,9 @@ class CustomFooter extends StatelessWidget {
                   children: [
                     Text(
                       'Categories',
-                      style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      foreground: Paint()
-                        ..shader = LinearGradient(
-                          colors: [Color(0xFFA59DFF), Color(0xFF73E4EA)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                      style: PrimaryText.primaryTextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -146,7 +120,7 @@ class CustomFooter extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Text(
                             item,
-                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                            style:const TextStyle(color: Colors.white70, fontSize: 14),
                           ),
                         );
                       }).toList(),
@@ -156,9 +130,9 @@ class CustomFooter extends StatelessWidget {
               ),
             ],
           ),
-          Divider(color: Colors.white38, height: 32),
+         const Divider(color: Colors.white38, height: 32),
           // Footer Text
-          Text(
+          const Text(
             'Copyright © 2024 All Rights Reserved | This application is made with ❤️ by TNT',
             style: TextStyle(color: Colors.white54, fontSize: 12),
             textAlign: TextAlign.center,

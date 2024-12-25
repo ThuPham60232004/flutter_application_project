@@ -6,5 +6,4 @@ class PrimaryTheme {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-
 }

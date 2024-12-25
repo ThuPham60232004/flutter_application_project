@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_project/core/widgets/customAppbar.dart';
-import 'package:flutter_application_project/core/widgets/customDrawer.dart';
-import 'package:flutter_application_project/core/widgets/customFooter.dart';
+import 'package:flutter_application_project/core/widgets/custom_appbar.dart';
+import 'package:flutter_application_project/core/widgets/custom_drawer.dart';
+import 'package:flutter_application_project/core/widgets/custom_footer.dart';
 import 'package:flutter_application_project/app.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      //bottomNavigationBar: CustomFooter(),
+      bottomNavigationBar: CustomFooter(),
     );
   }
 }
