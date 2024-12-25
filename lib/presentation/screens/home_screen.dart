@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_project/core/widgets/custom_appbar.dart';
-import 'package:flutter_application_project/core/widgets/custom_drawer.dart';
-import 'package:flutter_application_project/core/widgets/custom_footer.dart';
+import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
+import 'package:flutter_application_project/core/widgets/widget_drawer.dart';
+//import 'package:flutter_application_project/core/widgets/custom_footer.dart';
+import 'package:flutter_application_project/core/widgets/widget_jobcard.dart';
 import 'package:flutter_application_project/app.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -21,15 +22,11 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Home Screen Content',
-              style: TextStyle(fontSize: 18),
-            ),
-            
+            JobCard(),
           ],
         ),
       ),
-      bottomNavigationBar: CustomFooter(),
+      //bottomNavigationBar: CustomFooter(),
     );
   }
 }
