@@ -28,9 +28,11 @@ class JobCard extends StatelessWidget {
     );
   }
 }
+
 class _JobDetails extends StatelessWidget {
   final _JobCardColors colors;
   const _JobDetails({required this.colors});
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -58,17 +60,9 @@ class _JobDetails extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4.0),
-              _RichTextRow(
-                label: "Mức lương: ",
-                value: "100.000.000 VND",
-                colors: colors,
-              ),
+              _RichTextRow(label: "Mức lương: ", value: "100.000.000 VND", colors: colors),
               const SizedBox(height: 4.0),
-              _RichTextRow(
-                label: "Thành phố: ",
-                value: "TP.HCM",
-                colors: colors,
-              ),
+              _RichTextRow(label: "Thành phố: ", value: "TP.HCM", colors: colors),
             ],
           ),
         ),
@@ -76,9 +70,11 @@ class _JobDetails extends StatelessWidget {
     );
   }
 }
+
 class _CompanyLogo extends StatelessWidget {
   final Color borderColor;
   const _CompanyLogo({required this.borderColor});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -98,6 +94,7 @@ class _CompanyLogo extends StatelessWidget {
     );
   }
 }
+
 class _RichTextRow extends StatelessWidget {
   final String label;
   final String value;
@@ -107,6 +104,7 @@ class _RichTextRow extends StatelessWidget {
     required this.value,
     required this.colors,
   });
+
   @override
   Widget build(BuildContext context) {
     return Text.rich(
@@ -129,6 +127,7 @@ class _RichTextRow extends StatelessWidget {
     );
   }
 }
+
 class _ApplyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -160,6 +159,7 @@ class _ApplyButton extends StatelessWidget {
     );
   }
 }
+
 class _JobCardColors {
   final Color backgroundColor;
   final Color borderColor;
