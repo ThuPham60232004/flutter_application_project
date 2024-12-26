@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
 import 'package:flutter_application_project/core/widgets/widget_drawer.dart';
-//import 'package:flutter_application_project/core/widgets/custom_footer.dart';
+import 'package:flutter_application_project/core/widgets/widget_footer.dart';
 import 'package:flutter_application_project/core/widgets/widget_jobcard.dart';
 import 'package:flutter_application_project/app.dart';
 
@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      //bottomNavigationBar: CustomFooter(),
+      bottomNavigationBar: CustomFooter(),
     );
   }
 }

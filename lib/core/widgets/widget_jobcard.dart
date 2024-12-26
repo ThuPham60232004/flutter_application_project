@@ -125,7 +125,6 @@ class JobCard extends StatelessWidget {
               ],
             ),
           ),
-          // Apply Button
           ElevatedButton(
             onPressed: () {
             },
