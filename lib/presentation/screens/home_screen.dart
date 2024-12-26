@@ -22,11 +22,11 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            JobCard(),
+            //JobCard(),
           ],
         ),
       ),
-      bottomNavigationBar: CustomFooter(),
+      //bottomNavigationBar: CustomFooter(),
     );
   }
 }
