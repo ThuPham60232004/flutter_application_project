@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
+
 class _HomeScreenState extends State<HomeScreen> {
   double _scrollOffset = 0.0;
 
@@ -57,9 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 252,
                 child: JobCard(),
               ),
-              SizedBox(height: 40),
               _buildAboutUsHeader(),
-              SizedBox(height: 60),
               ..._buildFadeItems(),
               _buildDreamJobSection(),
               _buildBlogRecent(),
@@ -88,36 +87,34 @@ class _HomeScreenState extends State<HomeScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-            SizedBox(height: 20),
           Image.asset(
             'assets/images/nen.png',
             width: double.infinity, 
             height: 300,
             fit: BoxFit.cover, 
           ),
-            SizedBox(height: 20),
           Container(
             alignment: Alignment.centerLeft,
             child: const Text(
               'Môi trường công việc',
               style: TextStyle(
-                fontSize: 23,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           Row(
-            children: [
+            children: const [
               Text(
                 '20 Tháng 1, 2018 *',
                 style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey),
               ),
               Text(
                 'By Josh Holmes',
-                style: PrimaryText.primaryTextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
               ),
             ],
           ),
@@ -169,11 +166,10 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Image.asset(
             'assets/images/nen.png',
-            width: 180,
-            height: 180,
-            fit: BoxFit.cover, 
+            width: 150,
+            height: 150,
+            fit: BoxFit.cover, // Make sure the image is responsive
           ),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -186,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 width: 180,
                 child: Text(
-                  '“Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsaad iure porro mollitia architecto hic consequuntur. Distinctio nisi perferendis dolore, ipsa consectetur.”',
+                  '“Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea nisi Lorem ipsum dolor sit amet, consectetur.”',
                   style: TextStyle(fontSize: 13, height: 1.5),
                 ),
               ),
@@ -367,6 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
 
 class FadeItem extends StatelessWidget {
   final String title;
