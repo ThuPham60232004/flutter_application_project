@@ -61,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildAboutUsHeader(),
               ..._buildFadeItems(),
               _buildDreamJobSection(),
+              _buidBlogRecent(),
               SizedBox(
                 height: 330,
                 child: CustomFooter(),
               ),
-              _buidBlogRecent()
             ],
           ),
         ),
@@ -79,7 +79,51 @@ class _HomeScreenState extends State<HomeScreen> {
       child:Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-         
+          SizedBox(
+            height: 50,
+          ),
+          Text(
+            'Blog gần đây',
+            style: PrimaryText.primaryTextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          Image.asset(
+            'assets/images/nen.png',
+            width: 500,
+            height: 300,
+          ),
+        Container(
+          alignment: Alignment.centerLeft, 
+          child: Text(
+            'Môi trường công việc',
+            style: PrimaryText.primaryTextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+          Row(
+            children: [
+                Text(
+                '20 Tháng 1, 2018 *',
+                style: TextStyle(fontSize: 11,fontWeight: FontWeight.bold,color: Colors.grey),
+              ),
+              Text(
+                'By Josh Holmes',
+              style: PrimaryText.primaryTextStyle(
+                  fontSize:12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsaad iure porro mollitia architecto hic consequuntur. Distinctio nisi perferendis dolore, ipsa consectetur Ipsaad iure porro mollitia architecto hic consequuntur. Distinctio nisi perferendis dolore, ipsa consectetur',
+            style: TextStyle(fontSize: 14),
+          ),
+          SizedBox(height: 40),
         ],
       )
     );
