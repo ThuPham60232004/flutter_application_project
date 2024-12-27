@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_project/presentation/screens/home_screen.dart';
 import 'package:flutter_application_project/presentation/screens/login_screen.dart';
+import 'package:flutter_application_project/presentation/screens/signup_screen.dart';
 class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -48,12 +49,22 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.settings, color: Colors.black),
-            title: const Text('Settings'),
+            leading: const Icon(Icons.login, color: Colors.black),
+            title: const Text('Login'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.app_registration, color: Colors.black),
+            title: const Text('Register'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignUpScreen()),
               );
             },
           ),
