@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_project/presentation/screens/home_screen.dart';
 import 'package:flutter_application_project/presentation/screens/login_screen.dart';
 
-import 'package:flutter_application_project/presentation/signup_screen.dart';
+import 'package:flutter_application_project/presentation/screens/signup_screen.dart';
 import 'route_names.dart';
 
 class AppRoutes {
