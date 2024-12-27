@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
 import 'package:flutter_application_project/app.dart';
+import 'package:flutter_application_project/core/widgets/widget_search.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -13,7 +14,7 @@ class LoginScreen extends StatelessWidget {
         toggleTheme: inheritedTheme.toggleTheme,
       ),
       body: Center(
-        child: const Text('Welcome to Login Screen'),
+        child: WidgetSearch(),
       ),
     );
   }
