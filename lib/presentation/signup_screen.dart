@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
 import 'package:flutter_application_project/app.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
-import 'package:flutter_application_project/core/themes/primary_text.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +22,7 @@ class LoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Sign In',
+                'Sign Up',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
@@ -98,6 +95,17 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 10),
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.lock_outline),
+                  hintText: 'Confirm Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {},
@@ -109,41 +117,34 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                 child: Ink(
-                        decoration: BoxDecoration(
-                          gradient: PrimaryTheme.buttonPrimary, 
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            minHeight: 40,
-                            minWidth: 80,
-                          ),
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Sign In',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
+                  decoration: BoxDecoration(
+                    gradient: PrimaryTheme.buttonPrimary,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minHeight: 50,
+                      minWidth: double.infinity,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
+                    ),
+                  ),
+                ),
               ),
               SizedBox(height: 10),
-              
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Don’t have an account?  ',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text('Sign up'),
-                  ),
-                ],
+              Center(
+                child: Text(
+                  'This site is protected by reCAPTCHA and the Google Privacy Policy.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
               ),
             ],
           ),
