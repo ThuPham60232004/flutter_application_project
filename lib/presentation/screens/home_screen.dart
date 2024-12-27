@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildAboutUsHeader() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 32.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 1.0),
               _buildAboutUsDecoration(),
               const SizedBox(
-                width: 222,
+                width: 180,
                 child: Text(
                   '“Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea nisi Lorem ipsum dolor sit amet, consectetur.”',
                   style: TextStyle(
@@ -200,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildAboutUsDecoration() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: 50,
