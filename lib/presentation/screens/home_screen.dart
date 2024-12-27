@@ -15,7 +15,6 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
   double _scrollOffset = 0.0;
 
@@ -58,10 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 252,
                 child: JobCard(),
               ),
+              SizedBox(height: 40),
               _buildAboutUsHeader(),
+              SizedBox(height: 60),
               ..._buildFadeItems(),
               _buildDreamJobSection(),
-              _buidBlogRecent(),
+              _buildBlogRecent(),
               SizedBox(
                 height: 330,
                 child: CustomFooter(),
@@ -73,59 +74,60 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buidBlogRecent() {
+  Widget _buildBlogRecent() {
     return Padding(
-      padding:EdgeInsets.symmetric(horizontal: 16.0),
-      child:Column(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 50,
-          ),
+          const SizedBox(height: 50),
           Text(
             'Blog gần đây',
             style: PrimaryText.primaryTextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          Image.asset(
-            'assets/images/nen.png',
-            width: 500,
-            height: 300,
-          ),
-        Container(
-          alignment: Alignment.centerLeft, 
-          child: Text(
-            'Môi trường công việc',
-            style: PrimaryText.primaryTextStyle(
-              fontSize: 20,
+              fontSize: 35,
               fontWeight: FontWeight.bold,
             ),
           ),
-        ),
+            SizedBox(height: 20),
+          Image.asset(
+            'assets/images/nen.png',
+            width: double.infinity, 
+            height: 300,
+            fit: BoxFit.cover, 
+          ),
+            SizedBox(height: 20),
+          Container(
+            alignment: Alignment.centerLeft,
+            child: const Text(
+              'Môi trường công việc',
+              style: TextStyle(
+                fontSize: 23,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           Row(
             children: [
-                Text(
+              Text(
                 '20 Tháng 1, 2018 *',
-                style: TextStyle(fontSize: 11,fontWeight: FontWeight.bold,color: Colors.grey),
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey),
               ),
               Text(
                 'By Josh Holmes',
-              style: PrimaryText.primaryTextStyle(
-                  fontSize:12,
+                style: PrimaryText.primaryTextStyle(
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
-          Text(
-            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsaad iure porro mollitia architecto hic consequuntur. Distinctio nisi perferendis dolore, ipsa consectetur Ipsaad iure porro mollitia architecto hic consequuntur. Distinctio nisi perferendis dolore, ipsa consectetur',
+          const Text(
+            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsaad iure porro mollitia architecto hic consequuntur. Distinctio nisi perferendis dolore, ipsa consectetur.',
             style: TextStyle(fontSize: 14),
           ),
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
         ],
-      )
+      ),
     );
   }
 
@@ -147,8 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.filter_list, size: 16),
             label: const Text('Lọc theo'),
             style: OutlinedButton.styleFrom(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               foregroundColor: Colors.grey,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
@@ -169,8 +170,10 @@ class _HomeScreenState extends State<HomeScreen> {
           Image.asset(
             'assets/images/nen.png',
             width: 180,
-            height: 200,
+            height: 180,
+            fit: BoxFit.cover, 
           ),
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -183,11 +186,8 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 width: 180,
                 child: Text(
-                  '“Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea nisi Lorem ipsum dolor sit amet, consectetur.”',
-                  style: TextStyle(
-                    fontSize: 13,
-                    height: 1.5,
-                  ),
+                  '“Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsaad iure porro mollitia architecto hic consequuntur. Distinctio nisi perferendis dolore, ipsa consectetur.”',
+                  style: TextStyle(fontSize: 13, height: 1.5),
                 ),
               ),
               _buildDeveloperInfo(),
@@ -201,17 +201,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildAboutUsDecoration() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
+      children: const [
+        SizedBox(
           width: 50,
           height: 2,
-          color: const Color.fromARGB(255, 89, 148, 185),
+          child: DecoratedBox(
+            decoration: BoxDecoration(color: Color.fromARGB(255, 89, 148, 185)),
+          ),
         ),
-        const SizedBox(height: 3.0),
-        Container(
+        SizedBox(height: 3.0),
+        SizedBox(
           width: 80,
           height: 2,
-          color: const Color.fromARGB(255, 89, 148, 185),
+          child: DecoratedBox(
+            decoration: BoxDecoration(color: Color.fromARGB(255, 89, 148, 185)),
+          ),
         ),
       ],
     );
@@ -219,21 +223,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildDeveloperInfo() {
     return Row(
-      children: [
-        Container(
+      children: const [
+        SizedBox(
           width: 20,
           height: 2,
-          color: const Color.fromARGB(255, 89, 148, 185),
+          child: DecoratedBox(
+            decoration: BoxDecoration(color: Color.fromARGB(255, 89, 148, 185)),
+          ),
         ),
-        const SizedBox(width: 8),
-        const Text(
+        SizedBox(width: 8),
+        Text(
           'Anh Thu',
           style: TextStyle(
             color: Colors.grey,
             fontSize: 12,
           ),
         ),
-        const Text(
+        Text(
           ', Developer',
           style: TextStyle(
             fontSize: 12,
@@ -278,8 +284,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
+          children: const [
+            Text(
               'Công việc mơ ước của bạn',
               style: TextStyle(
                 fontSize: 32,
@@ -288,8 +294,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               'Đang chờ bạn',
               style: TextStyle(
                 fontSize: 20,
@@ -298,8 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 40),
-            _buildActionButtons(),
+            SizedBox(height: 40),
           ],
         ),
       ],
