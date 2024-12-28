@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
             'assets/images/nen.png',
             width: 150,
             height: 150,
-            fit: BoxFit.cover, // Make sure the image is responsive
+            fit: BoxFit.cover, 
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
