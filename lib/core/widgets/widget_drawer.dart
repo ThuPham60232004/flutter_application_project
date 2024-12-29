@@ -8,6 +8,7 @@ import 'package:flutter_application_project/presentation/screens/company_screen.
 import 'package:flutter_application_project/presentation/screens/companydetail_screen.dart';
 import 'package:flutter_application_project/presentation/screens/profile_screen.dart';
 import 'package:flutter_application_project/presentation/screens/contact_screen.dart';
+import 'package:flutter_application_project/presentation/screens/blogdetail_screen.dart';
 class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -82,6 +83,14 @@ class CustomDrawer extends StatelessWidget {
         'onTap': () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ProfileScreen()),
+        ),
+      },
+      {
+        'leading': const Icon(Icons.app_blocking),
+        'title': 'Blog Details',
+        'onTap': () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => BlogDetail()),
         ),
       },
       {

@@ -8,6 +8,7 @@ import 'package:flutter_application_project/presentation/screens/signup_screen.d
 import 'package:flutter_application_project/presentation/screens/companydetail_screen.dart';
 import 'package:flutter_application_project/presentation/screens/profile_screen.dart';
 import 'package:flutter_application_project/presentation/screens/contact_screen.dart';
+import 'package:flutter_application_project/presentation/screens/blogdetail_screen.dart';
 import 'route_names.dart';
 
 class AppRoutes {
@@ -19,7 +20,8 @@ class AppRoutes {
     RouteNames.careerdetail: (context) => const CareerDetail(),
     RouteNames.company: (context) => const CompanyScreen(),
     RouteNames.companydetail: (context) => const CompanyDetail(),
-        RouteNames.company: (context) => const ProfileScreen(),
-    RouteNames.companydetail: (context) => const ContactScreen(),
+    RouteNames.profile: (context) => const ProfileScreen(),
+    RouteNames.contact: (context) => const ContactScreen(),
+    RouteNames.blogdetail: (context) => const BlogDetail(),
   };
 }
