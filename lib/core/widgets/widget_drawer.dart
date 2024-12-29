@@ -9,12 +9,17 @@ import 'package:flutter_application_project/presentation/screens/companydetail_s
 import 'package:flutter_application_project/presentation/screens/profile_screen.dart';
 import 'package:flutter_application_project/presentation/screens/contact_screen.dart';
 import 'package:flutter_application_project/presentation/screens/blogdetail_screen.dart';
+import 'package:flutter_application_project/presentation/screens/cv_screen.dart';
+import 'package:flutter_application_project/presentation/screens/entercode_screen.dart';
+import 'package:flutter_application_project/presentation/screens/forgetpass_screen.dart';
+import 'package:flutter_application_project/presentation/screens/resetpass_screen.dart';
+
 class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final menuItems = [
       {
-        'leading': const Icon(Icons.home),
+        'leading': const Icon(Icons.home, color: Colors.blue),
         'title': 'Home',
         'onTap': () => Navigator.push(
               context,
@@ -22,7 +27,7 @@ class CustomDrawer extends StatelessWidget {
             ),
       },
       {
-        'leading': const Icon(Icons.login),
+        'leading': const Icon(Icons.login, color: Colors.green),
         'title': 'Login',
         'onTap': () => Navigator.push(
               context,
@@ -30,7 +35,7 @@ class CustomDrawer extends StatelessWidget {
             ),
       },
       {
-        'leading': const Icon(Icons.app_registration),
+        'leading': const Icon(Icons.app_registration, color: Colors.orange),
         'title': 'Register',
         'onTap': () => Navigator.push(
               context,
@@ -38,60 +43,92 @@ class CustomDrawer extends StatelessWidget {
             ),
       },
       {
-        'leading': const Icon(Icons.badge),
-        'title': 'Carrer',
+        'leading': const Icon(Icons.badge, color: Colors.teal),
+        'title': 'Career',
         'onTap': () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MenuCareer()),
             ),
       },
       {
-        'leading': const Icon(Icons.border_right_sharp),
-        'title': 'CarrerDetail',
+        'leading': const Icon(Icons.description, color: Colors.indigo),
+        'title': 'Career Details',
         'onTap': () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CareerDetail()),
             ),
       },
       {
-        'leading': const Icon(Icons.people),
+        'leading': const Icon(Icons.business, color: Colors.purple),
         'title': 'Company',
         'onTap': () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CompanyScreen()),
-        ),
+            ),
       },
       {
-        'leading': const Icon(Icons.people_alt_sharp),
+        'leading': const Icon(Icons.info, color: Colors.deepPurple),
         'title': 'Company Details',
         'onTap': () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CompanyDetail()),
-        ),
+            ),
       },
       {
-        'leading': const Icon(Icons.contact_emergency),
+        'leading': const Icon(Icons.contacts, color: Colors.blueGrey),
         'title': 'Contact',
         'onTap': () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ContactScreen()),
-        ),
+            ),
       },
       {
-        'leading': const Icon(Icons.person_off_outlined),
+        'leading': const Icon(Icons.person, color: Colors.cyan),
         'title': 'Profile',
         'onTap': () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ProfileScreen()),
-        ),
+            ),
       },
       {
-        'leading': const Icon(Icons.app_blocking),
+        'leading': const Icon(Icons.article, color: Colors.amber),
         'title': 'Blog Details',
         'onTap': () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => BlogDetail()),
-        ),
+            ),
+      },
+      {
+        'leading': const Icon(Icons.insert_drive_file, color: Colors.lightGreen),
+        'title': 'CV',
+        'onTap': () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CVScreen()),
+            ),
+      },
+      {
+        'leading': const Icon(Icons.code, color: Colors.deepOrange),
+        'title': 'Enter Code',
+        'onTap': () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EnterCodeScreen()),
+            ),
+      },
+      {
+        'leading': const Icon(Icons.lock_open, color: Colors.redAccent),
+        'title': 'Forget Password',
+        'onTap': () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ForgetPassScreen()),
+            ),
+      },
+      {
+        'leading': const Icon(Icons.lock_reset, color: Colors.pinkAccent),
+        'title': 'Reset Password',
+        'onTap': () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ResetPassScreen()),
+            ),
       },
       {
         'leading': const Icon(Icons.logout, color: Colors.red),

@@ -9,4 +9,8 @@ class RouteNames {
   static const String profile = '/profile';
   static const String contact = '/contact';
   static const String blogdetail = '/blogdetail';
+  static const String cvscreen = '/cvscreen';
+  static const String entercodescreen = '/entercodescreen';
+  static const String forgetpassscreen = '/forgetpassscreen';
+    static const String resetpassscreen = '/resetpassscreen';
 }

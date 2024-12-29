@@ -9,6 +9,10 @@ import 'package:flutter_application_project/presentation/screens/companydetail_s
 import 'package:flutter_application_project/presentation/screens/profile_screen.dart';
 import 'package:flutter_application_project/presentation/screens/contact_screen.dart';
 import 'package:flutter_application_project/presentation/screens/blogdetail_screen.dart';
+import 'package:flutter_application_project/presentation/screens/cv_screen.dart';
+import 'package:flutter_application_project/presentation/screens/entercode_screen.dart';
+import 'package:flutter_application_project/presentation/screens/forgetpass_screen.dart';
+import 'package:flutter_application_project/presentation/screens/resetpass_screen.dart';
 import 'route_names.dart';
 
 class AppRoutes {
@@ -23,5 +27,9 @@ class AppRoutes {
     RouteNames.profile: (context) => const ProfileScreen(),
     RouteNames.contact: (context) => const ContactScreen(),
     RouteNames.blogdetail: (context) => const BlogDetail(),
+    RouteNames.cvscreen: (context) => const CVScreen(),
+    RouteNames.entercodescreen: (context) => const EnterCodeScreen(),
+    RouteNames.forgetpassscreen: (context) => const ForgetPassScreen(),
+    RouteNames.resetpassscreen: (context) => const ResetPassScreen(),
   };
 }
