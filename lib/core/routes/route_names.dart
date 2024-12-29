@@ -5,4 +5,5 @@ class RouteNames {
   static const String menucareer = '/menucareer';
   static const String careerdetail = '/careerdetail';
   static const String company = '/company';
+  static const String companydetail = '/companydetail';
 }

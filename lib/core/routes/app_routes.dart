@@ -5,6 +5,7 @@ import 'package:flutter_application_project/presentation/screens/menu_career.dar
 import 'package:flutter_application_project/presentation/screens/careerdetail_screen.dart';
 import 'package:flutter_application_project/presentation/screens/company_screen.dart';
 import 'package:flutter_application_project/presentation/screens/signup_screen.dart';
+import 'package:flutter_application_project/presentation/screens/companydetail_screen.dart';
 import 'route_names.dart';
 
 class AppRoutes {
@@ -15,5 +16,6 @@ class AppRoutes {
     RouteNames.menucareer: (context) => const MenuCareer(),
     RouteNames.careerdetail: (context) => const CareerDetail(),
     RouteNames.company: (context) => const CompanyScreen(),
+    RouteNames.companydetail: (context) => const CompanyDetail(),
   };
 }

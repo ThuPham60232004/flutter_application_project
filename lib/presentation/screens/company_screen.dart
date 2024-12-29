@@ -5,7 +5,7 @@ import 'package:flutter_application_project/core/widgets/widget_drawer.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/widgets/widget_search.dart';
 import 'package:flutter_application_project/core/widgets/widgte_jobbanner.dart';
-
+import 'package:flutter_application_project/core/widgets/widget_footer.dart';
 class CompanyScreen extends StatefulWidget {
   const CompanyScreen({Key? key}) : super(key: key);
 
@@ -67,6 +67,11 @@ class _CompanyScreenState extends State<CompanyScreen> {
                   runSpacing: 16,
                   children: List.generate(10, (index) => _buildCompanyCard()),
                 ),
+              ),
+              const SizedBox(height: 30),
+              SizedBox(
+                height: 330,
+                child: CustomFooter(),
               ),
             ],
           ),
