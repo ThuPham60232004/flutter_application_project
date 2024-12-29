@@ -6,4 +6,6 @@ class RouteNames {
   static const String careerdetail = '/careerdetail';
   static const String company = '/company';
   static const String companydetail = '/companydetail';
+    static const String profile = '/profile';
+  static const String contact = '/contact';
 }
