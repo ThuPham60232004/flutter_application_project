@@ -265,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
   }
 
-  Widget _buildDreamJobSection() {
+    Widget _buildDreamJobSection() {
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -278,29 +278,84 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
+        Container(
+          color: Colors.black.withOpacity(0.4), // Overlay for better readability
+          height: 250,
+        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Text(
               'Công việc mơ ước của bạn',
-              style: TextStyle(
-                fontSize: 32,
+              style: const TextStyle(
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               'Đang chờ bạn',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 color: Colors.white70,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    side: const BorderSide(color: Colors.white, width: 2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                  ),
+                  child: const Text(
+                    'Tìm việc làm',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    backgroundColor: Colors.transparent,
+                  ),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      gradient: PrimaryTheme.buttonPrimary,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Ứng tuyển',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ],
