@@ -4,6 +4,7 @@ import 'package:flutter_application_project/presentation/screens/login_screen.da
 import 'package:flutter_application_project/presentation/screens/signup_screen.dart';
 import 'package:flutter_application_project/presentation/screens/menu_career.dart';
 import 'package:flutter_application_project/presentation/screens/careerdetail_screen.dart';
+import 'package:flutter_application_project/presentation/screens/company_screen.dart';
 class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,14 @@ class CustomDrawer extends StatelessWidget {
         'onTap': () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CareerDetail()),
+            ),
+      },
+      {
+        'leading': const Icon(Icons.people),
+        'title': 'Company',
+        'onTap': () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CompanyScreen()),
             ),
       },
       {

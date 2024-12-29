@@ -3,6 +3,7 @@ import 'package:flutter_application_project/presentation/screens/home_screen.dar
 import 'package:flutter_application_project/presentation/screens/login_screen.dart';
 import 'package:flutter_application_project/presentation/screens/menu_career.dart';
 import 'package:flutter_application_project/presentation/screens/careerdetail_screen.dart';
+import 'package:flutter_application_project/presentation/screens/company_screen.dart';
 import 'package:flutter_application_project/presentation/screens/signup_screen.dart';
 import 'route_names.dart';
 
@@ -13,5 +14,6 @@ class AppRoutes {
     RouteNames.signup: (context) => const SignUpScreen(),
     RouteNames.menucareer: (context) => const MenuCareer(),
     RouteNames.careerdetail: (context) => const CareerDetail(),
+    RouteNames.company: (context) => const CompanyScreen(),
   };
 }
