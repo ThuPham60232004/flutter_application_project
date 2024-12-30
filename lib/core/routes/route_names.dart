@@ -15,4 +15,5 @@ class RouteNames {
   static const String resetpassscreen = '/resetpassscreen';
   static const String detailjob_modal = '/detailjob_modal';
   static const String detailjob_screen = '/detailjob_screen';
+    static const String filter_modal = '/filter_modal';
 }

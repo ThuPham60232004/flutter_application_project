@@ -15,6 +15,7 @@ import 'package:flutter_application_project/presentation/screens/forgetpass_scre
 import 'package:flutter_application_project/presentation/screens/resetpass_screen.dart';
 import 'package:flutter_application_project/presentation/modal/detailjob_modal.dart';
 import 'package:flutter_application_project/presentation/screens/detailjob_screen.dart';
+import 'package:flutter_application_project/presentation/modal/filter_modal.dart';
 import 'route_names.dart';
 
 class AppRoutes {
@@ -35,5 +36,6 @@ class AppRoutes {
     RouteNames.resetpassscreen: (context) => const ResetPassScreen(),
     RouteNames.detailjob_modal: (context) => const ModalDetailScreen(),
     RouteNames.detailjob_screen: (context) => const DetailJobScreen(),
+    RouteNames.filter_modal: (context) => const FilterModal(),
   };
 }

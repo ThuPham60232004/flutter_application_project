@@ -15,6 +15,7 @@ import 'package:flutter_application_project/presentation/screens/forgetpass_scre
 import 'package:flutter_application_project/presentation/screens/resetpass_screen.dart';
 import 'package:flutter_application_project/presentation/modal/detailjob_modal.dart';
 import 'package:flutter_application_project/presentation/screens/detailjob_screen.dart';
+import 'package:flutter_application_project/presentation/modal/filter_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -32,7 +33,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
     super.initState();
     _checkLoginStatus();
   }
-
   Future<void> _checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -41,7 +41,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
       isLoggedIn = name != null;
     });
   }
-
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
@@ -57,6 +56,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   @override
+
   Widget build(BuildContext context) {
     final menuItems = [
       _buildMenuItem(Icons.home, 'Home', HomeScreen(), Colors.blue),
@@ -73,8 +73,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
       _buildMenuItem(Icons.code, 'Enter Code', EnterCodeScreen(), Colors.deepOrange),
       _buildMenuItem(Icons.lock_open, 'Forget Password', ForgetPassScreen(), Colors.redAccent),
       _buildMenuItem(Icons.lock_reset, 'Reset Password', ResetPassScreen(), Colors.pinkAccent),
-      _buildMenuItem(Icons.lock_reset, 'Modal Detail', ModalDetailScreen(), Colors.pinkAccent),
-      _buildMenuItem(Icons.lock_reset, 'Detail Job', DetailJobScreen(), Colors.pinkAccent),
+      _buildMenuItem(Icons.model_training, 'Modal Detail', ModalDetailScreen(), Colors.pinkAccent),
+      _buildMenuItem(Icons.join_full, 'Detail Job', DetailJobScreen(), Colors.pinkAccent),
+      _buildMenuItem(Icons.filter, 'Filter Modal', FilterModal(), Colors.pinkAccent),
+      
     ];
 
     return Drawer(
