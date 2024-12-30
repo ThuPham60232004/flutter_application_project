@@ -12,5 +12,7 @@ class RouteNames {
   static const String cvscreen = '/cvscreen';
   static const String entercodescreen = '/entercodescreen';
   static const String forgetpassscreen = '/forgetpassscreen';
-    static const String resetpassscreen = '/resetpassscreen';
+  static const String resetpassscreen = '/resetpassscreen';
+  static const String detailjob_modal = '/detailjob_modal';
+  static const String detailjob_screen = '/detailjob_screen';
 }

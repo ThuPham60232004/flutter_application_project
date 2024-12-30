@@ -13,6 +13,8 @@ import 'package:flutter_application_project/presentation/screens/cv_screen.dart'
 import 'package:flutter_application_project/presentation/screens/entercode_screen.dart';
 import 'package:flutter_application_project/presentation/screens/forgetpass_screen.dart';
 import 'package:flutter_application_project/presentation/screens/resetpass_screen.dart';
+import 'package:flutter_application_project/presentation/modal/detailjob_modal.dart';
+import 'package:flutter_application_project/presentation/screens/detailjob_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -71,6 +73,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
       _buildMenuItem(Icons.code, 'Enter Code', EnterCodeScreen(), Colors.deepOrange),
       _buildMenuItem(Icons.lock_open, 'Forget Password', ForgetPassScreen(), Colors.redAccent),
       _buildMenuItem(Icons.lock_reset, 'Reset Password', ResetPassScreen(), Colors.pinkAccent),
+      _buildMenuItem(Icons.lock_reset, 'Modal Detail', ModalDetailScreen(), Colors.pinkAccent),
+      _buildMenuItem(Icons.lock_reset, 'Detail Job', DetailJobScreen(), Colors.pinkAccent),
     ];
 
     return Drawer(
@@ -79,7 +83,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               children: [
                 _buildUserProfile(),
                 const Divider(),
-                ...menuItems,  // Directly using the ListTile widgets
+                ...menuItems, 
               ],
             )
           : const Center(child: CircularProgressIndicator()),

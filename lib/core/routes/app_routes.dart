@@ -13,6 +13,8 @@ import 'package:flutter_application_project/presentation/screens/cv_screen.dart'
 import 'package:flutter_application_project/presentation/screens/entercode_screen.dart';
 import 'package:flutter_application_project/presentation/screens/forgetpass_screen.dart';
 import 'package:flutter_application_project/presentation/screens/resetpass_screen.dart';
+import 'package:flutter_application_project/presentation/modal/detailjob_modal.dart';
+import 'package:flutter_application_project/presentation/screens/detailjob_screen.dart';
 import 'route_names.dart';
 
 class AppRoutes {
@@ -31,5 +33,7 @@ class AppRoutes {
     RouteNames.entercodescreen: (context) => const EnterCodeScreen(),
     RouteNames.forgetpassscreen: (context) => const ForgetPassScreen(),
     RouteNames.resetpassscreen: (context) => const ResetPassScreen(),
+    RouteNames.detailjob_modal: (context) => const ModalDetailScreen(),
+    RouteNames.detailjob_screen: (context) => const DetailJobScreen(),
   };
 }
