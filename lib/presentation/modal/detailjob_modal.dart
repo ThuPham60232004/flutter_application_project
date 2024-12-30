@@ -20,7 +20,6 @@ class ModalDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Phần tiêu đề công việc
               Text(
                 'Lập trình viên Backend',
                 style: TextStyle(
@@ -39,8 +38,6 @@ class ModalDetailScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16),
-
-              // Phần tải lên CV
               Container(
                 decoration: BoxDecoration(
                   color: Color(0xFFF7E0E0),
@@ -99,8 +96,6 @@ class ModalDetailScreen extends StatelessWidget {
               ),
 
               SizedBox(height: 24),
-
-              // Phần thông tin cá nhân
               Text(
                 'Thông tin cá nhân',
                 style: TextStyle(
@@ -150,8 +145,6 @@ class ModalDetailScreen extends StatelessWidget {
                 onChanged: (value) {},
               ),
               SizedBox(height: 24),
-
-              // Phần thư xin việc
               Row(
                 children: [
                   Text(
@@ -187,8 +180,6 @@ class ModalDetailScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 12, color: Colors.grey),
               ),
               SizedBox(height: 24),
-
-              // Nút gửi
               Center(
                 child: ElevatedButton(
                   onPressed: () {},
@@ -201,7 +192,7 @@ class ModalDetailScreen extends StatelessWidget {
                   ),
                   child: Ink(
                     decoration: BoxDecoration(
-                      gradient: PrimaryTheme.buttonPrimary, // Giả sử bạn có gradient ở đây
+                      gradient: PrimaryTheme.buttonPrimary, 
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Container(

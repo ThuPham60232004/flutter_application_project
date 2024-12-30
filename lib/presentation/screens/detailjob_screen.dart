@@ -6,7 +6,6 @@ import 'package:flutter_application_project/core/widgets/widget_jobcard.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/widgets/widget_search.dart';
 import 'package:flutter_application_project/core/widgets/widgte_jobbanner.dart';
-import 'package:flutter_application_project/core/themes/primary_text.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
 
 class DetailJobScreen extends StatefulWidget {
@@ -18,6 +17,14 @@ class DetailJobScreen extends StatefulWidget {
 
 class _DetailJobScreenState extends State<DetailJobScreen> {
   double _scrollOffset = 0.0;
+  String _currentTab = 'Chi tiết';
+
+  static const TextStyle _headerTextStyle =
+      TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+  static const TextStyle _subHeaderTextStyle =
+      TextStyle(fontSize: 16, fontWeight: FontWeight.normal);
+  static const TextStyle _defaultTextStyle =
+      TextStyle(fontSize: 14, color: Colors.black87);
 
   @override
   Widget build(BuildContext context) {
@@ -39,416 +46,333 @@ class _DetailJobScreenState extends State<DetailJobScreen> {
           return true;
         },
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildItemPage(),
-              const SizedBox(height: 20),
-              _buildPosJob(),
-              _buildBenefitSection(),
-              const SizedBox(height: 20),
-              _buildAboutUsHeader(),
-              const SizedBox(height: 20),
-               _buildText(),
-              const SizedBox(height: 20),
-              _buildHeader(),
-              const SizedBox(
-                height: 252,
-                child: JobCard(),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(13.0),
+            child: Column(
+              children: [
+                _buildItemPage(),
+                const SizedBox(height: 20),
+                _buildPosJob(),
+                _buildSectionWithLine('Phúc Lợi', _buildBenefitSection()),
+                const SizedBox(height: 20),
+                _buildSectionWithLine('Về Chúng Tôi', _buildAboutUsHeader()),
+                const SizedBox(height: 20),
+                _buildText(),
+                const SizedBox(height: 20),
+                const SizedBox(height: 252, child: JobCard()),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-  
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Expanded(
-            child: Text(
-              'Gợi Ý (Công Việc Tương Tự)',
-              style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.left,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-Widget _buildItemPage() {
-  return Container(
-    width: MediaQuery.of(context).size.width, 
-    height: 150, 
-    decoration: BoxDecoration(
-      color: Colors.purple[100], 
-    ),
-    child: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, 
-        crossAxisAlignment: CrossAxisAlignment.center, 
-        children: [
-          Text(
-            'Backend Developer',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(height: 10), 
-          Text(
-            'Job Item',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
-              color: Colors.white, 
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
 
-
-Widget _buildPosJob() {
-  return Container(
-    width: MediaQuery.of(context).size.width,
-    height: 250,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                'Backend Developer',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              SizedBox(width: 8),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue, width: 1),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Text(
-                  'Freelancer',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.blue,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
-            'Tiến Phong - TPHCM, Việt Nam',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.normal,
-              color: Colors.black87,
-            ),
-          ),
-        ),
-        
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
-          child: Row(
-            children: [
-              Text(
-                'Chi tiết',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              SizedBox(width: 20),
-              Text(
-                'Tổng quan công ty',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-        ),
-        
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            children: [
-              Container(
-                width:120,
-                height:120,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 1),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Image.asset(
-                    'assets/images/hcm_map.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              SizedBox(width: 12), 
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.calendar_today, color: Colors.blue, size: 20),
-                        SizedBox(width: 5),
-                        Text(
-                          'Ngày cập nhật: 09/12/2024',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.business, color: Colors.blue, size: 20),
-                        SizedBox(width: 5),
-                        Text(
-                          'Ngành nghề:Technology',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.money, color: Colors.green, size: 20),
-                        SizedBox(width: 5),
-                        Text(
-                          'Lương: 11 Tr - 15 Tr VND',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.access_time, color: Colors.orange, size: 20),
-                        SizedBox(width: 5),
-                        Text(
-                          'Hết hạn nộp: 31/01/2025',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.work, color: Colors.purple, size: 20),
-                        SizedBox(width: 5),
-                        Text(
-                          'Hình thức: Nhân viên chính thức',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-
-
-
-
-
-
-
-  Widget _buildBenefitSection() {
+  Widget _buildSectionWithLine(String title, Widget child) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Phúc Lợi',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          children: [
-            _buildBenefitItem(Icons.health_and_safety, 'Chế độ bảo hiểm'),
-            _buildBenefitItem(Icons.card_giftcard, 'Chế độ thưởng'),
-            _buildBenefitItem(Icons.family_restroom, 'Phụ cấp nhà ở'),
-            _buildBenefitItem(Icons.local_cafe, 'Đào tạo'),
-            _buildBenefitItem(Icons.favorite, 'Chăm sóc sức khoẻ'),
-            _buildBenefitItem(Icons.flight, 'Du Lịch'),
-            _buildBenefitItem(Icons.laptop, 'Công việc ổn định'),
-            _buildBenefitItem(Icons.attach_money, 'Tăng lương'),
-            _buildBenefitItem(Icons.event, 'Nghỉ phép năm'),
-          ],
-        ),
-        const SizedBox(height: 20),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12.0),
-          child: Stack(
-            alignment: Alignment.center,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBenefitItem(IconData icon, String text) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 18, color: Colors.purple),
-        const SizedBox(width: 6),
-        Text(text, style: const TextStyle(fontSize: 14)),
-      ],
-    );
-  }
-
-Widget _buildAboutUsHeader() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Image.asset(
-          'assets/images/nen.png',
-          width: 150,
-          height: 150,
-          fit: BoxFit.cover,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'More Info',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 1.0),
-            _buildAboutUsDecoration(),
-            const SizedBox(
-              width: 180,
-              child: Text(
-                'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea nisi Lorem ipsum dolor sit amet, consectetur.',
-                style: TextStyle(fontSize: 13, height: 1.5),
-              ),
-            ),
-            const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: () {
-              },
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color:  const Color(0xFFA290FF)), 
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: const Text(
-                'Ứng tuyển',
-                style: TextStyle(fontSize: 14, color:  const Color(0xFFA290FF)),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-Widget _buildText() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Unde, iure beatae! Voluptas tempora doloremque atque repudiandae maiores odio magni. Illo ut nihil officia numquam in. Delenti pariatur at minima quaerat!',
-          style: TextStyle(fontSize: 16, height: 1.5),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          'Qui corrupti animi, dignissimos veritatis, necessitatibus consequuntur nobis, placeat beatae dolorum ullam harum at atque dolor! Accusantium cupiditate ipsum placeat, vel voluptatibus non eaque, animi neque minima facere provident aspernatur!',
-          style: TextStyle(fontSize: 16, height: 1.5),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          'Porro magni numquam ex natus repellat accusamus laborum blanditiis odit consequatur at veritatis nostrum provident recusandae dolores incidunt distinctio facere, nulla odio quo tempore libero! Voluptatum porro velit, qui optio.',
-          style: TextStyle(fontSize: 16, height: 1.5),
-        ),
-        const SizedBox(height: 24),
-        Center(
-          child: ElevatedButton(
-            onPressed: () {
-              // Hành động khi nhấn vào nút
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFA290FF), 
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-            child: const Text(
-              'Ứng tuyển',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-
-
-  Widget _buildAboutUsDecoration() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        SizedBox(
+        Text(title, style: _headerTextStyle),
+        const SizedBox(height: 8),
+        Container(
           width: 50,
           height: 2,
-          child: DecoratedBox(
-            decoration: BoxDecoration(color: Color.fromARGB(255, 89, 148, 185)),
+          color: Colors.black,
+        ),
+        const SizedBox(height: 12),
+        child,
+      ],
+    );
+  }
+
+
+  Widget _buildItemPage() {
+    return Container(
+      width: double.infinity,
+      height: 150,
+      color: Colors.black,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Backend Developer',
+            style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          const SizedBox(height: 10),
+          const Text('Job Item',
+              style: TextStyle(fontSize: 16, color: Colors.white)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPosJob() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Text('Backend Developer',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(width: 8),
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.blue, width: 1),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: const Text('Freelancer',
+                  style: TextStyle(fontSize: 14, color: Colors.blue)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5),
+        const Text('Tiến Phong - TPHCM, Việt Nam', style: _defaultTextStyle),
+        const SizedBox(height: 5),
+       Row(
+          children: [
+            _buildTabButton('Chi tiết', _currentTab == 'Chi tiết'),
+            const SizedBox(width: 20),
+            _buildTabButton('Tổng quan công ty', _currentTab == 'Tổng quan công ty'),
+          ],
+        ),
+
+        const SizedBox(height: 10),
+        if (_currentTab == 'Chi tiết') _buildJobDetails(),
+        if (_currentTab == 'Tổng quan công ty') _buildCompanyOverview(),
+      ],
+    );
+  }
+
+Widget _buildTabButton(String title, bool isSelected) {
+  return GestureDetector(
+    onTap: () {
+      setState(() {
+        _currentTab = title;
+      });
+    },
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: isSelected ? Colors.black : Colors.grey,
           ),
         ),
-        SizedBox(height: 3.0),
-        SizedBox(
-          width: 80,
-          height: 2,
-          child: DecoratedBox(
-            decoration: BoxDecoration(color: Color.fromARGB(255, 89, 148, 185)),
+        if (isSelected)
+          Container(
+            margin: const EdgeInsets.only(top: 4),
+            height: 2,
+            width: title.length * 8.0,
+            color: Colors.black,
+          ),
+      ],
+    ),
+  );
+}
+
+  Widget _buildJobDetails() {
+    return Row(
+      children: [
+        _buildImageContainer('assets/images/hcm_map.png'),
+        const SizedBox(width: 12),
+        _buildJobInfo(),
+      ],
+    );
+  }
+
+  Widget _buildCompanyOverview() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('CTY TNHH YAKULT VIET NAM',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10),
+          _buildInfoRow(Icons.location_on,
+              'Địa điểm: 195 Trương Văn Bang, KP1, P Thạnh Mỹ Lợi, Tp Thủ Đức, HCM'),
+          _buildInfoRow(Icons.person, 'Người liên hệ: Ms Huyền'),
+          _buildInfoRow(Icons.group, 'Quy mô công ty: 500-999'),
+          _buildInfoRow(Icons.business_center,
+              'Loại hình hoạt động: Trách nhiệm hữu hạn'),
+          _buildInfoRow(Icons.link,
+              'Website: https://corporate.yakult.vn/tuyen-dung.html'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, size: 20),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(text, style: _defaultTextStyle),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBenefitSection() {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 3,
+      ),
+      itemCount: _benefits.length,
+      itemBuilder: (context, index) {
+        final benefit = _benefits[index];
+        return Row(
+          children: [
+            Icon(benefit['icon'] as IconData, size: 20),
+            const SizedBox(width: 5),
+            Expanded(
+                child: Text(benefit['text'] as String,
+                    style: const TextStyle(fontSize: 14))),
+          ],
+        );
+      },
+    );
+  }
+
+  final List<Map<String, dynamic>> _benefits = [
+    {'icon': Icons.health_and_safety, 'text': 'Chế độ bảo hiểm'},
+    {'icon': Icons.card_giftcard, 'text': 'Chế độ thưởng'},
+    {'icon': Icons.family_restroom, 'text': 'Phụ cấp nhà ở'},
+    {'icon': Icons.local_cafe, 'text': 'Đào tạo'},
+    {'icon': Icons.favorite, 'text': 'Chăm sóc sức khoẻ'},
+    {'icon': Icons.flight, 'text': 'Du Lịch'},
+    {'icon': Icons.laptop, 'text': 'Công việc ổn định'},
+    {'icon': Icons.attach_money, 'text': 'Tăng lương'},
+    {'icon': Icons.event, 'text': 'Nghỉ phép năm'},
+  ];
+
+  Widget _buildAboutUsHeader() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Image.asset('assets/images/nen.png',
+            width: 190, height: 190, fit: BoxFit.cover),
+        const SizedBox(width: 20),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+              border: Border.all(color: Colors.black, width: 2),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(13.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('More Info',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 10),
+                  Container(height: 2, width: 50, color: Colors.black),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea nisi Lorem ipsum dolor',
+                    style: TextStyle(fontSize: 12, height: 1.5),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: PrimaryTheme.buttonPrimary,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Ứng tuyển',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-        
+      ],
+    );
+  }
+
+  Widget _buildText() {
+    return const Text(
+      'This is a placeholder text for additional information about the job or company. You can customize this section further based on your requirements.',
+      style: TextStyle(fontSize: 14, height: 1.5),
+    );
+  }
+
+  Widget _buildImageContainer(String assetPath) {
+    return Container(
+      width: 120,
+      height: 120,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: Image.asset(assetPath, fit: BoxFit.cover),
+      ),
+    );
+  }
+
+  Widget _buildJobInfo() {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildJobDetail(Icons.calendar_today, 'Ngày cập nhật: 09/12/2024'),
+          _buildJobDetail(Icons.business, 'Ngành nghề: Technology'),
+          _buildJobDetail(Icons.money, 'Lương: 11 Tr - 15 Tr VND'),
+          _buildJobDetail(Icons.access_time, 'Hết hạn nộp: 31/01/2025'),
+          _buildJobDetail(Icons.work, 'Hình thức: Nhân viên chính thức'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildJobDetail(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.black, size: 20),
+        const SizedBox(width: 5),
+        Text(text, style: _defaultTextStyle),
       ],
     );
   }
 }
- 
