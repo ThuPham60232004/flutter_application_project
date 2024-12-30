@@ -13,166 +13,110 @@ import 'package:flutter_application_project/presentation/screens/cv_screen.dart'
 import 'package:flutter_application_project/presentation/screens/entercode_screen.dart';
 import 'package:flutter_application_project/presentation/screens/forgetpass_screen.dart';
 import 'package:flutter_application_project/presentation/screens/resetpass_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
+  @override
+  _CustomDrawerState createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  String? name;
+  String? profileImage;
+  bool isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name');
+      profileImage = prefs.getString('profile_image');
+      isLoggedIn = name != null;
+    });
+  }
+
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      name = null;
+      profileImage = null;
+      isLoggedIn = false;
+    });
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final menuItems = [
-      {
-        'leading': const Icon(Icons.home, color: Colors.blue),
-        'title': 'Home',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.login, color: Colors.green),
-        'title': 'Login',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.app_registration, color: Colors.orange),
-        'title': 'Register',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SignUpScreen()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.badge, color: Colors.teal),
-        'title': 'Career',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MenuCareer()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.description, color: Colors.indigo),
-        'title': 'Career Details',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CareerDetail()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.business, color: Colors.purple),
-        'title': 'Company',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CompanyScreen()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.info, color: Colors.deepPurple),
-        'title': 'Company Details',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CompanyDetail()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.contacts, color: Colors.blueGrey),
-        'title': 'Contact',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ContactScreen()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.person, color: Colors.cyan),
-        'title': 'Profile',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProfileScreen()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.article, color: Colors.amber),
-        'title': 'Blog Details',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BlogDetail()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.insert_drive_file, color: Colors.lightGreen),
-        'title': 'CV',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CVScreen()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.code, color: Colors.deepOrange),
-        'title': 'Enter Code',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => EnterCodeScreen()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.lock_open, color: Colors.redAccent),
-        'title': 'Forget Password',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ForgetPassScreen()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.lock_reset, color: Colors.pinkAccent),
-        'title': 'Reset Password',
-        'onTap': () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ResetPassScreen()),
-            ),
-      },
-      {
-        'leading': const Icon(Icons.logout, color: Colors.red),
-        'title': 'Logout',
-        'onTap': () {},
-      },
+      _buildMenuItem(Icons.home, 'Home', HomeScreen(), Colors.blue),
+      _buildMenuItem(Icons.login, isLoggedIn ? 'Logout' : 'Login', LoginScreen(), Colors.green),
+      if (!isLoggedIn) _buildMenuItem(Icons.app_registration, 'Register', SignUpScreen(), Colors.orange),
+      _buildMenuItem(Icons.badge, 'Career', MenuCareer(), Colors.teal),
+      _buildMenuItem(Icons.description, 'Career Details', CareerDetail(), Colors.indigo),
+      _buildMenuItem(Icons.business, 'Company', CompanyScreen(), Colors.purple),
+      _buildMenuItem(Icons.info, 'Company Details', CompanyDetail(), Colors.deepPurple),
+      _buildMenuItem(Icons.contacts, 'Contact', ContactScreen(), Colors.blueGrey),
+      _buildMenuItem(Icons.person, 'Profile', ProfileScreen(), Colors.cyan),
+      _buildMenuItem(Icons.article, 'Blog Details', BlogDetail(), Colors.amber),
+      _buildMenuItem(Icons.insert_drive_file, 'CV', CVScreen(), Colors.lightGreen),
+      _buildMenuItem(Icons.code, 'Enter Code', EnterCodeScreen(), Colors.deepOrange),
+      _buildMenuItem(Icons.lock_open, 'Forget Password', ForgetPassScreen(), Colors.redAccent),
+      _buildMenuItem(Icons.lock_reset, 'Reset Password', ResetPassScreen(), Colors.pinkAccent),
     ];
 
     return Drawer(
-      child: ListView(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(2),
-            child: Column(
+      child: isLoggedIn
+          ? ListView(
               children: [
-                const SizedBox(height: 20),
-                const CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage('assets/icons/nen.png'),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Welcome!',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                const Text(
-                  'Here’s your profile menu',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
+                _buildUserProfile(),
+                const Divider(),
+                ...menuItems,  // Directly using the ListTile widgets
               ],
-            ),
+            )
+          : const Center(child: CircularProgressIndicator()),
+    );
+  }
+  ListTile _buildMenuItem(IconData icon, String title, Widget screen, Color color) {
+    return ListTile(
+      leading: Icon(icon, color: color),
+      title: Text(title),
+      onTap: title == 'Logout' ? _logout : () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => screen),
+      ),
+    );
+  }
+
+  Widget _buildUserProfile() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          CircleAvatar(
+            radius: 40,
+            backgroundImage: profileImage != null && profileImage!.isNotEmpty
+                ? NetworkImage(profileImage!)
+                : AssetImage('assets/icons/nen.png') as ImageProvider,
           ),
-          const Divider(),
-          ...menuItems.map((item) => ListTile(
-                leading: item['leading'] as Widget,
-                title: Text(item['title'] as String),
-                onTap: item['onTap'] as VoidCallback,
-              )),
+          const SizedBox(height: 20),
+          Text(
+            'Welcome, ${name ?? "Guest"}!',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            name ?? 'Guest',
+            style: const TextStyle(fontSize: 14),
+          ),
         ],
       ),
     );
