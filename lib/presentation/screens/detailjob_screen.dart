@@ -42,9 +42,9 @@ class _DetailJobScreenState extends State<DetailJobScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              
+              _buildItemPage(),
               const SizedBox(height: 20),
-              
+              _buildPosJob(),
               _buildBenefitSection(),
               const SizedBox(height: 20),
               _buildAboutUsHeader(),
@@ -62,7 +62,7 @@ class _DetailJobScreenState extends State<DetailJobScreen> {
       ),
     );
   }
-
+  
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
@@ -80,6 +80,210 @@ class _DetailJobScreenState extends State<DetailJobScreen> {
       ),
     );
   }
+Widget _buildItemPage() {
+  return Container(
+    width: MediaQuery.of(context).size.width, 
+    height: 150, 
+    decoration: BoxDecoration(
+      color: Colors.purple[100], 
+    ),
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, 
+        crossAxisAlignment: CrossAxisAlignment.center, 
+        children: [
+          Text(
+            'Backend Developer',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(height: 10), 
+          Text(
+            'Job Item',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              color: Colors.white, 
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+
+Widget _buildPosJob() {
+  return Container(
+    width: MediaQuery.of(context).size.width,
+    height: 250,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'Backend Developer',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(width: 8),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blue, width: 1),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  'Freelancer',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            'Tiến Phong - TPHCM, Việt Nam',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: Colors.black87,
+            ),
+          ),
+        ),
+        
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
+          child: Row(
+            children: [
+              Text(
+                'Chi tiết',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+              SizedBox(width: 20),
+              Text(
+                'Tổng quan công ty',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: [
+              Container(
+                width:120,
+                height:120,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.asset(
+                    'assets/images/hcm_map.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(width: 12), 
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.calendar_today, color: Colors.blue, size: 20),
+                        SizedBox(width: 5),
+                        Text(
+                          'Ngày cập nhật: 09/12/2024',
+                          style: TextStyle(fontSize: 14, color: Colors.black87),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.business, color: Colors.blue, size: 20),
+                        SizedBox(width: 5),
+                        Text(
+                          'Ngành nghề:Technology',
+                          style: TextStyle(fontSize: 14, color: Colors.black87),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.money, color: Colors.green, size: 20),
+                        SizedBox(width: 5),
+                        Text(
+                          'Lương: 11 Tr - 15 Tr VND',
+                          style: TextStyle(fontSize: 14, color: Colors.black87),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.access_time, color: Colors.orange, size: 20),
+                        SizedBox(width: 5),
+                        Text(
+                          'Hết hạn nộp: 31/01/2025',
+                          style: TextStyle(fontSize: 14, color: Colors.black87),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.work, color: Colors.purple, size: 20),
+                        SizedBox(width: 5),
+                        Text(
+                          'Hình thức: Nhân viên chính thức',
+                          style: TextStyle(fontSize: 14, color: Colors.black87),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
+
+
+
+
+
 
   Widget _buildBenefitSection() {
     return Column(
@@ -103,7 +307,6 @@ class _DetailJobScreenState extends State<DetailJobScreen> {
             _buildBenefitItem(Icons.laptop, 'Công việc ổn định'),
             _buildBenefitItem(Icons.attach_money, 'Tăng lương'),
             _buildBenefitItem(Icons.event, 'Nghỉ phép năm'),
-            
           ],
         ),
         const SizedBox(height: 20),
@@ -223,6 +426,7 @@ Widget _buildText() {
 }
 
 
+
   Widget _buildAboutUsDecoration() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,5 +452,3 @@ Widget _buildText() {
   }
 }
  
-
-
