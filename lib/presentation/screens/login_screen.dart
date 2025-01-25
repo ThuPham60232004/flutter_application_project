@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_project/data/repositories/auth_repository.dart';
 import 'package:flutter_application_project/data/sources/local_data_source.dart';
-import 'package:flutter_application_project/data/models/user.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
 import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -33,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final user = await authRepository.loginUser(email, password);
       if (user != null) {
-        await localDataSource.saveUserData(user.token, user.name, user.profileImage);
+        await localDataSource.saveUserData(user.token, user.name, user.profileImage, user.id);
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         _showErrorDialog('Đăng nhập thất bại');
@@ -115,17 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const Text('Đăng nhập', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
-              const Text('Đăng ký với tài khoản Open', style: TextStyle(fontSize: 16)),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildSocialButton('Google', 'assets/icons/google.png', () {}),
-                  const SizedBox(width: 10),
-                  _buildSocialButton('Apple ID', 'assets/icons/apple-logo.png', () {}),
-                ],
-              ),
-              const SizedBox(height: 30),
+  
               const Text('Hoặc tiếp tục với địa chỉ email'),
               const SizedBox(height: 10),
               _buildTextField(emailController, 'Email của bạn', Icons.email_outlined),
@@ -163,12 +152,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text('Bạn quên mật khẩu?  ', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                  TextButton(onPressed: () {
+                    Navigator.pushNamed(context, '/forgetpassscreen');
+                  }, child: const Text('Quên mật khẩu')),
+                ],
+              ),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text('Chưa có tài khoản?  ', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                  TextButton(onPressed: () {}, child: const Text('Đăng ký')),
+                  TextButton(onPressed: () {
+                    Navigator.pushNamed(context, '/signup');
+                  }, child: const Text('Đăng ký')),
                 ],
               ),
             ],

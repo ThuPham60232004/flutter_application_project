@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter_application_project/core/themes/primary_text.dart';
 import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
 import 'package:flutter_application_project/core/widgets/widget_drawer.dart';
-import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/widgets/widget_search.dart';
 import 'package:flutter_application_project/core/widgets/widgte_jobbanner.dart';
 import 'package:flutter_application_project/core/widgets/widget_footer.dart';
+import 'package:flutter_application_project/app.dart';
+import 'package:flutter_application_project/presentation/screens/companydetail_screen.dart';
 class CompanyScreen extends StatefulWidget {
   const CompanyScreen({Key? key}) : super(key: key);
 
@@ -15,6 +18,58 @@ class CompanyScreen extends StatefulWidget {
 
 class _CompanyScreenState extends State<CompanyScreen> {
   double _scrollOffset = 0.0;
+  List<dynamic> companyList = [];
+  bool isLoading = true;
+  Map<String, int> jobCounts = {};
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCompanies();
+  }
+
+  Future<void> fetchCompanies() async {
+    try {
+      final response = await http.get(Uri.parse('http://192.168.1.213:2000/company/'));
+      if (response.statusCode == 200) {
+        setState(() {
+          companyList = json.decode(response.body);
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Không thể tải công ty');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print('Lỗi: $e');
+    }
+  }
+
+  Future<int> fetchJobCount(String companyId) async {
+    if (jobCounts.containsKey(companyId)) {
+      return jobCounts[companyId]!;
+    }
+
+    try {
+      final response = await http.get(Uri.parse('http://192.168.1.213:2000/job/count-by-company/$companyId'));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final jobCount = data['jobCount'] ?? 0;
+        setState(() {
+          jobCounts[companyId] = jobCount;
+        });
+        return jobCount;
+      } else {
+        throw Exception('Không thể tải số lượng công việc');
+      }
+    } catch (e) {
+      print('Lỗi khi lấy số công việc: $e');
+      return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final inheritedTheme = AppInheritedTheme.of(context);
@@ -62,11 +117,15 @@ class _CompanyScreenState extends State<CompanyScreen> {
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
-                  children: List.generate(10, (index) => _buildCompanyCard()),
-                ),
+                child: isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : companyList.isEmpty
+                        ? Center(child: Text('Không có công ty nào.'))
+                        : Wrap(
+                            spacing: 16,
+                            runSpacing: 16,
+                            children: companyList.map((company) => _buildCompanyCard(company)).toList(),
+                          ),
               ),
               const SizedBox(height: 30),
               SizedBox(
@@ -80,97 +139,111 @@ class _CompanyScreenState extends State<CompanyScreen> {
     );
   }
 
-  Widget _buildCompanyCard() {
-    return Container(
-      width: 180,
-      height: 180,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.blueAccent,
-          width: 1.5,
-        ),
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 8,
-            offset: Offset(0, 4),
+    Widget _buildCompanyCard(dynamic company) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CompanyDetailScreen(company: company),
           ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: Image.network(
-              'https://nhanlucnganhluat.vn/uploads/images/BBD5FCBE/logo/2023-03/logo.jpg',
-              fit: BoxFit.cover,
-              height: 50,
-              width: 50,
-            ),
-          ),
-          Text(
-            'MB Bank',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            height: 50,
+        );
+      },
+      child: FutureBuilder<int>(
+        future: fetchJobCount(company['_id']),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Lỗi khi lấy số công việc'));
+          }
+
+          int jobCount = snapshot.data ?? 0;
+
+          return Container(
+            width: 200,
+            height: 240,
             decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
-              ),
+              borderRadius: BorderRadius.circular(16),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Hà Nội',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black54,
-                    ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  child: Image.network(
+                    company['logo'] ?? 'https://via.placeholder.com/200x120',
+                    height: 120,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
                   ),
-                  Row(
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.circle,
-                        color: Colors.green,
-                        size: 10,
-                      ),
-                      const SizedBox(width: 4),
                       Text(
-                        '3 công việc',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black54,
+                        company['nameCompany'] ?? 'Không rõ',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(width: 4),
-                      Icon(
-                        Icons.chevron_right,
-                        color: Colors.black54,
-                        size: 16,
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          const Icon(Icons.location_on, color: Colors.blueAccent, size: 16),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              company['location'] ?? 'Không rõ',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Icon(Icons.work, color: Colors.green, size: 16),
+                          const SizedBox(width: 4),
+                          Text(
+                            '$jobCount công việc',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
+
 }

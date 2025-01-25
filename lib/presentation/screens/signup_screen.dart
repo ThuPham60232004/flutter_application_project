@@ -1,153 +1,159 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
+import 'package:flutter_application_project/data/repositories/auth_repository.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
+import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
+class SignUpScreen extends StatefulWidget {
+  @override
+  _SignUpScreenState createState() => _SignUpScreenState();
+}
 
-class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  bool isLoading = false;
+  final AuthRepository authRepository = AuthRepository();
+
+  Future<void> registerUser() async {
+    if (passwordController.text != confirmPasswordController.text) {
+      _showErrorDialog("Mật khẩu và xác nhận mật khẩu không khớp!");
+      return;
+    }
+
+    setState(() => isLoading = true);
+    try {
+      final user = await authRepository.registerUser(
+        emailController.text,
+        passwordController.text,
+        nameController.text,
+      );
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, '/login');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Đăng ký thành công!')),
+        );
+      }
+    } catch (error) {
+      _showErrorDialog('Đăng ký thất bại: $error');
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Lỗi'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+    TextEditingController controller,
+    String hint,
+    IconData icon, {
+    bool obscureText = false,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon),
+        hintText: hint,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final inheritedTheme = AppInheritedTheme.of(context);
     return Scaffold(
-      appBar: CustomAppBar(
+     appBar: CustomAppBar(
         themeMode: inheritedTheme!.themeMode,
         toggleTheme: inheritedTheme.toggleTheme,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Sign Up',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Tạo tài khoản mới',
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            const Text('Hoặc tiếp tục với địa chỉ email'),
+            
+            const SizedBox(height: 10),
+            _buildTextField(nameController, 'Tên của bạn', Icons.person_outline),
+            const SizedBox(height: 10),
+            _buildTextField(emailController, 'Email của bạn', Icons.email_outlined),
+            const SizedBox(height: 10),
+            _buildTextField(passwordController, 'Mật khẩu', Icons.lock_outline, obscureText: true),
+            const SizedBox(height: 10),
+            _buildTextField(confirmPasswordController, 'Xác nhận mật khẩu', Icons.lock_outline, obscureText: true),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      if (nameController.text.isNotEmpty &&
+                          emailController.text.isNotEmpty &&
+                          passwordController.text.isNotEmpty &&
+                          confirmPasswordController.text.isNotEmpty) {
+                        registerUser();
+                      } else {
+                        _showErrorDialog('Vui lòng nhập đầy đủ thông tin');
+                      }
+                    },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: const Size(80, 32),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Ink(
+                decoration: BoxDecoration(
+                   gradient: PrimaryTheme.buttonPrimary,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Sign up with Open account',
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      icon: Image.asset(
-                        'assets/icons/google.png',
-                        height: 24,
-                        width: 24,
-                      ),
-                      label: Text('Google'),
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        elevation: 2,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      icon: Image.asset(
-                        'assets/icons/apple-logo.png',
-                        height: 24,
-                        width: 24,
-                      ),
-                      label: Text('Apple ID'),
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        elevation: 2,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 30),
-              Text('Or Continue with email address'),
-              SizedBox(height: 10),
-              TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.email_outlined),
-                  hintText: 'Your email',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock_outline),
-                  hintText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock_outline),
-                  hintText: 'Confirm Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.zero, 
-                        minimumSize: const Size(80, 32),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  constraints: const BoxConstraints(minHeight: 40, minWidth: 80),
+                  alignment: Alignment.center,
+                  child: isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text(
+                          'Đăng ký',
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                         ),
-                      ),
-                child: Ink(
-                  decoration: BoxDecoration(
-                    gradient: PrimaryTheme.buttonPrimary,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Container(
-                    constraints: BoxConstraints(
-                      minHeight: 50,
-                      minWidth: double.infinity,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
                 ),
               ),
-              SizedBox(height: 10),
-              Center(
-                child: Text(
-                  'This site is protected by reCAPTCHA and the Google Privacy Policy.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Đã có tài khoản?  ', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/login');
+                  },
+                  child: const Text('Đăng nhập'),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
     );

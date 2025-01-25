@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 class PrimaryText {
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [Color(0xFF8A4DFF), Color(0xFF73E4EA)],
+    colors: [Color.fromARGB(255, 90, 165, 245), Color.fromARGB(255, 113, 25, 221)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );

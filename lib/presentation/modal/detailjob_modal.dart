@@ -1,218 +1,317 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:file_picker/file_picker.dart';
+import 'dart:convert';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:http_parser/http_parser.dart';
+class ModalDetailScreen extends StatefulWidget {
+  final String jobId;
+  final String title;
+  const ModalDetailScreen({Key? key, required this.jobId, required this.title})
+      : super(key: key);
 
-class ModalDetailScreen extends StatelessWidget {
-  const ModalDetailScreen({super.key});
+  @override
+  State<ModalDetailScreen> createState() => _ModalDetailScreenState();
+}
+
+class _ModalDetailScreenState extends State<ModalDetailScreen> {
+  Map<String, dynamic>? profileData;
+  bool isLoading = true;
+  File? selectedFile;
+  final TextEditingController coverLetterController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _fetchProfileData();
+  }
+void _showSuccessDialog(String message) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text("Thành công"),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text("Đóng"),
+        ),
+      ],
+    ),
+  );
+}
+
+
+Future<void> _applyJob() async {
+  if (selectedFile == null) {
+    _showErrorDialog('Vui lòng chọn CV trước khi gửi.');
+    return;
+  }
+
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('id');
+
+    if (userId == null) {
+      throw Exception("Không tìm thấy thông tin người dùng.");
+    }
+
+    // Đọc tệp và mã hóa dưới dạng base64
+    final fileBytes = await selectedFile!.readAsBytes();
+    final base64File = base64Encode(fileBytes);
+
+    final uri = Uri.parse('http://192.168.1.213:2000/application/');
+
+    // Sử dụng multipart request để gửi tệp và các trường dữ liệu khác
+    var request = http.MultipartRequest('POST', uri)
+      ..headers.addAll({
+        'Content-Type': 'multipart/form-data',
+      })
+      ..fields['user'] = userId
+      ..fields['job'] = widget.jobId
+      ..fields['coverLetter'] = coverLetterController.text
+      ..fields['profile'] = profileData?['_id']!
+      ..fields['status'] = 'pending';
+
+    // Thêm CV dưới dạng tệp
+    request.files.add(http.MultipartFile.fromBytes(
+      'cv', // Tên trường 'cv' phải trùng khớp với tên đã khai báo trên server
+      fileBytes,
+      filename: selectedFile!.path.split('/').last,
+    ));
+
+    // Gửi yêu cầu
+    final response = await request.send();
+
+    // Kiểm tra kết quả
+    if (response.statusCode == 200) {
+      print("Gửi thành công!");
+      _showSuccessDialog("Gửi ứng tuyển thành công.");
+    } else {
+      final responseData = await response.stream.bytesToString();
+      throw Exception('Lỗi khi gửi ứng tuyển: $responseData');
+    }
+  } catch (e) {
+    print("Lỗi: $e");
+    _showErrorDialog(e.toString());
+  }
+}
+
+  Future<void> _fetchProfileData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userId = prefs.getString('id');
+      if (userId == null) {
+        throw Exception("User ID không tồn tại.");
+      }
+
+      final profileUrl = Uri.parse('http://192.168.1.213:2000/profile/$userId');
+      final response = await http.get(profileUrl);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          profileData = data;
+
+          nameController.text = data['user']['name'] ?? '';
+          phoneController.text = data['contactInfo']['phone'] ?? '';
+
+          isLoading = false;
+        });
+      } else {
+        throw Exception("Không thể lấy thông tin cá nhân.");
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      _showErrorDialog(e.toString());
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Lỗi"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Đóng"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _pickFile() async {
+    var status = await Permission.storage.status;
+
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+      allowMultiple: false,
+    );
+
+    if (result != null) {
+      setState(() {
+        selectedFile = File(result.files.single.path!);
+      });
+    } else {
+      _showErrorDialog('Không chọn được file.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final inheritedTheme = AppInheritedTheme.of(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         themeMode: inheritedTheme!.themeMode,
         toggleTheme: inheritedTheme.toggleTheme,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Lập trình viên Backend',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'CV của bạn *',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[700],
-                ),
-              ),
-              SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFFF7E0E0),
-                  border: Border.all(color: Colors.redAccent),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : profileData != null
+              ? Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.upload_file, color: Colors.black54),
-                          SizedBox(width: 8),
-                          Text(
-                            'Tải lên CV mới',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 12),
-                      Row(
-                        children: [
-                          ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: Icon(Icons.cloud_upload),
-                            label: Text('Chọn tệp'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                side: BorderSide(color: Colors.blueAccent),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${widget.title}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
-                            ),
+                        ),
+                        const SizedBox(height: 24),
+                        _buildSectionTitle('CV ứng tuyển *'),
+                        _buildCVPickerSection(),
+                        const SizedBox(height: 16),
+                        _buildSectionTitle('Thông tin cơ bản'),
+                        const SizedBox(height: 16),
+                        _buildTextField('Họ và tên', nameController,
+                            enable: false),
+                        const SizedBox(height: 16),
+                        _buildTextField('Số điện thoại *', phoneController,
+                            enable: false),
+                        const SizedBox(height: 16),
+                        _buildSectionTitle('Thư xin việc (Không bắt buộc)'),
+                        TextField(
+                          controller: coverLetterController,
+                          maxLines: 5,
+                          decoration: InputDecoration(
+                            hintText: 'Nhập lá thư ứng tuyển...',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8)),
                           ),
-                          SizedBox(width: 12),
-                          Text(
-                            'Chưa chọn tệp',
-                            style: TextStyle(fontSize: 14, color: Colors.black),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 12),
-                      Text(
-                        'Vui lòng tải lên tệp .doc, .docx hoặc .pdf, tối đa 3MB và không có bảo vệ mật khẩu.',
-                        style: TextStyle(fontSize: 12, color: Color(0xFF979090)),
-                      ),
-                    ],
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton(
+                          onPressed: _applyJob,
+                          child: Text('Gửi CV của tôi'),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                )
+              : const Center(child: Text("Không có dữ liệu.")),
+    );
+  }
 
-              SizedBox(height: 24),
-              Text(
-                'Thông tin cá nhân',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              SizedBox(height: 16),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Họ và tên *',
-                  labelStyle: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 16),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Số điện thoại *',
-                  labelStyle: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: 'Vị trí làm việc ưa thích *',
-                  labelStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-                items: [
-                  DropdownMenuItem(child: Text('HCM'), value: 'HCM'),
-                  DropdownMenuItem(child: Text('HN'), value: 'HN'),
-                  DropdownMenuItem(child: Text('DN'), value: 'DN'),
-                ],
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 24),
-              Row(
-                children: [
-                  Text(
-                    'Thư xin việc',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(width: 4),
-                  Text(
-                    '(Tùy chọn)',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Kỹ năng, dự án công việc hoặc thành tựu nào khiến bạn là ứng viên mạnh?',
-                style: TextStyle(fontSize: 14, color: Colors.black),
-              ),
-              SizedBox(height: 8),
-              TextField(
-                maxLines: 5,
-                maxLength: 500,
-                decoration: InputDecoration(
-                  hintText:
-                      'Chi tiết và ví dụ cụ thể sẽ làm đơn ứng tuyển của bạn mạnh mẽ hơn .....',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                '500 trong số 500 ký tự còn lại',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-              SizedBox(height: 24),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    backgroundColor: Colors.transparent,
-                  ),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                      gradient: PrimaryTheme.buttonPrimary, 
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Ứng tuyển',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+          fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+    );
+  }
+
+  Widget _buildCVPickerSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: _pickFile,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.red),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.upload_file, color: Colors.red),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    selectedFile == null
+                        ? 'Tải lên CV mới'
+                        : 'Đã chọn: ${selectedFile!.path.split('/').last}',
+                    style: const TextStyle(color: Colors.red),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
+        const SizedBox(height: 8),
+        const Text(
+          'Hỗ trợ định dạng doc, docx hoặc pdf, dưới 3MB và không chứa mật khẩu bảo vệ.',
+          style: TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTextField(String label, TextEditingController controller,
+      {bool enable = true}) {
+    return TextField(
+      controller: controller,
+      enabled: enable,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        filled: true,
+        fillColor: enable ? Colors.white : Colors.grey[300],
       ),
+      maxLines: controller == coverLetterController
+          ? 5
+          : 1, // Make the cover letter field multiline
+    );
+  }
+}
+
+class PdfViewerScreen extends StatelessWidget {
+  final String filePath;
+
+  const PdfViewerScreen({Key? key, required this.filePath}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Xem PDF')),
+      body: PDFView(filePath: filePath),
     );
   }
 }

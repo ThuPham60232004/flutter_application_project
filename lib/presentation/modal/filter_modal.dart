@@ -15,7 +15,7 @@ class _FilterModalState extends State<FilterModal> {
   bool _isTechnologySelected = false;
   bool _isDesignSelected = false;
   bool _isMarketingSelected = false;
-  String _selectedCity = ''; // Thành phố được chọn
+  String _selectedCity = ''; 
 
   @override
   Widget build(BuildContext context) {

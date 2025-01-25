@@ -55,8 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               _buildHeader(),
               const SizedBox(
-                height: 252,
+                height: 180,
                 child: JobCard(),
+              ),
+              SizedBox(
+                height: 30,
               ),
               _buildAboutUsHeader(),
               ..._buildFadeItems(),
@@ -279,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         Container(
-          color: Colors.black.withOpacity(0.4), // Overlay for better readability
+          color: Colors.black.withOpacity(0.4), 
           height: 250,
         ),
         Column(

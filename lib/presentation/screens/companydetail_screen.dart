@@ -1,127 +1,306 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_application_project/presentation/screens/detailjob_screen.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
-import 'package:flutter_application_project/core/themes/primary_text.dart';
-import 'package:flutter_application_project/core/widgets/widget_jobcard.dart';
-class CompanyDetail extends StatefulWidget {
-  const CompanyDetail({Key? key}) : super(key: key);
+class CompanyDetailScreen extends StatefulWidget {
+  final dynamic company;
+
+  const CompanyDetailScreen({Key? key, required this.company})
+      : super(key: key);
+
   @override
-  _CompanyDetailState createState() => _CompanyDetailState();
+  _CompanyDetailScreenState createState() => _CompanyDetailScreenState();
 }
 
-class _CompanyDetailState extends State<CompanyDetail> {
+class _CompanyDetailScreenState extends State<CompanyDetailScreen> {
+  bool isLoading = true;
+  List<dynamic> jobs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchJobs();
+  }
+
+  Future<void> fetchJobs() async {
+    try {
+      final response = await http.get(Uri.parse(
+          'http://192.168.1.213:2000/job/company/${widget.company['_id']}'));
+      if (response.statusCode == 200) {
+        final List<dynamic> decodedJobs = jsonDecode(response.body);
+        setState(() {
+          jobs = decodedJobs;
+          isLoading = false;
+        });
+        debugPrint('Jobs fetched successfully: $decodedJobs');
+      } else {
+        throw Exception('Không thể tải danh sách công việc');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      debugPrint('Lỗi khi tải danh sách công việc: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final inheritedTheme = AppInheritedTheme.of(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         themeMode: inheritedTheme!.themeMode,
         toggleTheme: inheritedTheme.toggleTheme,
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-            Padding(
+          children:[ Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 8,
+            child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Container(
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        'https://upload.wikimedia.org/wikipedia/commons/3/3f/LG_logo_%282015%29.svg',
-                        height: 80,
-                        width: 80,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Icon(
-                          Icons.image_not_supported,
-                          size: 80,
-                          color: Colors.grey,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(
+                      widget.company['logo'] ??
+                          'https://via.placeholder.com/300x200',
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    widget.company['nameCompany'] ?? 'Không rõ',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.location_on, color: Colors.black),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          widget.company['location'] ?? 'Không rõ',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black54,
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                  const Divider(height: 40, thickness: 1),
+                  Text(
+                    'Mô tả công ty:',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
                     ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'MB Bank',
-                            style: PrimaryText.primaryTextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Icon(Icons.location_on, color: Colors.black, size: 16),
-                              SizedBox(width: 4),
-                              Expanded(
-                                child: Text(
-                                  'Da Nang - Others - Ha Noi',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[700],
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Icon(Icons.work_outline, color: Colors.black, size: 16),
-                              SizedBox(width: 4),
-                              Text(
-                                '5 job openings',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[700],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.company['description'] ??
+                        'Chưa có thông tin mô tả cho công ty này.',
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                      height: 1.5,
                     ),
                   ),
+                  
                 ],
               ),
             ),
-            ),
-            SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
-                  children: List.generate(10, (index) => JobCard()),
-                ),
-              ),
-          ],
+          ),
+          const SizedBox(height: 30),
+                  isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : jobs.isEmpty
+                          ? const Center(
+                              child: Text(
+                                'Không có công việc nào phù hợp',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black54),
+                              ),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: jobs.length,
+                              itemBuilder: (context, index) {
+                                final job = jobs[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 16.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              DetailJobScreen(job: job),
+                                        ),
+                                      );
+                                    },
+                                    child: _JobCardDesign(
+                                      logoUrl: job['company']?['logo'] ?? '',
+                                      jobTitle:
+                                          job['title'] ?? 'Không có tiêu đề',
+                                      companyName: job['company']
+                                              ?['nameCompany'] ??
+                                          'Không có công ty',
+                                      jobDescription: job['description'] ??
+                                          'Không có mô tả',
+                                      jobExperience:
+                                          job['exp'] ?? 'Không yêu cầu',
+                                      jobLocation: job['location'] ?? 'Remote',
+                                      jobSalary: job['salary'] != null
+                                          ? '${job['salary']} VND'
+                                          : 'Không rõ',
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+          ]
         ),
+      ),
+    );
+  }
+}
+class _JobCardDesign extends StatelessWidget {
+  final String logoUrl;
+  final String jobTitle;
+  final String companyName;
+  final String jobDescription;
+  final String jobExperience;
+  final String jobLocation;
+  final String jobSalary;
+
+  const _JobCardDesign({
+    Key? key,
+    required this.logoUrl,
+    required this.jobTitle,
+    required this.companyName,
+    required this.jobDescription,
+    required this.jobExperience,
+    required this.jobLocation,
+    required this.jobSalary,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 28.0,
+            backgroundImage: logoUrl.isNotEmpty
+                ? NetworkImage(logoUrl)
+                : null,
+            backgroundColor: Colors.grey.shade200,
+            child: logoUrl.isEmpty
+                ? const Icon(Icons.business, color: Colors.white)
+                : null,
+          ),
+          const SizedBox(width: 16.0),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  jobTitle,
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 6.0),
+                Text(
+                  companyName,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  jobDescription.length > 50
+                      ? jobDescription.substring(0, 50) + '...'
+                      : jobDescription,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.black54,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 12.0),
+                Row(
+                  children: [
+                    Text(
+                      jobExperience,
+                      style: const TextStyle(
+                          fontSize: 14.0, color: Colors.black54),
+                    ),
+                    const Text(" • ", style: TextStyle(color: Colors.black26)),
+                    Text(
+                      jobLocation,
+                      style: const TextStyle(
+                          fontSize: 14.0, color: Colors.black54),
+                    ),
+                    const Text(" • ", style: TextStyle(color: Colors.black26)),
+                    Container(
+                      constraints: BoxConstraints(
+                        maxWidth: 60, 
+                      ),
+                      child: Text(
+                        jobSalary,
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.black54,
+                        ),
+                        overflow: TextOverflow.ellipsis, 
+                        maxLines: 1,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

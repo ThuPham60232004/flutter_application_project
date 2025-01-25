@@ -3,18 +3,13 @@ import 'package:flutter_application_project/presentation/screens/home_screen.dar
 import 'package:flutter_application_project/presentation/screens/login_screen.dart';
 import 'package:flutter_application_project/presentation/screens/signup_screen.dart';
 import 'package:flutter_application_project/presentation/screens/menu_career.dart';
-import 'package:flutter_application_project/presentation/screens/careerdetail_screen.dart';
 import 'package:flutter_application_project/presentation/screens/company_screen.dart';
-import 'package:flutter_application_project/presentation/screens/companydetail_screen.dart';
-import 'package:flutter_application_project/presentation/screens/profile_screen.dart';
+import 'package:flutter_application_project/presentation/screens/account_screen.dart';
 import 'package:flutter_application_project/presentation/screens/contact_screen.dart';
 import 'package:flutter_application_project/presentation/screens/blogdetail_screen.dart';
-import 'package:flutter_application_project/presentation/screens/cv_screen.dart';
-import 'package:flutter_application_project/presentation/screens/entercode_screen.dart';
+import 'package:flutter_application_project/presentation/screens/profile_screen.dart';
 import 'package:flutter_application_project/presentation/screens/forgetpass_screen.dart';
 import 'package:flutter_application_project/presentation/screens/resetpass_screen.dart';
-import 'package:flutter_application_project/presentation/modal/detailjob_modal.dart';
-import 'package:flutter_application_project/presentation/screens/detailjob_screen.dart';
 import 'package:flutter_application_project/presentation/modal/filter_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,8 +26,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     super.initState();
+    _initializeDefaults();
     _checkLoginStatus();
   }
+
+  Future<void> _initializeDefaults() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('name') == null) {
+      await prefs.setString('name', 'Guest');
+      await prefs.setString('profile_image', '');
+    }
+  }
+
   Future<void> _checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -41,6 +46,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       isLoggedIn = name != null;
     });
   }
+
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
@@ -56,49 +62,41 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   @override
-
   Widget build(BuildContext context) {
     final menuItems = [
-      _buildMenuItem(Icons.home, 'Home', HomeScreen(), Colors.blue),
-      _buildMenuItem(Icons.login, isLoggedIn ? 'Logout' : 'Login', LoginScreen(), Colors.green),
-      if (!isLoggedIn) _buildMenuItem(Icons.app_registration, 'Register', SignUpScreen(), Colors.orange),
-      _buildMenuItem(Icons.badge, 'Career', MenuCareer(), Colors.teal),
-      _buildMenuItem(Icons.description, 'Career Details', CareerDetail(), Colors.indigo),
-      _buildMenuItem(Icons.business, 'Company', CompanyScreen(), Colors.purple),
-      _buildMenuItem(Icons.info, 'Company Details', CompanyDetail(), Colors.deepPurple),
-      _buildMenuItem(Icons.contacts, 'Contact', ContactScreen(), Colors.blueGrey),
-      _buildMenuItem(Icons.person, 'Profile', ProfileScreen(), Colors.cyan),
-      _buildMenuItem(Icons.article, 'Blog Details', BlogDetail(), Colors.amber),
-      _buildMenuItem(Icons.insert_drive_file, 'CV', CVScreen(), Colors.lightGreen),
-      _buildMenuItem(Icons.code, 'Enter Code', EnterCodeScreen(), Colors.deepOrange),
-      _buildMenuItem(Icons.lock_open, 'Forget Password', ForgetPassScreen(), Colors.redAccent),
-      _buildMenuItem(Icons.lock_reset, 'Reset Password', ResetPassScreen(), Colors.pinkAccent),
-      _buildMenuItem(Icons.model_training, 'Modal Detail', ModalDetailScreen(), Colors.pinkAccent),
-      _buildMenuItem(Icons.join_full, 'Detail Job', DetailJobScreen(), Colors.pinkAccent),
-      _buildMenuItem(Icons.filter, 'Filter Modal', FilterModal(), Colors.pinkAccent),
-      
+      _buildMenuItem(Icons.home, 'Trang chủ', HomeScreen(), Colors.blue),
+      _buildMenuItem(Icons.login, isLoggedIn ? 'Đăng xuất' : 'Đăng nhập', LoginScreen(), Colors.green),
+      if (!isLoggedIn) _buildMenuItem(Icons.app_registration, 'Đăng ký', SignUpScreen(), Colors.orange),
+      _buildMenuItem(Icons.badge, 'Nghề nghiệp', MenuCareer(), Colors.teal),
+      _buildMenuItem(Icons.business, 'Công ty', CompanyScreen(), Colors.purple),
+      _buildMenuItem(Icons.contacts, 'Liên hệ', ContactScreen(), Colors.blueGrey),
+      _buildMenuItem(Icons.person, 'Tài khoản', AccoutScreen(), Colors.cyan),
+      // _buildMenuItem(Icons.article, 'Chi tiết blog', BlogDetail(), Colors.amber),
+      _buildMenuItem(Icons.insert_drive_file, 'Thông tin cá nhân', ProfileScreen(), Colors.lightGreen),
+      _buildMenuItem(Icons.filter, 'Lọc', FilterModal(), Colors.pinkAccent),
     ];
 
     return Drawer(
-      child: isLoggedIn
-          ? ListView(
-              children: [
-                _buildUserProfile(),
-                const Divider(),
-                ...menuItems, 
-              ],
-            )
-          : const Center(child: CircularProgressIndicator()),
+      child: ListView(
+        children: [
+          _buildUserProfile(),
+          const Divider(),
+          ...menuItems,
+        ],
+      ),
     );
   }
+
   ListTile _buildMenuItem(IconData icon, String title, Widget screen, Color color) {
     return ListTile(
       leading: Icon(icon, color: color),
       title: Text(title),
-      onTap: title == 'Logout' ? _logout : () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => screen),
-      ),
+      onTap: title == 'Đăng xuất'
+          ? _logout
+          : () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => screen),
+              ),
     );
   }
 
@@ -112,15 +110,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
             radius: 40,
             backgroundImage: profileImage != null && profileImage!.isNotEmpty
                 ? NetworkImage(profileImage!)
-                : AssetImage('assets/icons/nen.png') as ImageProvider,
+                : const AssetImage('assets/icons/nen.png') as ImageProvider,
           ),
           const SizedBox(height: 20),
           Text(
-            'Welcome, ${name ?? "Guest"}!',
+            'Xin chào, ${name ?? "Khách"}!',
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           Text(
-            name ?? 'Guest',
+            name ?? 'Khách',
             style: const TextStyle(fontSize: 14),
           ),
         ],

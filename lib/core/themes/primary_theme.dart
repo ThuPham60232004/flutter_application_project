@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PrimaryTheme {
   static const LinearGradient buttonPrimary = LinearGradient(
-    colors: [Color(0xFFA59DFF), Color(0xFF73E4EA)],
+    colors: [Color.fromARGB(255, 183, 134, 243), Color.fromARGB(255, 104, 126, 208)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );

@@ -1,174 +1,237 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_project/core/themes/primary_theme.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_application_project/presentation/screens/detailjob_screen.dart';
 
-class JobCard extends StatelessWidget {
+class JobCard extends StatefulWidget {
   const JobCard({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final colors = _JobCardColors(isDarkMode);
+  _JobCardState createState() => _JobCardState();
+}
 
+class _JobCardState extends State<JobCard> {
+  late List<dynamic> jobs = [];
+  bool isLoading = true;
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchJobs();
+    _autoScroll();
+  }
+
+  Future<void> fetchJobs() async {
+    try {
+      final response =
+          await http.get(Uri.parse('http://192.168.1.213:2000/job/'));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> decodedJobs = jsonDecode(response.body);
+        setState(() {
+          jobs = decodedJobs;
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Không thể tải danh sách công việc');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      debugPrint('Lỗi khi tải danh sách công việc: $e');
+    }
+  }
+
+  void _autoScroll() {
+    Timer.periodic(Duration(seconds: 4), (Timer timer) {
+      if (_scrollController.hasClients) {
+        double maxScroll = _scrollController.position.maxScrollExtent;
+        double currentScroll = _scrollController.position.pixels;
+
+        if (currentScroll < maxScroll) {
+          _scrollController.animateTo(currentScroll + 200,
+              duration: Duration(seconds: 2), curve: Curves.easeInOut);
+        } else {
+          _scrollController.animateTo(0,
+              duration: Duration(seconds: 2), curve: Curves.easeInOut);
+        }
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : jobs.isEmpty
+              ? const Center(
+                  child: Text(
+                    'Không có công việc nào phù hợp',
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: ListView.builder(
+                          controller: _scrollController, 
+                          scrollDirection: Axis.horizontal,
+                          itemCount: jobs.length,
+                          itemBuilder: (context, index) {
+                            final job = jobs[index];
+                            if (job is Map<String, dynamic>) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DetailJobScreen(job: job),
+                                      ),
+                                    );
+                                  },
+                                  child: _JobCardDesign(
+                                    logoUrl: job['company']?['logo'] ?? '',
+                                    jobTitle: job['title'] ?? 'Không có tiêu đề',
+                                    companyName: job['company']?['nameCompany'] ?? 'Không có công ty',
+                                    jobDescription: job['description'] ?? 'Không có mô tả',
+                                    jobExperience: job['exp'] ?? 'Không yêu cầu',
+                                    jobLocation: job['location'] ?? 'Remote',
+                                    jobSalary: job['salary'] != null
+                                        ? '${job['salary']} VND'
+                                        : 'Không rõ',
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const Text('Dữ liệu công việc không hợp lệ');
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+    );
+  }
+}
+
+class _JobCardDesign extends StatelessWidget {
+  final String logoUrl;
+  final String jobTitle;
+  final String companyName;
+  final String jobDescription;
+  final String jobExperience;
+  final String jobLocation;
+  final String jobSalary;
+
+  const _JobCardDesign({
+    Key? key,
+    required this.logoUrl,
+    required this.jobTitle,
+    required this.companyName,
+    required this.jobDescription,
+    required this.jobExperience,
+    required this.jobLocation,
+    required this.jobSalary,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
-      margin: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(12.0), // Adjust padding to reduce the space
       decoration: BoxDecoration(
-        color: colors.backgroundColor,
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: colors.borderColor, width: 0.6),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          _JobDetails(colors: colors),
-          const SizedBox(height: 16.0),
-          _ApplyButton(),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.0), // Adjust border radius
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
         ],
+        border: Border.all(color: Colors.grey.shade300),
       ),
-    );
-  }
-}
-
-class _JobDetails extends StatelessWidget {
-  final _JobCardColors colors;
-  const _JobDetails({required this.colors});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _CompanyLogo(borderColor: colors.borderColor),
-        const SizedBox(width: 16.0),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Nhân viên Streamer Game - Hồ Chí Minh",
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: colors.titleColor,
-                ),
-              ),
-              Text(
-                "CÔNG TY TNHH PHÁT TRIỂN CÔNG NGHỆ BTG",
-                style: TextStyle(
-                  fontSize: 12.0,
-                  color: colors.subtitleColor,
-                ),
-              ),
-              const SizedBox(height: 4.0),
-              _RichTextRow(label: "Mức lương: ", value: "100.000.000 VND", colors: colors),
-              const SizedBox(height: 4.0),
-              _RichTextRow(label: "Thành phố: ", value: "TP.HCM", colors: colors),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _CompanyLogo extends StatelessWidget {
-  final Color borderColor;
-  const _CompanyLogo({required this.borderColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 120,
-      height: 120,
-      decoration: BoxDecoration(
-        border: Border.all(color: borderColor),
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      child: const Center(
-        child: Text(
-          "Logo công ty",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 10, color: Color(0xFF90A4AE)),
-        ),
-      ),
-    );
-  }
-}
-
-class _RichTextRow extends StatelessWidget {
-  final String label;
-  final String value;
-  final _JobCardColors colors;
-  const _RichTextRow({
-    required this.label,
-    required this.value,
-    required this.colors,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
+      child: Row(
+        mainAxisSize: MainAxisSize.min, // Shrink wrap Row
         children: [
-          TextSpan(
-            text: label,
-            style: TextStyle(fontSize: 12.0, color: colors.subtitleColor),
+          CircleAvatar(
+            radius: 25.0,  // Slightly smaller radius to make it fit better
+            backgroundImage: logoUrl.isNotEmpty ? NetworkImage(logoUrl) : null,
+            backgroundColor: Colors.grey.shade200,
+            child: logoUrl.isEmpty
+                ? const Icon(Icons.business, color: Colors.white)
+                : null,
           ),
-          TextSpan(
-            text: value,
-            style: TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.bold,
-              color: colors.titleColor,
+          const SizedBox(width: 12.0),  // Adjusted space between logo and text
+          Flexible( // Use Flexible instead of Expanded
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  jobTitle,
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 4.0),
+                Text(
+                  companyName,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  jobDescription.length > 42
+                      ? jobDescription.substring(0, 42) + '...'
+                      : jobDescription,
+                  style: const TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.black54,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 12.0),
+                Row(
+                  children: [
+                    Text(
+                      jobExperience,
+                      style: const TextStyle(
+                          fontSize: 12.0, color: Colors.black54),
+                    ),
+                    const Text(" • ", style: TextStyle(color: Colors.black26)),
+                    Text(
+                      jobLocation,
+                      style: const TextStyle(
+                          fontSize: 12.0, color: Colors.black54),
+                    ),
+                    const Text(" • ", style: TextStyle(color: Colors.black26)),
+                    Text(
+                      jobSalary,
+                      style: const TextStyle(
+                          fontSize: 12.0, color: Colors.black54),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
-}
-
-class _ApplyButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.zero,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
-      child: Ink(
-        decoration: BoxDecoration(
-          gradient: PrimaryTheme.buttonPrimary,
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        child: Container(
-          alignment: Alignment.center,
-          width: 60.0,
-          constraints: const BoxConstraints(
-            minWidth: 100.0,
-            minHeight: 36.0,
-          ),
-          child: const Text(
-            "Ứng tuyển",
-            style: TextStyle(fontSize: 12.0, color: Colors.white),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _JobCardColors {
-  final Color backgroundColor;
-  final Color borderColor;
-  final Color titleColor;
-  final Color subtitleColor;
-
-  _JobCardColors(bool isDarkMode)
-      : backgroundColor = isDarkMode ? const Color(0xFF263238) : const Color(0xFFF7F9FC),
-        borderColor = isDarkMode ? const Color(0xFF37474F) : const Color(0xFFB0BEC5),
-        titleColor = isDarkMode ? const Color(0xFFECEFF1) : const Color(0xFF263238),
-        subtitleColor = isDarkMode ? const Color(0xFFB0BEC5) : const Color(0xFF546E7A);
 }
