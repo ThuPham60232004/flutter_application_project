@@ -8,7 +8,7 @@ import 'package:flutter_application_project/core/widgets/widget_search.dart';
 import 'package:flutter_application_project/core/widgets/widgte_jobbanner.dart';
 import 'package:flutter_application_project/core/widgets/widget_footer.dart';
 import 'package:flutter_application_project/app.dart';
-import 'package:flutter_application_project/presentation/screens/companydetail_screen.dart';
+import 'package:flutter_application_project/presentation/screens/client/companydetail_screen.dart';
 class CompanyScreen extends StatefulWidget {
   const CompanyScreen({Key? key}) : super(key: key);
 

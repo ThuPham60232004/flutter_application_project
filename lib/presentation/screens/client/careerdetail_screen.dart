@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
 import 'package:flutter_application_project/core/themes/primary_text.dart';
-import 'package:flutter_application_project/presentation/screens/detailjob_screen.dart';  
+import 'package:flutter_application_project/presentation/screens/client/detailjob_screen.dart';  
 
 class CareerDetail extends StatefulWidget {
   final String categoryName;

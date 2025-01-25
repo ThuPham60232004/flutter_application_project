@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_application_project/presentation/screens/detailjob_screen.dart';
+import 'package:flutter_application_project/presentation/screens/client/detailjob_screen.dart';
 
 class JobCard extends StatefulWidget {
   const JobCard({Key? key}) : super(key: key);

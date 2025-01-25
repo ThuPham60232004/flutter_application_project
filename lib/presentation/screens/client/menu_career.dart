@@ -5,7 +5,7 @@ import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_text.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_application_project/presentation/screens/careerdetail_screen.dart';
+import 'package:flutter_application_project/presentation/screens/client/careerdetail_screen.dart';
 
 class MenuCareer extends StatefulWidget {
   const MenuCareer({Key? key}) : super(key: key);
