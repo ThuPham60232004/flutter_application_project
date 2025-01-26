@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_project/data/repositories/auth_repository.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
-import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();

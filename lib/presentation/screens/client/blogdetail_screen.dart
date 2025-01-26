@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_text.dart';
-import 'package:flutter_application_project/core/widgets/widget_footer.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_footer.dart';
 class BlogDetail extends StatefulWidget {
   const BlogDetail({Key? key}) : super(key: key);
 

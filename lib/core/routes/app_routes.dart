@@ -11,6 +11,7 @@ import 'package:flutter_application_project/presentation/screens/client/profile_
 import 'package:flutter_application_project/presentation/screens/forgetpass_screen.dart';
 import 'package:flutter_application_project/presentation/screens/resetpass_screen.dart';
 import 'package:flutter_application_project/presentation/modal/filter_modal.dart';
+import 'package:flutter_application_project/presentation/screens/admin/home_a.dart';
 import 'route_names.dart';
 
 class AppRoutes {
@@ -20,12 +21,14 @@ class AppRoutes {
     RouteNames.signup: (context) => SignUpScreen(),
     RouteNames.menucareer: (context) => const MenuCareer(),
     RouteNames.company: (context) => const CompanyScreen(),
-    RouteNames.accout: (context) =>  AccoutScreen(),
+    RouteNames.accout: (context) => AccoutScreen(),
     RouteNames.contact: (context) => const ContactScreen(),
     RouteNames.blogdetail: (context) => const BlogDetail(),
-    RouteNames.profile: (context) =>  ProfileScreen(),
+    RouteNames.profile: (context) => ProfileScreen(),
     RouteNames.forgetpassscreen: (context) => const ForgetPassScreen(),
     RouteNames.resetpassscreen: (context) => const ResetPassScreen(),
     RouteNames.filter_modal: (context) => const FilterModal(),
+    RouteNames.home_a: (context) => AdminDashboard(),
+    RouteNames.home_p: (context) => AdminDashboard(),
   };
 }

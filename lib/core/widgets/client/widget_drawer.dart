@@ -42,10 +42,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       name = prefs.getString('name');
-      profileImage = prefs.getString('profile_image');
+      profileImage = prefs.getString('img');
       isLoggedIn = name != null;
     });
   }
+
+
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -118,7 +120,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           Text(
-            name ?? 'Khách',
+            'Người tìm việc',
             style: const TextStyle(fontSize: 14),
           ),
         ],

@@ -10,5 +10,7 @@ class RouteNames {
   static const String profile = '/profile';
   static const String forgetpassscreen = '/forgetpassscreen';
   static const String resetpassscreen = '/resetpassscreen';
-    static const String filter_modal = '/filter_modal';
+  static const String filter_modal = '/filter_modal';
+  static const String home_a = '/home_a';
+  static const String home_p = '/home_p';
 }

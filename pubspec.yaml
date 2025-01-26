@@ -24,6 +24,9 @@ dependencies:
   dio: ^5.7.0
   flutter_pdfview: ^1.4.0
   permission_handler: ^11.3.1
+  fluttertoast: ^8.2.10
+  flutter_slidable: ^4.0.0
+  font_awesome_flutter: ^10.8.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

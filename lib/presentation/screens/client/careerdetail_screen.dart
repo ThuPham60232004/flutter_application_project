@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_project/app.dart';
-import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 import 'package:flutter_application_project/core/themes/primary_text.dart';
 import 'package:flutter_application_project/presentation/screens/client/detailjob_screen.dart';  
 

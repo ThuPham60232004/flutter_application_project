@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_application_project/core/themes/primary_text.dart';
-import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
-import 'package:flutter_application_project/core/widgets/widget_drawer.dart';
-import 'package:flutter_application_project/core/widgets/widget_search.dart';
-import 'package:flutter_application_project/core/widgets/widgte_jobbanner.dart';
-import 'package:flutter_application_project/core/widgets/widget_footer.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_drawer.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_search.dart';
+import 'package:flutter_application_project/core/widgets/client/widgte_jobbanner.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_footer.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/presentation/screens/client/companydetail_screen.dart';
 class CompanyScreen extends StatefulWidget {

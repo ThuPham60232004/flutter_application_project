@@ -3,9 +3,10 @@ import 'package:flutter_application_project/data/repositories/auth_repository.da
 import 'package:flutter_application_project/data/sources/local_data_source.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
-import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_application_project/presentation/screens/admin/home_a.dart';
+import 'package:flutter_application_project/presentation/screens/client/home_screen.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -28,12 +29,36 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> loginUser(String email, String password) async {
     setState(() => isLoading = true);
-
+    
     try {
       final user = await authRepository.loginUser(email, password);
       if (user != null) {
-        await localDataSource.saveUserData(user.token, user.name, user.profileImage, user.id);
-        Navigator.pushReplacementNamed(context, '/home');
+        await localDataSource.saveUserData(
+            user.token, user.name, user.profileImage, user.id);
+        print('role: ${user.role}');
+        switch (user.role) {
+          case 'job_seeker':
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+            );
+            break;
+          case 'job_poster':
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AdminDashboard()),
+            );
+            break;
+          case 'admin':
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AdminDashboard()),
+            );
+            break;
+          default:
+            _showErrorDialog('Vai trò không hợp lệ');
+            break;
+        }
       } else {
         _showErrorDialog('Đăng nhập thất bại');
       }
@@ -69,7 +94,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String hint, IconData icon, {bool obscureText = false}) {
+  Widget _buildTextField(
+      TextEditingController controller, String hint, IconData icon,
+      {bool obscureText = false}) {
     return TextField(
       controller: controller,
       obscureText: obscureText,
@@ -77,21 +104,6 @@ class _LoginScreenState extends State<LoginScreen> {
         prefixIcon: Icon(icon),
         hintText: hint,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
-  }
-
-  Widget _buildSocialButton(String label, String iconPath, VoidCallback onPressed) {
-    return Expanded(
-      child: ElevatedButton.icon(
-        icon: Image.asset(iconPath, height: 24, width: 24),
-        label: Text(label),
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          elevation: 2,
-        ),
       ),
     );
   }
@@ -112,14 +124,17 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Đăng nhập', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+              const Text('Đăng nhập',
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
-  
               const Text('Hoặc tiếp tục với địa chỉ email'),
               const SizedBox(height: 10),
-              _buildTextField(emailController, 'Email của bạn', Icons.email_outlined),
+              _buildTextField(
+                  emailController, 'Email của bạn', Icons.email_outlined),
               const SizedBox(height: 10),
-              _buildTextField(passwordController, 'Mật khẩu', Icons.lock_outline, obscureText: true),
+              _buildTextField(
+                  passwordController, 'Mật khẩu', Icons.lock_outline,
+                  obscureText: true),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: isLoading
@@ -130,13 +145,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (email.isNotEmpty && password.isNotEmpty) {
                           loginUser(email, password);
                         } else {
-                          _showErrorDialog('Vui lòng nhập cả email và mật khẩu');
+                          _showErrorDialog(
+                              'Vui lòng nhập cả email và mật khẩu');
                         }
                       },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(80, 32),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                 ),
                 child: Ink(
                   decoration: BoxDecoration(
@@ -144,31 +161,42 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Container(
-                    constraints: const BoxConstraints(minHeight: 40, minWidth: 80),
+                    constraints:
+                        const BoxConstraints(minHeight: 40, minWidth: 80),
                     alignment: Alignment.center,
                     child: isLoading
                         ? const CircularProgressIndicator()
-                        : const Text('Đăng nhập', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                        : const Text('Đăng nhập',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12)),
                   ),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Text('Bạn quên mật khẩu?  ', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                  TextButton(onPressed: () {
-                    Navigator.pushNamed(context, '/forgetpassscreen');
-                  }, child: const Text('Quên mật khẩu')),
+                  const Text('Bạn quên mật khẩu?  ',
+                      style: TextStyle(fontSize: 12, color: Colors.grey)),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/forgetpassscreen');
+                      },
+                      child: const Text('Quên mật khẩu')),
                 ],
               ),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Chưa có tài khoản?  ', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                  TextButton(onPressed: () {
-                    Navigator.pushNamed(context, '/signup');
-                  }, child: const Text('Đăng ký')),
+                  const Text('Chưa có tài khoản?  ',
+                      style: TextStyle(fontSize: 12, color: Colors.grey)),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/signup');
+                      },
+                      child: const Text('Đăng ký')),
                 ],
               ),
             ],

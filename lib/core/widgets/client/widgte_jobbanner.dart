@@ -4,8 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 class BannerCarousel extends StatelessWidget {
   final List<String> images = [
     'https://tienthangvet.vn/wp-content/uploads/thong-tin-tuyen-dung-Tien-Thang-Vet.jpg',
-    'https://th.bing.com/th?id=OIF.6gSR%2fxxNuXZEACXE%2fobTDg&rs=1&pid=ImgDetMaing',
-    'https://file.asxh.org/uploads/10/anh%20td....png',
+    'https://talentbold.com/uptalent/attachments/images/20211028/151910467_ky-nang-tim-kiem-viec-lam-1.png',
+    'https://hr.jobnow.com.vn/wp-content/uploads/2019/04/cach-tim-viec-lam-nhanh-hieu-qua.jpg',
   ];
 
   @override

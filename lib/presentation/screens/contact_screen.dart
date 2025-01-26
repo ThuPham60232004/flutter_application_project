@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_project/core/widgets/widget_appbar.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_text.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
-import 'package:flutter_application_project/core/widgets/widget_footer.dart';
+import 'package:flutter_application_project/core/widgets/client/widget_footer.dart';
 class ContactScreen extends StatefulWidget {
   const ContactScreen({Key? key}) : super(key: key);
   @override

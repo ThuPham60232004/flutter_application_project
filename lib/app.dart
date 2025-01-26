@@ -24,7 +24,7 @@ class _AppState extends State<App> {
       theme: AppTheme.lightTheme, 
       darkTheme: AppTheme.darkTheme, 
       themeMode: _themeMode, 
-      initialRoute: RouteNames.home,
+      initialRoute: RouteNames.login,
       routes: AppRoutes.routes,
       builder: (context, child) {
         return AppInheritedTheme(
