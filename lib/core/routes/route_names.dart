@@ -13,4 +13,5 @@ class RouteNames {
   static const String filter_modal = '/filter_modal';
   static const String home_a = '/home_a';
   static const String home_p = '/home_p';
+  static const String job_manager = '/job_manager';
 }

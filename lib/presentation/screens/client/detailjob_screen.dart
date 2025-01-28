@@ -102,7 +102,7 @@ Widget _buildText() {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        'Mô tả',  // Tiêu đề
+        'Mô tả', 
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,

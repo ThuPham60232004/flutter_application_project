@@ -12,6 +12,7 @@ import 'package:flutter_application_project/presentation/screens/forgetpass_scre
 import 'package:flutter_application_project/presentation/screens/resetpass_screen.dart';
 import 'package:flutter_application_project/presentation/modal/filter_modal.dart';
 import 'package:flutter_application_project/presentation/screens/admin/home_a.dart';
+import 'package:flutter_application_project/presentation/screens/admin/job_screen.dart';
 import 'route_names.dart';
 
 class AppRoutes {
@@ -30,5 +31,6 @@ class AppRoutes {
     RouteNames.filter_modal: (context) => const FilterModal(),
     RouteNames.home_a: (context) => AdminDashboard(),
     RouteNames.home_p: (context) => AdminDashboard(),
+    RouteNames.job_manager: (context) => JobListScreen(),
   };
 }

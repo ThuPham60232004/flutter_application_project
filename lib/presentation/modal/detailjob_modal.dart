@@ -2,14 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 import 'package:flutter_application_project/app.dart';
-import 'package:flutter_application_project/core/themes/primary_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'dart:convert';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:http_parser/http_parser.dart';
 class ModalDetailScreen extends StatefulWidget {
   final String jobId;
   final String title;
@@ -63,13 +61,11 @@ Future<void> _applyJob() async {
       throw Exception("Không tìm thấy thông tin người dùng.");
     }
 
-    // Đọc tệp và mã hóa dưới dạng base64
     final fileBytes = await selectedFile!.readAsBytes();
     final base64File = base64Encode(fileBytes);
 
     final uri = Uri.parse('http://192.168.1.213:2000/application/');
 
-    // Sử dụng multipart request để gửi tệp và các trường dữ liệu khác
     var request = http.MultipartRequest('POST', uri)
       ..headers.addAll({
         'Content-Type': 'multipart/form-data',
@@ -80,17 +76,14 @@ Future<void> _applyJob() async {
       ..fields['profile'] = profileData?['_id']!
       ..fields['status'] = 'pending';
 
-    // Thêm CV dưới dạng tệp
     request.files.add(http.MultipartFile.fromBytes(
-      'cv', // Tên trường 'cv' phải trùng khớp với tên đã khai báo trên server
+      'cv', 
       fileBytes,
       filename: selectedFile!.path.split('/').last,
     ));
 
-    // Gửi yêu cầu
     final response = await request.send();
 
-    // Kiểm tra kết quả
     if (response.statusCode == 200) {
       print("Gửi thành công!");
       _showSuccessDialog("Gửi ứng tuyển thành công.");

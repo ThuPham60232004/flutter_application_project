@@ -6,9 +6,12 @@ import 'package:flutter_application_project/presentation/screens/account_screen.
 import 'package:flutter_application_project/presentation/screens/contact_screen.dart';
 import 'package:flutter_application_project/presentation/screens/admin/category_screen.dart';
 import 'package:flutter_application_project/presentation/screens/admin/benefit_page.dart';
-import 'package:flutter_application_project/presentation/screens/admin/profile_page.dart';
+import 'package:flutter_application_project/presentation/screens/admin/profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_application_project/presentation/screens/admin/job_screen.dart';
+import 'package:flutter_application_project/presentation/screens/admin/company_page.dart';
+import 'package:flutter_application_project/presentation/screens/admin/application_page.dart';
+import 'package:flutter_application_project/presentation/screens/admin/user_page.dart';
 class AdminDrawer extends StatefulWidget {
   @override
   _AdminDrawerState createState() => _AdminDrawerState();
@@ -43,8 +46,6 @@ class _AdminDrawerState extends State<AdminDrawer> {
     });
   }
 
-
-
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
@@ -63,15 +64,23 @@ class _AdminDrawerState extends State<AdminDrawer> {
   Widget build(BuildContext context) {
     final menuItems = [
       _buildMenuItem(Icons.home, 'Trang chủ', HomeScreen(), Colors.blue),
-      _buildMenuItem(Icons.login, isLoggedIn ? 'Đăng xuất' : 'Đăng nhập', LoginScreen(), Colors.green),
-      if (!isLoggedIn) _buildMenuItem(Icons.app_registration, 'Đăng ký', SignUpScreen(), Colors.orange),
-      _buildMenuItem(Icons.contacts, 'Liên hệ', ContactScreen(), Colors.blueGrey),
-      _buildMenuItem(Icons.person, 'Tài khoản', AccoutScreen(), Colors.cyan),
-      _buildMenuItem(Icons.category_rounded, 'Quản lý danh mục', CategoryScreen(), Colors.cyan),
-      _buildMenuItem(Icons.category_sharp, 'Quản lý phúc lợi', BenefitPage(), Colors.cyan),
-            _buildMenuItem(Icons.person_off_outlined, 'Quản lý thông tin cá nhân', ProfilePage(), Colors.cyan),
+  _buildMenuItem(
+      isLoggedIn ? Icons.logout : Icons.login,
+      isLoggedIn ? 'Đăng xuất' : 'Đăng nhập',
+      LoginScreen(),
+      isLoggedIn ? Colors.red : Colors.green),
+  if (!isLoggedIn)
+    _buildMenuItem(Icons.person_add, 'Đăng ký', SignUpScreen(), Colors.orange),
+    _buildMenuItem(Icons.contact_mail, 'Liên hệ', ContactScreen(), Colors.blueGrey),
+    _buildMenuItem(Icons.account_circle, 'Tài khoản', AccoutScreen(), Colors.deepPurple),
+    _buildMenuItem(Icons.category, 'Quản lý danh mục', CategoryScreen(), Colors.teal),
+    _buildMenuItem(Icons.volunteer_activism, 'Quản lý phúc lợi', BenefitPage(), Colors.lightGreen),
+    _buildMenuItem(Icons.person, 'Quản lý thông tin cá nhân', ProfilePage(), Colors.indigo),
+    _buildMenuItem(Icons.work, 'Quản lý thông tin công việc', JobListScreen(), Colors.amber),
+    _buildMenuItem(Icons.business, 'Quản lý thông tin công ty', CompanyPage(), Colors.cyan),
+    _buildMenuItem(Icons.assignment, 'Quản lý đơn ứng tuyển', ApplicationPage(), Colors.pinkAccent),
+    _buildMenuItem(Icons.group, 'Quản lý người dùng', UserManagementPage(), Colors.orangeAccent),
       // _buildMenuItem(Icons.article, 'Chi tiết blog', BlogDetail(), Colors.amber),
-
     ];
 
     return Drawer(
@@ -85,7 +94,8 @@ class _AdminDrawerState extends State<AdminDrawer> {
     );
   }
 
-  ListTile _buildMenuItem(IconData icon, String title, Widget screen, Color color) {
+  ListTile _buildMenuItem(
+      IconData icon, String title, Widget screen, Color color) {
     return ListTile(
       leading: Icon(icon, color: color),
       title: Text(title),
