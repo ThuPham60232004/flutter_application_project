@@ -7,6 +7,7 @@ import 'package:flutter_application_project/core/widgets/client/widget_appbar.da
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_project/presentation/screens/admin/home_a.dart';
 import 'package:flutter_application_project/presentation/screens/client/home_screen.dart';
+import 'package:flutter_application_project/presentation/screens/post_job/home_p.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -46,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
           case 'job_poster':
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AdminDashboard()),
+              MaterialPageRoute(builder: (context) => EmployerHomePage()),
             );
             break;
           case 'admin':
