@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_application_project/presentation/screens/client/detailjob_screen.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
+
 class CompanyDetailScreen extends StatefulWidget {
   final dynamic company;
 
@@ -27,7 +28,7 @@ class _CompanyDetailScreenState extends State<CompanyDetailScreen> {
   Future<void> fetchJobs() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.1.213:2000/job/company/${widget.company['_id']}'));
+          'https://backend-findjob.onrender.com/job/company/${widget.company['_id']}'));
       if (response.statusCode == 200) {
         final List<dynamic> decodedJobs = jsonDecode(response.body);
         setState(() {
@@ -57,8 +58,8 @@ class _CompanyDetailScreenState extends State<CompanyDetailScreen> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children:[ Card(
+        child: Column(children: [
+          Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -125,65 +126,60 @@ class _CompanyDetailScreenState extends State<CompanyDetailScreen> {
                       height: 1.5,
                     ),
                   ),
-                  
                 ],
               ),
             ),
           ),
           const SizedBox(height: 30),
-                  isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : jobs.isEmpty
-                          ? const Center(
-                              child: Text(
-                                'Không có công việc nào phù hợp',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.black54),
-                              ),
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: jobs.length,
-                              itemBuilder: (context, index) {
-                                final job = jobs[index];
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 16.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailJobScreen(job: job),
-                                        ),
-                                      );
-                                    },
-                                    child: _JobCardDesign(
-                                      logoUrl: job['company']?['logo'] ?? '',
-                                      jobTitle:
-                                          job['title'] ?? 'Không có tiêu đề',
-                                      companyName: job['company']
-                                              ?['nameCompany'] ??
-                                          'Không có công ty',
-                                      jobDescription: job['description'] ??
-                                          'Không có mô tả',
-                                      jobExperience:
-                                          job['exp'] ?? 'Không yêu cầu',
-                                      jobLocation: job['location'] ?? 'Remote',
-                                      jobSalary: job['salary'] != null
-                                          ? '${job['salary']} VND'
-                                          : 'Không rõ',
-                                    ),
-                                  ),
-                                );
-                              },
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : jobs.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'Không có công việc nào phù hợp',
+                        style: TextStyle(fontSize: 16, color: Colors.black54),
+                      ),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: jobs.length,
+                      itemBuilder: (context, index) {
+                        final job = jobs[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailJobScreen(job: job),
+                                ),
+                              );
+                            },
+                            child: _JobCardDesign(
+                              logoUrl: job['company']?['logo'] ?? '',
+                              jobTitle: job['title'] ?? 'Không có tiêu đề',
+                              companyName: job['company']?['nameCompany'] ??
+                                  'Không có công ty',
+                              jobDescription:
+                                  job['description'] ?? 'Không có mô tả',
+                              jobExperience: job['exp'] ?? 'Không yêu cầu',
+                              jobLocation: job['location'] ?? 'Remote',
+                              jobSalary: job['salary'] != null
+                                  ? '${job['salary']} VND'
+                                  : 'Không rõ',
                             ),
-          ]
-        ),
+                          ),
+                        );
+                      },
+                    ),
+        ]),
       ),
     );
   }
 }
+
 class _JobCardDesign extends StatelessWidget {
   final String logoUrl;
   final String jobTitle;
@@ -224,9 +220,7 @@ class _JobCardDesign extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 28.0,
-            backgroundImage: logoUrl.isNotEmpty
-                ? NetworkImage(logoUrl)
-                : null,
+            backgroundImage: logoUrl.isNotEmpty ? NetworkImage(logoUrl) : null,
             backgroundColor: Colors.grey.shade200,
             child: logoUrl.isEmpty
                 ? const Icon(Icons.business, color: Colors.white)
@@ -283,7 +277,7 @@ class _JobCardDesign extends StatelessWidget {
                     const Text(" • ", style: TextStyle(color: Colors.black26)),
                     Container(
                       constraints: BoxConstraints(
-                        maxWidth: 60, 
+                        maxWidth: 60,
                       ),
                       child: Text(
                         jobSalary,
@@ -291,7 +285,7 @@ class _JobCardDesign extends StatelessWidget {
                           fontSize: 14.0,
                           color: Colors.black54,
                         ),
-                        overflow: TextOverflow.ellipsis, 
+                        overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
                     ),

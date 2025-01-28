@@ -3,8 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_application_project/data/models/category.dart';
 
 class CategoryRepository {
-  final String apiUrl = 'http://192.168.1.213:2000/category';
-  Future<Category?> createCategory(String name, String description, String icon) async {
+  final String apiUrl = 'https://backend-findjob.onrender.com/category';
+  Future<Category?> createCategory(
+      String name, String description, String icon) async {
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -26,7 +27,9 @@ class CategoryRepository {
       throw Exception('Error creating category');
     }
   }
-  Future<Category?> updateCategory(String id, String name, String description, String icon) async {
+
+  Future<Category?> updateCategory(
+      String id, String name, String description, String icon) async {
     try {
       final response = await http.put(
         Uri.parse('$apiUrl/$id'),
@@ -79,6 +82,7 @@ class CategoryRepository {
       throw Exception('Error fetching categories');
     }
   }
+
   Future<bool> deleteCategoryById(String id) async {
     try {
       final response = await http.delete(Uri.parse('$apiUrl/$id'));
@@ -93,6 +97,7 @@ class CategoryRepository {
       throw Exception('Error deleting category by ID');
     }
   }
+
   Future<bool> deleteAllCategories() async {
     try {
       final response = await http.delete(Uri.parse(apiUrl));
@@ -107,6 +112,7 @@ class CategoryRepository {
       throw Exception('Error deleting all categories');
     }
   }
+
   Future<int> countCategories() async {
     try {
       final response = await http.get(Uri.parse('$apiUrl/count'));

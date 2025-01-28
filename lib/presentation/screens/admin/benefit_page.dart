@@ -8,7 +8,7 @@ class BenefitPage extends StatefulWidget {
 }
 
 class _BenefitPageState extends State<BenefitPage> {
-  final String baseUrl = 'http://192.168.1.213:2000/benefit';
+  final String baseUrl = 'https://backend-findjob.onrender.com/benefit';
   List<dynamic> _benefits = [];
   bool _isLoading = true;
 
@@ -33,8 +33,8 @@ class _BenefitPageState extends State<BenefitPage> {
       setState(() {
         _isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Lỗi tải danh sách phúc lợi: ${e.toString()}')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Lỗi tải danh sách phúc lợi: ${e.toString()}')));
     }
   }
 
@@ -56,8 +56,8 @@ class _BenefitPageState extends State<BenefitPage> {
         throw Exception('Failed to save benefit');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Lỗi lưu phúc lợi: ${e.toString()}')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lỗi lưu phúc lợi: ${e.toString()}')));
     }
   }
 
@@ -73,17 +73,19 @@ class _BenefitPageState extends State<BenefitPage> {
         throw Exception('Failed to delete benefit');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Lỗi xóa phúc lợi: ${e.toString()}')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lỗi xóa phúc lợi: ${e.toString()}')));
     }
   }
 
   void _showBenefitForm({Map<String, dynamic>? benefit}) async {
     final isEdit = benefit != null;
-    final nameController = TextEditingController(text: isEdit ? benefit['name'] : '');
+    final nameController =
+        TextEditingController(text: isEdit ? benefit['name'] : '');
     final descriptionController =
         TextEditingController(text: isEdit ? benefit['description'] : '');
-    final iconController = TextEditingController(text: isEdit ? benefit['icon'] : '');
+    final iconController =
+        TextEditingController(text: isEdit ? benefit['icon'] : '');
 
     await showDialog(
       context: context,
@@ -129,29 +131,29 @@ class _BenefitPageState extends State<BenefitPage> {
   }
 
   IconData getIconForBenefit(String name) {
-  switch (name.toLowerCase()) {
-    case 'chế độ bảo hiểm':
-      return Icons.health_and_safety;
-    case 'chế độ thưởng':
-      return Icons.card_giftcard;
-    case 'phụ cấp nhà ở':
-      return Icons.home;
-    case 'đào tạo':
-      return Icons.school;
-    case 'chăm sóc sức khoẻ':
-      return Icons.local_hospital;
-    case 'du lịch':
-      return Icons.flight_takeoff;
-    case 'công việc ổn định':
-      return Icons.work;
-    case 'tăng lương':
-      return Icons.trending_up;
-    case 'nghỉ phép năm':
-      return Icons.beach_access;
-    default:
-      return Icons.help_outline;
+    switch (name.toLowerCase()) {
+      case 'chế độ bảo hiểm':
+        return Icons.health_and_safety;
+      case 'chế độ thưởng':
+        return Icons.card_giftcard;
+      case 'phụ cấp nhà ở':
+        return Icons.home;
+      case 'đào tạo':
+        return Icons.school;
+      case 'chăm sóc sức khoẻ':
+        return Icons.local_hospital;
+      case 'du lịch':
+        return Icons.flight_takeoff;
+      case 'công việc ổn định':
+        return Icons.work;
+      case 'tăng lương':
+        return Icons.trending_up;
+      case 'nghỉ phép năm':
+        return Icons.beach_access;
+      default:
+        return Icons.help_outline;
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -171,14 +173,16 @@ class _BenefitPageState extends State<BenefitPage> {
                       margin: EdgeInsets.all(8.0),
                       child: ListTile(
                         title: Text(benefit['name']),
-                        subtitle: Text(benefit['description'] ?? 'Không có mô tả'),
+                        subtitle:
+                            Text(benefit['description'] ?? 'Không có mô tả'),
                         leading: Icon(getIconForBenefit(benefit['name'])),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
                               icon: Icon(Icons.edit),
-                              onPressed: () => _showBenefitForm(benefit: benefit),
+                              onPressed: () =>
+                                  _showBenefitForm(benefit: benefit),
                             ),
                             IconButton(
                               icon: Icon(Icons.delete),

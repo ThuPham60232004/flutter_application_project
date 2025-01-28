@@ -35,7 +35,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.213:2000/profile/$userId'));
+      final response = await http.get(
+          Uri.parse('https://backend-findjob.onrender.com/profile/$userId'));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> data = json.decode(response.body);
@@ -73,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     final response = await http.put(
-      Uri.parse('http://192.168.1.213:2000/profile/$userId'),
+      Uri.parse('https://backend-findjob.onrender.com/profile/$userId'),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -90,7 +91,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> pickProfileImage() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         profile['profileImage'] = pickedFile.path;
@@ -147,8 +149,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           CircleAvatar(
                             radius: 50,
                             backgroundImage: profile['profileImage'] != null
-                              ? FileImage(File(profile['profileImage']))
-                              : const NetworkImage('https://placekitten.com/200/200'),
+                                ? FileImage(File(profile['profileImage']))
+                                : const NetworkImage(
+                                    'https://placekitten.com/200/200'),
                           ),
                           const SizedBox(height: 10),
                           if (isEditable)
@@ -157,20 +160,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               onPressed: pickProfileImage,
                             ),
                           const SizedBox(height: 10),
-                          buildEditableField("Vai trò", profile['title'] ?? 'No Title', 'title'),
+                          buildEditableField("Vai trò",
+                              profile['title'] ?? 'No Title', 'title'),
                         ],
                       ),
                     ),
                     const SizedBox(height: 20),
-                    buildSectionHeader('Thông tin cá nhân', () {}, showAddButton: false),
+                    buildSectionHeader('Thông tin cá nhân', () {},
+                        showAddButton: false),
                     buildCard([
-                      buildEditableField("Tên người dùng", profile['user']?['name'] ?? "No Name", 'user.name'),
-                      buildEditableField("Email", profile['user']?['email'] ?? "No Data", 'user.email'),
-                      buildEditableField("Số điện thoại", profile['contactInfo']?['phone'] ?? "No Data", 'contactInfo.phone'),
+                      buildEditableField("Tên người dùng",
+                          profile['user']?['name'] ?? "No Name", 'user.name'),
+                      buildEditableField("Email",
+                          profile['user']?['email'] ?? "No Data", 'user.email'),
+                      buildEditableField(
+                          "Số điện thoại",
+                          profile['contactInfo']?['phone'] ?? "No Data",
+                          'contactInfo.phone'),
                     ]),
-                    buildSectionHeader('Học vấn', addNewEducation, showAddButton: false),
+                    buildSectionHeader('Học vấn', addNewEducation,
+                        showAddButton: false),
                     buildCard(
-                      (profile['education'] as List<dynamic>? ?? []).map((education) {
+                      (profile['education'] as List<dynamic>? ?? [])
+                          .map((education) {
                         return Column(
                           children: [
                             buildEditableField(
@@ -188,9 +200,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         );
                       }).toList(),
                     ),
-                    buildSectionHeader('Kinh nghiệm làm việc', addNewExperience),
+                    buildSectionHeader(
+                        'Kinh nghiệm làm việc', addNewExperience),
                     buildCard(
-                      (profile['experiences'] as List<dynamic>? ?? []).map((experience) {
+                      (profile['experiences'] as List<dynamic>? ?? [])
+                          .map((experience) {
                         return Column(
                           children: [
                             buildEditableField(
@@ -218,9 +232,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         );
                       }).toList(),
                     ),
-                    buildSectionHeader('Ngôn ngữ', addNewLanguage, showAddButton: isEditable),
+                    buildSectionHeader('Ngôn ngữ', addNewLanguage,
+                        showAddButton: isEditable),
                     buildCard(
-                      (profile['languages'] as List<dynamic>? ?? []).map((language) {
+                      (profile['languages'] as List<dynamic>? ?? [])
+                          .map((language) {
                         return buildEditableField(
                           "Ngôn ngữ",
                           language['name'] ?? '',
@@ -228,9 +244,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         );
                       }).toList(),
                     ),
-                    buildSectionHeader('Chứng chỉ', addNewCertification, showAddButton: isEditable),
+                    buildSectionHeader('Chứng chỉ', addNewCertification,
+                        showAddButton: isEditable),
                     buildCard(
-                      (profile['certifications'] as List<dynamic>? ?? []).map((certification) {
+                      (profile['certifications'] as List<dynamic>? ?? [])
+                          .map((certification) {
                         return buildEditableField(
                           "Chứng chỉ",
                           certification['name'] ?? '',
@@ -248,7 +266,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildSectionHeader(String title, VoidCallback onAdd, {bool showAddButton = true}) {
+  Widget buildSectionHeader(String title, VoidCallback onAdd,
+      {bool showAddButton = true}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Row(
@@ -300,7 +319,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
         decoration: InputDecoration(
           labelText: label,
-          contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -356,7 +376,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void addNewCertification() {
     setState(() {
-      profile['certifications'] = (profile['certifications'] as List<dynamic>? ?? []);
+      profile['certifications'] =
+          (profile['certifications'] as List<dynamic>? ?? []);
       profile['certifications'].add({'name': '', 'issuedBy': ''});
     });
   }

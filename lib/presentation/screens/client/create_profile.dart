@@ -66,7 +66,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       };
 
       var response = await http.post(
-        Uri.parse('http://192.168.1.213:2000/profile/'),
+        Uri.parse('https://backend-findjob.onrender.com/profile/'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(profileData),
       );

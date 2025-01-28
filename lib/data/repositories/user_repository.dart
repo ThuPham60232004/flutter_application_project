@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_application_project/data/models/user.dart'; 
+import 'package:flutter_application_project/data/models/user.dart';
 
 class UserRepository {
   Future<User> fetchUserData(String userId, String token) async {
     final response = await http.get(
-      Uri.parse('http://192.168.1.213:2000/user/$userId'),
+      Uri.parse('https://backend-findjob.onrender.com/user/$userId'),
       headers: {
         'Authorization': 'Bearer $token',
       },

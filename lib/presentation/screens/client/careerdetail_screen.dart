@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 import 'package:flutter_application_project/core/themes/primary_text.dart';
-import 'package:flutter_application_project/presentation/screens/client/detailjob_screen.dart';  
+import 'package:flutter_application_project/presentation/screens/client/detailjob_screen.dart';
 
 class CareerDetail extends StatefulWidget {
   final String categoryName;
@@ -42,7 +42,8 @@ class _CareerDetailState extends State<CareerDetail> {
     }
 
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.213:2000/job/category/$categoryId'));
+      final response = await http.get(Uri.parse(
+          'https://backend-findjob.onrender.com/job/category/$categoryId'));
 
       if (response.statusCode == 200) {
         final List<dynamic> decodedJobs = jsonDecode(response.body);
@@ -83,7 +84,8 @@ class _CareerDetailState extends State<CareerDetail> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('${widget.categoryName}',
+                      Text(
+                        '${widget.categoryName}',
                         style: PrimaryText.primaryTextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.w700,
@@ -93,7 +95,8 @@ class _CareerDetailState extends State<CareerDetail> {
                       Expanded(
                         child: ListView.separated(
                           itemCount: jobs.length,
-                          separatorBuilder: (context, index) => const SizedBox(height: 10),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 10),
                           itemBuilder: (context, index) {
                             final job = jobs[index];
                             if (job is Map<String, dynamic>) {
@@ -102,22 +105,28 @@ class _CareerDetailState extends State<CareerDetail> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => DetailJobScreen(job: job),
+                                      builder: (context) =>
+                                          DetailJobScreen(job: job),
                                     ),
                                   );
                                 },
                                 child: _JobCardDesign(
                                   logoUrl: job['company']?['logo'] ?? '',
                                   jobTitle: job['title'] ?? 'Không có tiêu đề',
-                                  companyName: job['company']?['nameCompany'] ?? 'Không có công ty',
-                                  jobDescription: job['description'] ?? 'Không có mô tả',
+                                  companyName: job['company']?['nameCompany'] ??
+                                      'Không có công ty',
+                                  jobDescription:
+                                      job['description'] ?? 'Không có mô tả',
                                   jobExperience: job['exp'] ?? 'Không yêu cầu',
                                   jobLocation: job['location'] ?? 'Remote',
-                                  jobSalary: job['salary'] != null ? '${job['salary']} VND' : 'Không rõ',
+                                  jobSalary: job['salary'] != null
+                                      ? '${job['salary']} VND'
+                                      : 'Không rõ',
                                 ),
                               );
                             } else {
-                              return const Text('Dữ liệu công việc không hợp lệ');
+                              return const Text(
+                                  'Dữ liệu công việc không hợp lệ');
                             }
                           },
                         ),
@@ -169,9 +178,7 @@ class _JobCardDesign extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 30.0,
-            backgroundImage: logoUrl.isNotEmpty
-                ? NetworkImage(logoUrl)
-                : null,
+            backgroundImage: logoUrl.isNotEmpty ? NetworkImage(logoUrl) : null,
             backgroundColor: Colors.grey.shade200,
             child: logoUrl.isEmpty
                 ? const Icon(Icons.business, color: Colors.white)
@@ -214,19 +221,21 @@ class _JobCardDesign extends StatelessWidget {
                   children: [
                     Text(
                       jobExperience,
-                      style: const TextStyle(fontSize: 12.0, color: Colors.black54),
+                      style: const TextStyle(
+                          fontSize: 12.0, color: Colors.black54),
                     ),
                     const Text(" • ", style: TextStyle(color: Colors.black26)),
                     Text(
                       jobLocation,
-                      style: const TextStyle(fontSize: 12.0, color: Colors.black54),
+                      style: const TextStyle(
+                          fontSize: 12.0, color: Colors.black54),
                     ),
                     const Text(" • ", style: TextStyle(color: Colors.black26)),
                     Text(
                       jobSalary,
-                      style: const TextStyle(fontSize: 12.0, color: Colors.black54),
+                      style: const TextStyle(
+                          fontSize: 12.0, color: Colors.black54),
                     ),
-                    
                   ],
                 ),
               ],

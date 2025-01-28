@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_application_project/data/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class AuthRepository {
-  final String apiUrl = 'http://192.168.1.213:2000/user';
+  final String apiUrl = 'https://backend-findjob.onrender.com/user';
 
   Future<User?> loginUser(String email, String password) async {
     try {
@@ -25,11 +26,11 @@ class AuthRepository {
           profileImage: details['profile_image'] ?? '',
           email: details['email'] ?? '',
           role: details['role'] ?? '',
-          
           isEmployee: details['isEmployee'] ?? false,
         );
       } else {
-        final errorMessage = json.decode(response.body)['message'] ?? 'Login failed';
+        final errorMessage =
+            json.decode(response.body)['message'] ?? 'Login failed';
         throw Exception(errorMessage);
       }
     } catch (e) {
@@ -59,7 +60,8 @@ class AuthRepository {
         final data = json.decode(response.body);
         return User.fromJson(data);
       } else {
-        final errorMessage = json.decode(response.body)['message'] ?? 'Registration failed';
+        final errorMessage =
+            json.decode(response.body)['message'] ?? 'Registration failed';
         throw Exception(errorMessage);
       }
     } catch (e) {

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_application_project/presentation/screens/client/create_profile.dart';
 import 'dart:io';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -31,8 +32,8 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     try {
-      final response =
-          await http.get(Uri.parse('http://192.168.1.213:2000/profile'));
+      final response = await http
+          .get(Uri.parse('https://backend-findjob.onrender.com/profile'));
 
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
@@ -77,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: navigateToCreateProfile, 
+            onPressed: navigateToCreateProfile,
           ),
         ],
       ),
@@ -107,7 +108,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         : const AssetImage('assets/icons/nen.png'),
                   ),
                   title: Text(profile['user']['name'] as String? ?? 'No Name'),
-                  subtitle: Text(profile['user']['email'] as String? ?? 'No Email'),
+                  subtitle:
+                      Text(profile['user']['email'] as String? ?? 'No Email'),
                   onTap: () => navigateToDetail(profile),
                 );
               },
@@ -122,8 +124,11 @@ class _ProfilePageState extends State<ProfilePage> {
 class ProfileDetailScreen extends StatefulWidget {
   final Map<String, dynamic> profile;
   final String userId;
-  const ProfileDetailScreen({Key? key, required this.profile,required this.userId, })
-      : super(key: key);
+  const ProfileDetailScreen({
+    Key? key,
+    required this.profile,
+    required this.userId,
+  }) : super(key: key);
 
   @override
   _ProfileDetailScreenState createState() => _ProfileDetailScreenState();
@@ -143,8 +148,8 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
 
   Future<Map<String, dynamic>> fetchProfileData() async {
     try {
-      final response = await http
-          .get(Uri.parse('http://192.168.1.213:2000/profile/${widget.userId}'));
+      final response = await http.get(Uri.parse(
+          'https://backend-findjob.onrender.com/profile/${widget.userId}'));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> data = json.decode(response.body);
@@ -166,7 +171,8 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
     }
 
     final response = await http.put(
-      Uri.parse('http://192.168.1.213:2000/profile/${widget.userId}'),
+      Uri.parse(
+          'https://backend-findjob.onrender.com/profile/${widget.userId}'),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -240,12 +246,9 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                         children: [
                           CircleAvatar(
                             radius: 50,
-                            backgroundImage: 
-                            profile['profileImage'] != null
+                            backgroundImage: profile['profileImage'] != null
                                 ? FileImage(File(profile['profileImage']))
-                                : 
-                                const AssetImage(
-                                    'assets/icons/nen.png'),
+                                : const AssetImage('assets/icons/nen.png'),
                           ),
                           const SizedBox(height: 10),
                           if (isEditable)

@@ -9,6 +9,7 @@ import 'package:flutter_application_project/core/widgets/client/widgte_jobbanner
 import 'package:flutter_application_project/core/widgets/client/widget_footer.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/presentation/screens/client/companydetail_screen.dart';
+
 class CompanyScreen extends StatefulWidget {
   const CompanyScreen({Key? key}) : super(key: key);
 
@@ -30,7 +31,8 @@ class _CompanyScreenState extends State<CompanyScreen> {
 
   Future<void> fetchCompanies() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.213:2000/company/'));
+      final response = await http
+          .get(Uri.parse('https://backend-findjob.onrender.com/company/'));
       if (response.statusCode == 200) {
         setState(() {
           companyList = json.decode(response.body);
@@ -53,7 +55,8 @@ class _CompanyScreenState extends State<CompanyScreen> {
     }
 
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.213:2000/job/count-by-company/$companyId'));
+      final response = await http.get(Uri.parse(
+          'https://backend-findjob.onrender.com/job/count-by-company/$companyId'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final jobCount = data['jobCount'] ?? 0;
@@ -124,7 +127,9 @@ class _CompanyScreenState extends State<CompanyScreen> {
                         : Wrap(
                             spacing: 16,
                             runSpacing: 16,
-                            children: companyList.map((company) => _buildCompanyCard(company)).toList(),
+                            children: companyList
+                                .map((company) => _buildCompanyCard(company))
+                                .toList(),
                           ),
               ),
               const SizedBox(height: 30),
@@ -139,7 +144,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
     );
   }
 
-    Widget _buildCompanyCard(dynamic company) {
+  Widget _buildCompanyCard(dynamic company) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -180,7 +185,8 @@ class _CompanyScreenState extends State<CompanyScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(16)),
                   child: Image.network(
                     company['logo'] ?? 'https://via.placeholder.com/200x120',
                     height: 120,
@@ -206,7 +212,8 @@ class _CompanyScreenState extends State<CompanyScreen> {
                       const SizedBox(height: 6),
                       Row(
                         children: [
-                          const Icon(Icons.location_on, color: Colors.blueAccent, size: 16),
+                          const Icon(Icons.location_on,
+                              color: Colors.blueAccent, size: 16),
                           const SizedBox(width: 4),
                           Expanded(
                             child: Text(
@@ -245,5 +252,4 @@ class _CompanyScreenState extends State<CompanyScreen> {
       ),
     );
   }
-
 }

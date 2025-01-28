@@ -25,8 +25,8 @@ class _JobCardState extends State<JobCard> {
 
   Future<void> fetchJobs() async {
     try {
-      final response =
-          await http.get(Uri.parse('http://192.168.1.213:2000/job/'));
+      final response = await http
+          .get(Uri.parse('https://backend-findjob.onrender.com/job/'));
 
       if (response.statusCode == 200) {
         final List<dynamic> decodedJobs = jsonDecode(response.body);
@@ -75,13 +75,14 @@ class _JobCardState extends State<JobCard> {
                   ),
                 )
               : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 10.0),
                   child: Column(
                     children: [
                       const SizedBox(height: 16),
                       Expanded(
                         child: ListView.builder(
-                          controller: _scrollController, 
+                          controller: _scrollController,
                           scrollDirection: Axis.horizontal,
                           itemCount: jobs.length,
                           itemBuilder: (context, index) {
@@ -94,16 +95,22 @@ class _JobCardState extends State<JobCard> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => DetailJobScreen(job: job),
+                                        builder: (context) =>
+                                            DetailJobScreen(job: job),
                                       ),
                                     );
                                   },
                                   child: _JobCardDesign(
                                     logoUrl: job['company']?['logo'] ?? '',
-                                    jobTitle: job['title'] ?? 'Không có tiêu đề',
-                                    companyName: job['company']?['nameCompany'] ?? 'Không có công ty',
-                                    jobDescription: job['description'] ?? 'Không có mô tả',
-                                    jobExperience: job['exp'] ?? 'Không yêu cầu',
+                                    jobTitle:
+                                        job['title'] ?? 'Không có tiêu đề',
+                                    companyName: job['company']
+                                            ?['nameCompany'] ??
+                                        'Không có công ty',
+                                    jobDescription:
+                                        job['description'] ?? 'Không có mô tả',
+                                    jobExperience:
+                                        job['exp'] ?? 'Không yêu cầu',
                                     jobLocation: job['location'] ?? 'Remote',
                                     jobSalary: job['salary'] != null
                                         ? '${job['salary']} VND'
@@ -112,7 +119,8 @@ class _JobCardState extends State<JobCard> {
                                 ),
                               );
                             } else {
-                              return const Text('Dữ liệu công việc không hợp lệ');
+                              return const Text(
+                                  'Dữ liệu công việc không hợp lệ');
                             }
                           },
                         ),
@@ -164,15 +172,16 @@ class _JobCardDesign extends StatelessWidget {
         mainAxisSize: MainAxisSize.min, // Shrink wrap Row
         children: [
           CircleAvatar(
-            radius: 25.0,  // Slightly smaller radius to make it fit better
+            radius: 25.0, // Slightly smaller radius to make it fit better
             backgroundImage: logoUrl.isNotEmpty ? NetworkImage(logoUrl) : null,
             backgroundColor: Colors.grey.shade200,
             child: logoUrl.isEmpty
                 ? const Icon(Icons.business, color: Colors.white)
                 : null,
           ),
-          const SizedBox(width: 12.0),  // Adjusted space between logo and text
-          Flexible( // Use Flexible instead of Expanded
+          const SizedBox(width: 12.0), // Adjusted space between logo and text
+          Flexible(
+            // Use Flexible instead of Expanded
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

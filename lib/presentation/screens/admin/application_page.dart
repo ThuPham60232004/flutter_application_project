@@ -33,7 +33,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
   }
 
   Future<void> fetchApplications() async {
-    final response = await http.get(Uri.parse('http://192.168.1.213:2000/application'));
+    final response = await http
+        .get(Uri.parse('https://backend-findjob.onrender.com/application'));
     if (response.statusCode == 200) {
       setState(() {
         applications = json.decode(response.body);
@@ -42,7 +43,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
   }
 
   Future<void> fetchUsers() async {
-    final response = await http.get(Uri.parse('http://192.168.1.213:2000/user'));
+    final response =
+        await http.get(Uri.parse('https://backend-findjob.onrender.com/user'));
     if (response.statusCode == 200) {
       setState(() {
         users = json.decode(response.body);
@@ -51,7 +53,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
   }
 
   Future<void> fetchJobs() async {
-    final response = await http.get(Uri.parse('http://192.168.1.213:2000/job'));
+    final response =
+        await http.get(Uri.parse('https://backend-findjob.onrender.com/job'));
     if (response.statusCode == 200) {
       setState(() {
         jobs = json.decode(response.body);
@@ -60,7 +63,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
   }
 
   Future<void> fetchProfiles() async {
-    final response = await http.get(Uri.parse('http://192.168.1.213:2000/profile'));
+    final response = await http
+        .get(Uri.parse('https://backend-findjob.onrender.com/profile'));
     if (response.statusCode == 200) {
       setState(() {
         profiles = json.decode(response.body);
@@ -69,14 +73,16 @@ class _ApplicationPageState extends State<ApplicationPage> {
   }
 
   Future<void> deleteApplication(String id) async {
-    final response = await http.delete(Uri.parse('http://192.168.1.213:2000/application/$id'));
+    final response = await http.delete(
+        Uri.parse('https://backend-findjob.onrender.com/application/$id'));
     if (response.statusCode == 200) {
       fetchApplications();
     }
   }
 
   Future<void> pickFile() async {
-    final result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    final result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
     if (result != null) {
       setState(() {
         selectedFile = result.files.single;
@@ -91,14 +97,17 @@ class _ApplicationPageState extends State<ApplicationPage> {
         return;
       }
 
-      if (selectedUserId == null || selectedJobId == null || selectedProfileId == null || selectedStatus == null) {
+      if (selectedUserId == null ||
+          selectedJobId == null ||
+          selectedProfileId == null ||
+          selectedStatus == null) {
         _showErrorDialog('Please fill in all required fields.');
         return;
       }
 
       final url = id == null
-          ? 'http://192.168.1.213:2000/application'
-          : 'http://192.168.1.213:2000/application/$id';
+          ? 'https://backend-findjob.onrender.com/application'
+          : 'https://backend-findjob.onrender.com/application/$id';
       final method = id == null ? 'POST' : 'PUT';
 
       try {
@@ -207,7 +216,9 @@ class _ApplicationPageState extends State<ApplicationPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    application == null ? 'Add Application' : 'Edit Application',
+                    application == null
+                        ? 'Add Application'
+                        : 'Edit Application',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 20),
@@ -289,7 +300,9 @@ class _ApplicationPageState extends State<ApplicationPage> {
                   SizedBox(height: 15),
                   ElevatedButton(
                     onPressed: pickFile,
-                    child: Text(selectedFile == null ? 'Select CV' : selectedFile!.name),
+                    child: Text(selectedFile == null
+                        ? 'Select CV'
+                        : selectedFile!.name),
                   ),
                   SizedBox(height: 15),
                   TextFormField(
@@ -307,11 +320,15 @@ class _ApplicationPageState extends State<ApplicationPage> {
                       ),
                       padding: EdgeInsets.symmetric(vertical: 15),
                     ),
-                    onPressed: () => addOrUpdateApplication(application?['_id']),
+                    onPressed: () =>
+                        addOrUpdateApplication(application?['_id']),
                     child: Center(
                       child: Text(
-                        application == null ? 'Add Application' : 'Update Application',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        application == null
+                            ? 'Add Application'
+                            : 'Update Application',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -328,7 +345,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Application Management', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        title: Text('Application Management',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
         elevation: 2,
@@ -351,7 +369,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
                     child: ListTile(
                       title: Text(
                         job['title'] ?? 'No Job Title',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(application['status'] ?? 'No Status'),
                       trailing: Row(
@@ -363,7 +382,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
                           ),
                           IconButton(
                             icon: Icon(Icons.delete, color: Colors.redAccent),
-                            onPressed: () => deleteApplication(application['_id']),
+                            onPressed: () =>
+                                deleteApplication(application['_id']),
                           ),
                         ],
                       ),

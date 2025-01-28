@@ -22,7 +22,7 @@ class _JobListScreenState extends State<JobListScreen> {
   Future<void> fetchJobs() async {
     try {
       final response =
-          await http.get(Uri.parse('http://192.168.1.213:2000/job'));
+          await http.get(Uri.parse('https://backend-findjob.onrender.com/job'));
       if (response.statusCode == 200) {
         setState(() {
           jobs = json.decode(response.body);
@@ -43,8 +43,8 @@ class _JobListScreenState extends State<JobListScreen> {
 
   Future<void> deleteJob(String jobId) async {
     try {
-      final response =
-          await http.delete(Uri.parse('http://192.168.1.213:2000/job/$jobId'));
+      final response = await http
+          .delete(Uri.parse('https://backend-findjob.onrender.com/job/$jobId'));
       if (response.statusCode == 200) {
         setState(() {
           jobs.removeWhere((job) => job['_id'] == jobId);
@@ -71,8 +71,8 @@ class _JobListScreenState extends State<JobListScreen> {
 
   void openEditJobForm(String jobId) async {
     try {
-      final response =
-          await http.get(Uri.parse('http://192.168.1.213:2000/job/$jobId'));
+      final response = await http
+          .get(Uri.parse('https://backend-findjob.onrender.com/job/$jobId'));
       if (response.statusCode == 200) {
         final job = json.decode(response.body);
         showDialog(
@@ -199,10 +199,10 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
   Future<void> fetchDropdownData() async {
     try {
       final responses = await Future.wait([
-        http.get(Uri.parse('http://192.168.1.213:2000/company')),
-        http.get(Uri.parse('http://192.168.1.213:2000/category')),
-        http.get(Uri.parse('http://192.168.1.213:2000/user')),
-        http.get(Uri.parse('http://192.168.1.213:2000/benefit')),
+        http.get(Uri.parse('https://backend-findjob.onrender.com/company')),
+        http.get(Uri.parse('https://backend-findjob.onrender.com/category')),
+        http.get(Uri.parse('https://backend-findjob.onrender.com/user')),
+        http.get(Uri.parse('https://backend-findjob.onrender.com/benefit')),
       ]);
 
       setState(() {
@@ -236,7 +236,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
     try {
       print('Job Data: ${json.encode(jobData)}');
       final response = await http.post(
-        Uri.parse('http://192.168.1.213:2000/job'),
+        Uri.parse('https://backend-findjob.onrender.com/job'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(jobData),
       );
@@ -271,7 +271,8 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
     if (picked != null && picked != selectedDeadline) {
       setState(() {
         selectedDeadline = picked;
-        deadlineController.text = "${picked.toLocal()}".split(' ')[0]; // Format date to YYYY-MM-DD
+        deadlineController.text =
+            "${picked.toLocal()}".split(' ')[0]; // Format date to YYYY-MM-DD
       });
     }
   }
@@ -497,58 +498,62 @@ class _EditJobFormDialogState extends State<EditJobFormDialog> {
   // String? selectedUser;
   // List<String>? selectedBenefits = [];
 
- @override
-void initState() {
-  super.initState();
-  titleController = TextEditingController(text: widget.job['title'] ?? '');
-  descriptionController = TextEditingController(text: widget.job['description'] ?? '');
-  locationController = TextEditingController(text: widget.job['location'] ?? '');
-  salaryController = TextEditingController(text: widget.job['salary']?.toString() ?? '');
-  expController = TextEditingController(text: widget.job['exp'] ?? '');
-  deadlineController = TextEditingController(text: widget.job['deadline'] ?? '');
-  selectedType = widget.job['type'];
-  // selectedCompany = widget.job['company']?['_id'].toString();
-  // selectedCategory = widget.job['category']?['_id'].toString();
-  // selectedUser = widget.job['postedBy']?['_id'].toString();
-  // selectedBenefits = List<String>.from(widget.job['benefits'] ?? []);
-}
-
-Future<void> updateJob() async {
-  final jobData = {
-    'title': titleController.text,
-    'description': descriptionController.text,
-    'location': locationController.text,
-     'salary': salaryController.text,
-    'exp': expController.text,
-    'deadline': deadlineController.text,
-    'type': selectedType,
-    // 'company': selectedCompany,
-    // 'category': selectedCategory,
-    // 'postedBy': selectedUser,
-    // 'benefits': selectedBenefits,
-  };
-
-  try {
-    final response = await http.put(
-      Uri.parse('http://192.168.1.213:2000/job/${widget.job['_id']}'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(jobData),
-    );
-    if (response.statusCode == 200) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Job updated successfully')),
-      );
-    } else {
-      throw Exception('Failed to update job');
-    }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error updating job: $e')),
-    );
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.job['title'] ?? '');
+    descriptionController =
+        TextEditingController(text: widget.job['description'] ?? '');
+    locationController =
+        TextEditingController(text: widget.job['location'] ?? '');
+    salaryController =
+        TextEditingController(text: widget.job['salary']?.toString() ?? '');
+    expController = TextEditingController(text: widget.job['exp'] ?? '');
+    deadlineController =
+        TextEditingController(text: widget.job['deadline'] ?? '');
+    selectedType = widget.job['type'];
+    // selectedCompany = widget.job['company']?['_id'].toString();
+    // selectedCategory = widget.job['category']?['_id'].toString();
+    // selectedUser = widget.job['postedBy']?['_id'].toString();
+    // selectedBenefits = List<String>.from(widget.job['benefits'] ?? []);
   }
-}
 
+  Future<void> updateJob() async {
+    final jobData = {
+      'title': titleController.text,
+      'description': descriptionController.text,
+      'location': locationController.text,
+      'salary': salaryController.text,
+      'exp': expController.text,
+      'deadline': deadlineController.text,
+      'type': selectedType,
+      // 'company': selectedCompany,
+      // 'category': selectedCategory,
+      // 'postedBy': selectedUser,
+      // 'benefits': selectedBenefits,
+    };
+
+    try {
+      final response = await http.put(
+        Uri.parse(
+            'https://backend-findjob.onrender.com/job/${widget.job['_id']}'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(jobData),
+      );
+      if (response.statusCode == 200) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Job updated successfully')),
+        );
+      } else {
+        throw Exception('Failed to update job');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating job: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -653,7 +658,8 @@ Future<void> updateJob() async {
     );
     if (picked != null) {
       setState(() {
-        deadlineController.text = "${picked.toLocal()}".split(' ')[0]; // Format date to YYYY-MM-DD
+        deadlineController.text =
+            "${picked.toLocal()}".split(' ')[0]; // Format date to YYYY-MM-DD
       });
     }
   }

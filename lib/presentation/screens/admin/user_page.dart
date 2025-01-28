@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
 class UserManagementPage extends StatefulWidget {
   @override
   _UserManagementPageState createState() => _UserManagementPageState();
@@ -35,7 +36,8 @@ class _UserManagementPageState extends State<UserManagementPage> {
 
   Future<void> fetchUsers() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.213:2000/user'));
+      final response = await http
+          .get(Uri.parse('https://backend-findjob.onrender.com/user'));
       if (response.statusCode == 200) {
         setState(() {
           users = json.decode(response.body);
@@ -48,7 +50,8 @@ class _UserManagementPageState extends State<UserManagementPage> {
 
   Future<void> fetchCompanies() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.213:2000/company'));
+      final response = await http
+          .get(Uri.parse('https://backend-findjob.onrender.com/company'));
       if (response.statusCode == 200) {
         setState(() {
           companies = json.decode(response.body);
@@ -59,36 +62,35 @@ class _UserManagementPageState extends State<UserManagementPage> {
     }
   }
 
-Future<void> addUser() async {
-  if (_formKey.currentState!.validate()) {
-    _formKey.currentState!.save();
-    try {
-      final response = await http.post(
-        Uri.parse('http://192.168.1.213:2000/user/add/'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(_formData),
-      );
-
-      if (response.statusCode == 200) {
-        fetchUsers();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('User added successfully!')),
+  Future<void> addUser() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      try {
+        final response = await http.post(
+          Uri.parse('https://backend-findjob.onrender.com/user/add/'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(_formData),
         );
-      } else {
-        print('Failed to add user: ${response.body}');
+
+        if (response.statusCode == 200) {
+          fetchUsers();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('User added successfully!')),
+          );
+        } else {
+          print('Failed to add user: ${response.body}');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to add user: ${response.body}')),
+          );
+        }
+      } catch (e) {
+        print('Error: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add user: ${response.body}')),
+          SnackBar(content: Text('An error occurred. Please try again.')),
         );
       }
-    } catch (e) {
-      print('Error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred. Please try again.')),
-      );
     }
   }
-}
-
 
   Future<void> updateUser(String userId) async {
     if (_formKey.currentState!.validate()) {
@@ -99,7 +101,7 @@ Future<void> addUser() async {
         String body = json.encode(_formData);
 
         await http.put(
-          Uri.parse('http://192.168.1.213:2000/user/$userId'),
+          Uri.parse('https://backend-findjob.onrender.com/user/$userId'),
           headers: headers,
           body: body,
         );
@@ -112,7 +114,8 @@ Future<void> addUser() async {
 
   Future<void> deleteUser(String userId) async {
     try {
-      await http.delete(Uri.parse('http://192.168.1.213:2000/user/$userId'));
+      await http.delete(
+          Uri.parse('https://backend-findjob.onrender.com/user/$userId'));
       fetchUsers();
     } catch (e) {
       print(e);
@@ -153,19 +156,22 @@ Future<void> addUser() async {
                     initialValue: _formData['name'],
                     decoration: InputDecoration(labelText: 'Name'),
                     onSaved: (value) => _formData['name'] = value!,
-                    validator: (value) => value!.isEmpty ? 'Enter a name' : null,
+                    validator: (value) =>
+                        value!.isEmpty ? 'Enter a name' : null,
                   ),
                   TextFormField(
                     initialValue: _formData['email'],
                     decoration: InputDecoration(labelText: 'Email'),
                     onSaved: (value) => _formData['email'] = value!,
-                    validator: (value) => value!.isEmpty ? 'Enter an email' : null,
+                    validator: (value) =>
+                        value!.isEmpty ? 'Enter an email' : null,
                   ),
                   TextFormField(
                     initialValue: _formData['password'],
                     decoration: InputDecoration(labelText: 'Password'),
                     onSaved: (value) => _formData['password'] = value!,
-                    validator: (value) => value!.isEmpty ? 'Enter a password' : null,
+                    validator: (value) =>
+                        value!.isEmpty ? 'Enter a password' : null,
                     obscureText: true,
                   ),
                   TextFormField(
@@ -181,7 +187,8 @@ Future<void> addUser() async {
                               child: Text(role),
                             ))
                         .toList(),
-                    onChanged: (value) => setState(() => _formData['role'] = value),
+                    onChanged: (value) =>
+                        setState(() => _formData['role'] = value),
                     decoration: InputDecoration(labelText: 'Role'),
                   ),
                   DropdownButtonFormField<String>(
@@ -192,13 +199,15 @@ Future<void> addUser() async {
                               child: Text(status),
                             ))
                         .toList(),
-                    onChanged: (value) => setState(() => _formData['status'] = value),
+                    onChanged: (value) =>
+                        setState(() => _formData['status'] = value),
                     decoration: InputDecoration(labelText: 'Status'),
                   ),
                   SwitchListTile(
                     value: _formData['isVerified'] ?? false,
                     title: Text('Verified'),
-                    onChanged: (value) => setState(() => _formData['isVerified'] = value),
+                    onChanged: (value) =>
+                        setState(() => _formData['isVerified'] = value),
                   ),
                   DropdownButtonFormField<String>(
                     value: selectedCompany,

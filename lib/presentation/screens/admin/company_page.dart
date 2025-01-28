@@ -27,7 +27,8 @@ class _CompanyPageState extends State<CompanyPage> {
   }
 
   Future<void> fetchCompanies() async {
-    final response = await http.get(Uri.parse('http://192.168.1.213:2000/company'));
+    final response = await http
+        .get(Uri.parse('https://backend-findjob.onrender.com/company'));
     if (response.statusCode == 200) {
       setState(() {
         companies = json.decode(response.body);
@@ -36,7 +37,8 @@ class _CompanyPageState extends State<CompanyPage> {
   }
 
   Future<void> fetchUsers() async {
-    final response = await http.get(Uri.parse('http://192.168.1.213:2000/user'));
+    final response =
+        await http.get(Uri.parse('https://backend-findjob.onrender.com/user'));
     if (response.statusCode == 200) {
       setState(() {
         users = json.decode(response.body);
@@ -47,8 +49,8 @@ class _CompanyPageState extends State<CompanyPage> {
   Future<void> addOrUpdateCompany(String? id) async {
     if (_formKey.currentState!.validate()) {
       final url = id == null
-          ? 'http://192.168.1.213:2000/company'
-          : 'http://192.168.1.213:2000/company/$id';
+          ? 'https://backend-findjob.onrender.com/company'
+          : 'https://backend-findjob.onrender.com/company/$id';
       final method = id == null ? 'POST' : 'PUT';
 
       final response = await http.Request(method, Uri.parse(url))
@@ -63,7 +65,8 @@ class _CompanyPageState extends State<CompanyPage> {
         });
 
       final streamedResponse = await response.send();
-      if (streamedResponse.statusCode == 200 || streamedResponse.statusCode == 201) {
+      if (streamedResponse.statusCode == 200 ||
+          streamedResponse.statusCode == 201) {
         fetchCompanies();
         Navigator.pop(context);
       }
@@ -71,7 +74,8 @@ class _CompanyPageState extends State<CompanyPage> {
   }
 
   Future<void> deleteCompany(String id) async {
-    final response = await http.delete(Uri.parse('http://192.168.1.213:2000/company/$id'));
+    final response = await http
+        .delete(Uri.parse('https://backend-findjob.onrender.com/company/$id'));
     if (response.statusCode == 200) {
       fetchCompanies();
     }
@@ -170,93 +174,99 @@ class _CompanyPageState extends State<CompanyPage> {
                   ),
                   SizedBox(height: 15),
                   DropdownButtonFormField<String>(
-          value: selectedManagerId,
-          decoration: InputDecoration(
-            labelText: 'Managed By',
-            border: OutlineInputBorder(),
-          ),
-          items: users.map<DropdownMenuItem<String>>((user) {
-            return DropdownMenuItem<String>(
-              value: user['_id'],
-              child: Text(user['name'] ?? ''),
-            );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              selectedManagerId = value;
-            });
-          },
-        ),
-        SizedBox(height: 15),
-        TextFormField(
-          readOnly: true,
-          decoration: InputDecoration(
-            labelText: 'Employees',
-            border: OutlineInputBorder(),
-            suffixIcon: Icon(Icons.arrow_drop_down),
-          ),
-          onTap: () async {
-            final selectedUsers = await showDialog<List<String>>(
-              context: context,
-              builder: (BuildContext context) {
-                final List<String> tempSelectedEmployeeIds = [...selectedEmployeeIds];
-                return AlertDialog(
-                  title: Text('Select Employees'),
-                  content: StatefulBuilder(
-                    builder: (context, setDialogState) {
-                      return SingleChildScrollView(
-                        child: Column(
-                          children: users.map((user) {
-                            return CheckboxListTile(
-                              title: Text(user['name'] ?? ''),
-                              value: tempSelectedEmployeeIds.contains(user['_id']),
-                              onChanged: (isChecked) {
-                                setDialogState(() {
-                                  if (isChecked == true) {
-                                    tempSelectedEmployeeIds.add(user['_id']);
-                                  } else {
-                                    tempSelectedEmployeeIds.remove(user['_id']);
-                                  }
-                                });
-                                },
-                              );
-                            }).toList(),
-                          ),
-                        );
-                      },
+                    value: selectedManagerId,
+                    decoration: InputDecoration(
+                      labelText: 'Managed By',
+                      border: OutlineInputBorder(),
                     ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
+                    items: users.map<DropdownMenuItem<String>>((user) {
+                      return DropdownMenuItem<String>(
+                        value: user['_id'],
+                        child: Text(user['name'] ?? ''),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedManagerId = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 15),
+                  TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: 'Employees',
+                      border: OutlineInputBorder(),
+                      suffixIcon: Icon(Icons.arrow_drop_down),
+                    ),
+                    onTap: () async {
+                      final selectedUsers = await showDialog<List<String>>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          final List<String> tempSelectedEmployeeIds = [
+                            ...selectedEmployeeIds
+                          ];
+                          return AlertDialog(
+                            title: Text('Select Employees'),
+                            content: StatefulBuilder(
+                              builder: (context, setDialogState) {
+                                return SingleChildScrollView(
+                                  child: Column(
+                                    children: users.map((user) {
+                                      return CheckboxListTile(
+                                        title: Text(user['name'] ?? ''),
+                                        value: tempSelectedEmployeeIds
+                                            .contains(user['_id']),
+                                        onChanged: (isChecked) {
+                                          setDialogState(() {
+                                            if (isChecked == true) {
+                                              tempSelectedEmployeeIds
+                                                  .add(user['_id']);
+                                            } else {
+                                              tempSelectedEmployeeIds
+                                                  .remove(user['_id']);
+                                            }
+                                          });
+                                        },
+                                      );
+                                    }).toList(),
+                                  ),
+                                );
+                              },
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Cancel'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(
+                                      context, tempSelectedEmployeeIds);
+                                },
+                                child: Text('Select'),
+                              ),
+                            ],
+                          );
                         },
-                        child: Text('Cancel'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context, tempSelectedEmployeeIds);
-                        },
-                        child: Text('Select'),
-                      ),
-                    ],
-                  );
-                },
-              );
+                      );
 
-              if (selectedUsers != null) {
-                setState(() {
-                  selectedEmployeeIds = selectedUsers;
-                });
-              }
-            },
-            controller: TextEditingController(
-              text: users
-                  .where((user) => selectedEmployeeIds.contains(user['_id']))
-                  .map((user) => user['name'])
-                  .join(', '),
-            ),
-          ),
-
+                      if (selectedUsers != null) {
+                        setState(() {
+                          selectedEmployeeIds = selectedUsers;
+                        });
+                      }
+                    },
+                    controller: TextEditingController(
+                      text: users
+                          .where((user) =>
+                              selectedEmployeeIds.contains(user['_id']))
+                          .map((user) => user['name'])
+                          .join(', '),
+                    ),
+                  ),
                   SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -269,7 +279,8 @@ class _CompanyPageState extends State<CompanyPage> {
                     child: Center(
                       child: Text(
                         company == null ? 'Add Company' : 'Update Company',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -286,7 +297,8 @@ class _CompanyPageState extends State<CompanyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Company Management', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        title: Text('Company Management',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
         elevation: 2,
@@ -308,7 +320,8 @@ class _CompanyPageState extends State<CompanyPage> {
                     child: ListTile(
                       title: Text(
                         company['nameCompany'],
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(company['location'] ?? ''),
                       trailing: Row(

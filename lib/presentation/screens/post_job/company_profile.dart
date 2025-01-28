@@ -33,7 +33,8 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
         return;
       }
 
-      final url = Uri.parse('http://192.168.1.213:2000/company/user/$userId');
+      final url = Uri.parse(
+          'https://backend-findjob.onrender.com/company/user/$userId');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -64,37 +65,38 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
     }
   }
 
-Widget buildInputField(String label, String? value, {bool isMultiline = false, bool isEditable = true}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey[700],
-        ),
-      ),
-      SizedBox(height: 8),
-      TextFormField(
-        initialValue: value ?? 'Chưa có thông tin',
-        enabled: isEditable, 
-        maxLines: isMultiline ? null : 1,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.grey[200],
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+  Widget buildInputField(String label, String? value,
+      {bool isMultiline = false, bool isEditable = true}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey[700],
           ),
         ),
-        style: TextStyle(fontSize: 16),
-      ),
-      SizedBox(height: 16),
-    ],
-  );
-}
+        SizedBox(height: 8),
+        TextFormField(
+          initialValue: value ?? 'Chưa có thông tin',
+          enabled: isEditable,
+          maxLines: isMultiline ? null : 1,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[200],
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+          ),
+          style: TextStyle(fontSize: 16),
+        ),
+        SizedBox(height: 16),
+      ],
+    );
+  }
 
   Future<void> updateCompanyProfile() async {
     try {
@@ -102,20 +104,23 @@ Widget buildInputField(String label, String? value, {bool isMultiline = false, b
       String? userId = prefs.getString('id');
       if (userId == null) return;
 
-      final url = Uri.parse('http://192.168.1.213:2000/company/${companyData!['_id']}');
-      final response = await http.put(url, body: json.encode({
-        "nameCompany": companyData!['nameCompany'],
-        "location": companyData!['location'],
-        "website": companyData!['website'],
-        "description": companyData!['description'],
-        "isCompanyVerified": companyData!['isCompanyVerified'],
-      }), headers: {'Content-Type': 'application/json'});
+      final url = Uri.parse(
+          'https://backend-findjob.onrender.com/company/${companyData!['_id']}');
+      final response = await http.put(url,
+          body: json.encode({
+            "nameCompany": companyData!['nameCompany'],
+            "location": companyData!['location'],
+            "website": companyData!['website'],
+            "description": companyData!['description'],
+            "isCompanyVerified": companyData!['isCompanyVerified'],
+          }),
+          headers: {'Content-Type': 'application/json'});
 
       if (response.statusCode == 200) {
         setState(() {
-          isEditing = false;  // Sau khi cập nhật, không cho chỉnh sửa nữa
+          isEditing = false; // Sau khi cập nhật, không cho chỉnh sửa nữa
         });
-        fetchCompanyProfile();  // Lấy lại thông tin mới
+        fetchCompanyProfile(); // Lấy lại thông tin mới
       } else {
         setState(() {
           errorMessage = 'Cập nhật thông tin thất bại';
@@ -138,10 +143,10 @@ Widget buildInputField(String label, String? value, {bool isMultiline = false, b
             icon: Icon(isEditing ? Icons.check : Icons.edit),
             onPressed: () {
               if (isEditing) {
-                updateCompanyProfile();  // Cập nhật thông tin khi nhấn nút
+                updateCompanyProfile(); // Cập nhật thông tin khi nhấn nút
               } else {
                 setState(() {
-                  isEditing = true;  // Cho phép chỉnh sửa thông tin
+                  isEditing = true; // Cho phép chỉnh sửa thông tin
                 });
               }
             },
@@ -165,25 +170,29 @@ Widget buildInputField(String label, String? value, {bool isMultiline = false, b
                           if (companyData!['logo'] != null)
                             CircleAvatar(
                               radius: 50,
-                              backgroundImage: NetworkImage(companyData!['logo']),
+                              backgroundImage:
+                                  NetworkImage(companyData!['logo']),
                             )
                           else
                             CircleAvatar(
                               radius: 50,
                               backgroundColor: Colors.grey[300],
-                              child: Icon(Icons.business, size: 50, color: Colors.white),
+                              child: Icon(Icons.business,
+                                  size: 50, color: Colors.white),
                             ),
                           SizedBox(height: 16),
-                          buildInputField('Tên công ty', companyData!['nameCompany']),
+                          buildInputField(
+                              'Tên công ty', companyData!['nameCompany']),
                           buildInputField('Địa chỉ', companyData!['location']),
                           buildInputField('Website', companyData!['website']),
-                          buildInputField('Mô tả', companyData!['description'], isMultiline: true),
+                          buildInputField('Mô tả', companyData!['description'],
+                              isMultiline: true),
                           buildInputField(
                             'Trạng thái',
                             companyData!['isCompanyVerified'] == true
                                 ? 'Đã xác minh'
                                 : 'Chưa xác minh',
-                                isEditable: false, 
+                            isEditable: false,
                           ),
                           if (companyData!['employees'] != null &&
                               companyData!['employees'].isNotEmpty)
@@ -203,8 +212,10 @@ Widget buildInputField(String label, String? value, {bool isMultiline = false, b
                                     margin: EdgeInsets.symmetric(vertical: 8),
                                     child: ListTile(
                                       leading: Icon(Icons.person),
-                                      title: Text(employee['name'] ?? 'Tên không xác định'),
-                                      subtitle: Text(employee['email'] ?? 'Email không xác định'),
+                                      title: Text(employee['name'] ??
+                                          'Tên không xác định'),
+                                      subtitle: Text(employee['email'] ??
+                                          'Email không xác định'),
                                     ),
                                   ),
                                 ),

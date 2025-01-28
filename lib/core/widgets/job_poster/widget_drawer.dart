@@ -4,14 +4,10 @@ import 'package:flutter_application_project/presentation/screens/login_screen.da
 import 'package:flutter_application_project/presentation/screens/signup_screen.dart';
 import 'package:flutter_application_project/presentation/screens/account_screen.dart';
 import 'package:flutter_application_project/presentation/screens/contact_screen.dart';
-import 'package:flutter_application_project/presentation/screens/admin/category_screen.dart';
-import 'package:flutter_application_project/presentation/screens/admin/benefit_page.dart';
-import 'package:flutter_application_project/presentation/screens/admin/profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_project/presentation/screens/post_job/job_screen.dart';
 import 'package:flutter_application_project/presentation/screens/post_job/company_profile.dart';
 import 'package:flutter_application_project/presentation/screens/post_job/application.dart';
-import 'package:flutter_application_project/presentation/screens/admin/user_page.dart';
 class PosterDrawer extends StatefulWidget {
   @override
   _PosterDrawerState createState() => _PosterDrawerState();
@@ -78,7 +74,6 @@ class _PosterDrawerState extends State<PosterDrawer> {
     _buildMenuItem(Icons.assignment, 'Quản lý đơn ứng tuyển', JobApplicationPage(), Colors.pinkAccent),
     // _buildMenuItem(Icons.article, 'Chi tiết blog', BlogDetail(), Colors.amber),
     ];
-
     return Drawer(
       child: ListView(
         children: [

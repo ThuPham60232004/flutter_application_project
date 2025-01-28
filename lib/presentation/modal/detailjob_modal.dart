@@ -8,6 +8,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:convert';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 class ModalDetailScreen extends StatefulWidget {
   final String jobId;
   final String title;
@@ -30,72 +31,73 @@ class _ModalDetailScreenState extends State<ModalDetailScreen> {
     super.initState();
     _fetchProfileData();
   }
-void _showSuccessDialog(String message) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text("Thành công"),
-      content: Text(message),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text("Đóng"),
-        ),
-      ],
-    ),
-  );
-}
 
-
-Future<void> _applyJob() async {
-  if (selectedFile == null) {
-    _showErrorDialog('Vui lòng chọn CV trước khi gửi.');
-    return;
+  void _showSuccessDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Thành công"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Đóng"),
+          ),
+        ],
+      ),
+    );
   }
 
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('id');
-
-    if (userId == null) {
-      throw Exception("Không tìm thấy thông tin người dùng.");
+  Future<void> _applyJob() async {
+    if (selectedFile == null) {
+      _showErrorDialog('Vui lòng chọn CV trước khi gửi.');
+      return;
     }
 
-    final fileBytes = await selectedFile!.readAsBytes();
-    final base64File = base64Encode(fileBytes);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userId = prefs.getString('id');
 
-    final uri = Uri.parse('http://192.168.1.213:2000/application/');
+      if (userId == null) {
+        throw Exception("Không tìm thấy thông tin người dùng.");
+      }
 
-    var request = http.MultipartRequest('POST', uri)
-      ..headers.addAll({
-        'Content-Type': 'multipart/form-data',
-      })
-      ..fields['user'] = userId
-      ..fields['job'] = widget.jobId
-      ..fields['coverLetter'] = coverLetterController.text
-      ..fields['profile'] = profileData?['_id']!
-      ..fields['status'] = 'pending';
+      final fileBytes = await selectedFile!.readAsBytes();
+      final base64File = base64Encode(fileBytes);
 
-    request.files.add(http.MultipartFile.fromBytes(
-      'cv', 
-      fileBytes,
-      filename: selectedFile!.path.split('/').last,
-    ));
+      final uri =
+          Uri.parse('https://backend-findjob.onrender.com/application/');
 
-    final response = await request.send();
+      var request = http.MultipartRequest('POST', uri)
+        ..headers.addAll({
+          'Content-Type': 'multipart/form-data',
+        })
+        ..fields['user'] = userId
+        ..fields['job'] = widget.jobId
+        ..fields['coverLetter'] = coverLetterController.text
+        ..fields['profile'] = profileData?['_id']!
+        ..fields['status'] = 'pending';
 
-    if (response.statusCode == 200) {
-      print("Gửi thành công!");
-      _showSuccessDialog("Gửi ứng tuyển thành công.");
-    } else {
-      final responseData = await response.stream.bytesToString();
-      throw Exception('Lỗi khi gửi ứng tuyển: $responseData');
+      request.files.add(http.MultipartFile.fromBytes(
+        'cv',
+        fileBytes,
+        filename: selectedFile!.path.split('/').last,
+      ));
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        print("Gửi thành công!");
+        _showSuccessDialog("Gửi ứng tuyển thành công.");
+      } else {
+        final responseData = await response.stream.bytesToString();
+        throw Exception('Lỗi khi gửi ứng tuyển: $responseData');
+      }
+    } catch (e) {
+      print("Lỗi: $e");
+      _showErrorDialog(e.toString());
     }
-  } catch (e) {
-    print("Lỗi: $e");
-    _showErrorDialog(e.toString());
   }
-}
 
   Future<void> _fetchProfileData() async {
     try {
@@ -105,7 +107,8 @@ Future<void> _applyJob() async {
         throw Exception("User ID không tồn tại.");
       }
 
-      final profileUrl = Uri.parse('http://192.168.1.213:2000/profile/$userId');
+      final profileUrl =
+          Uri.parse('https://backend-findjob.onrender.com/profile/$userId');
       final response = await http.get(profileUrl);
 
       if (response.statusCode == 200) {

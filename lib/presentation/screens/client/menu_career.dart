@@ -25,7 +25,8 @@ class _MenuCareerState extends State<MenuCareer> {
   }
 
   Future<void> fetchCareers() async {
-    final response = await http.get(Uri.parse('http://192.168.1.213:2000/category/'));
+    final response = await http
+        .get(Uri.parse('https://backend-findjob.onrender.com/category/'));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -68,7 +69,8 @@ class _MenuCareerState extends State<MenuCareer> {
                     width: 150,
                     height: 2,
                     child: DecoratedBox(
-                      decoration: BoxDecoration(color: Color.fromARGB(174, 31, 133, 211)),
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(174, 31, 133, 211)),
                     ),
                   ),
                   SizedBox(height: 8.0),
@@ -76,7 +78,8 @@ class _MenuCareerState extends State<MenuCareer> {
                     width: 180,
                     height: 2,
                     child: DecoratedBox(
-                      decoration: BoxDecoration(color: Color.fromARGB(174, 31, 133, 211)),
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(174, 31, 133, 211)),
                     ),
                   ),
                   SizedBox(height: 30),
@@ -90,15 +93,16 @@ class _MenuCareerState extends State<MenuCareer> {
 
                       return GestureDetector(
                         onTap: () async {
-                
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setString('selectedCategoryId', categoryId);
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          await prefs.setString(
+                              'selectedCategoryId', categoryId);
 
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => CareerDetail(
-                                categoryName: name, 
+                                categoryName: name,
                               ),
                             ),
                           );

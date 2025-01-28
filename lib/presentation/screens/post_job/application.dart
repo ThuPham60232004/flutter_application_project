@@ -30,7 +30,7 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
     if (userId == null) return [];
 
     final response = await http.get(
-      Uri.parse('http://192.168.1.213:2000/job/user/$userId'),
+      Uri.parse('https://backend-findjob.onrender.com/job/user/$userId'),
     );
 
     if (response.statusCode == 200) {
@@ -42,7 +42,7 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
 
   Future<List<dynamic>> fetchApplications(String jobId) async {
     final response = await http.get(
-      Uri.parse('http://192.168.1.213:2000/application/job/$jobId'),
+      Uri.parse('https://backend-findjob.onrender.com/application/job/$jobId'),
     );
 
     if (response.statusCode == 200) {
@@ -56,7 +56,9 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(isViewingApplications ? 'Danh sách ứng tuyển' : 'Danh sách công việc'),
+        title: Text(isViewingApplications
+            ? 'Danh sách ứng tuyển'
+            : 'Danh sách công việc'),
         leading: isViewingApplications
             ? IconButton(
                 icon: const Icon(Icons.arrow_back),
@@ -95,7 +97,8 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
           itemBuilder: (context, index) {
             final job = jobs[index];
             return Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
               margin: EdgeInsets.all(10),
               elevation: 5,
               child: ListTile(
@@ -139,18 +142,22 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
           itemBuilder: (context, index) {
             final application = applications[index];
             return Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
               margin: EdgeInsets.all(10),
               elevation: 5,
               child: ListTile(
                 contentPadding: EdgeInsets.all(15),
-                title: Text('${application['user']['name'] ?? 'Không có thông tin CV'}'),
-                subtitle: Text('Email: ${application['user']['email'] ?? 'Không xác định'}'),
+                title: Text(
+                    '${application['user']['name'] ?? 'Không có thông tin CV'}'),
+                subtitle: Text(
+                    'Email: ${application['user']['email'] ?? 'Không xác định'}'),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ApplicationDetailPage(application: application),
+                      builder: (context) =>
+                          ApplicationDetailPage(application: application),
                     ),
                   );
                 },
@@ -162,6 +169,7 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
     );
   }
 }
+
 class ApplicationDetailPage extends StatelessWidget {
   final dynamic application;
 
@@ -185,7 +193,8 @@ class ApplicationDetailPage extends StatelessWidget {
             children: [
               _buildSectionTitle('Thông tin người ứng tuyển'),
               _buildCard([
-                _buildInputField('Tên người ứng tuyển', user['name'].toString()),
+                _buildInputField(
+                    'Tên người ứng tuyển', user['name'].toString()),
                 _buildInputField('Email', user['email'].toString()),
                 _buildInputField('Số điện thoại', user['phone'].toString()),
                 _buildInputField('Trạng thái', user['status'].toString()),
@@ -198,24 +207,30 @@ class ApplicationDetailPage extends StatelessWidget {
               _buildSectionTitle('Kinh nghiệm'),
               ...profile['experiences'].map<Widget>((experience) {
                 return _buildCard([
-                  _buildInputField('Công ty', experience['companyName'].toString()),
-                  _buildInputField('Chức vụ', experience['jobTitle'].toString()),
-                  _buildInputField('Bắt đầu', experience['startDate']?.toString() ?? 'N/A'),
+                  _buildInputField(
+                      'Công ty', experience['companyName'].toString()),
+                  _buildInputField(
+                      'Chức vụ', experience['jobTitle'].toString()),
+                  _buildInputField(
+                      'Bắt đầu', experience['startDate']?.toString() ?? 'N/A'),
                 ]);
               }).toList(),
               _buildSectionTitle('Học vấn'),
               ...profile['education'].map<Widget>((education) {
                 return _buildCard([
-                  _buildInputField('Trường học', education['schoolName'].toString()),
+                  _buildInputField(
+                      'Trường học', education['schoolName'].toString()),
                   _buildInputField('Bằng cấp', education['degree'].toString()),
-                  _buildInputField('Ngành học', education['fieldOfStudy'].toString()),
+                  _buildInputField(
+                      'Ngành học', education['fieldOfStudy'].toString()),
                 ]);
               }).toList(),
               _buildSectionTitle('Kỹ năng'),
               ...profile['skills'].map<Widget>((skill) {
                 return _buildCard([
                   _buildInputField('Kỹ năng', skill['name'].toString()),
-                  _buildInputField('Mức độ', skill['proficiencyLevel'].toString()),
+                  _buildInputField(
+                      'Mức độ', skill['proficiencyLevel'].toString()),
                 ]);
               }).toList(),
               _buildSectionTitle('Chứng chỉ'),
@@ -228,7 +243,10 @@ class ApplicationDetailPage extends StatelessWidget {
               _buildSectionTitle('Hồ sơ đính kèm'),
               _buildCard([
                 _buildInputField('CV', application['cv'].toString()),
-                _buildInputField('Thư xin việc', application['coverLetter']?.toString() ?? 'Không có thư xin việc'),
+                _buildInputField(
+                    'Thư xin việc',
+                    application['coverLetter']?.toString() ??
+                        'Không có thư xin việc'),
               ]),
             ],
           ),
@@ -290,7 +308,8 @@ class ApplicationDetailPage extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             ),
           ),
         ],

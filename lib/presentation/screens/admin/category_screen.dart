@@ -11,7 +11,7 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  final String baseUrl = "http://192.168.1.213:2000/category"; 
+  final String baseUrl = "https://backend-findjob.onrender.com/category";
   List categories = [];
   bool isLoading = true;
 
@@ -55,7 +55,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
     }
   }
 
-  Future<void> updateCategory(String id, String name, String description) async {
+  Future<void> updateCategory(
+      String id, String name, String description) async {
     try {
       final response = await http.put(
         Uri.parse("$baseUrl/$id"),
@@ -124,7 +125,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
               if (id == null) {
                 addCategory(nameController.text, descriptionController.text);
               } else {
-                updateCategory(id, nameController.text, descriptionController.text);
+                updateCategory(
+                    id, nameController.text, descriptionController.text);
               }
               Navigator.pop(context);
             },
@@ -164,13 +166,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 return Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
-                    
                   ),
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   elevation: 4,
                   child: Container(
                     padding: const EdgeInsets.all(16),
-                    height: 100, 
+                    height: 100,
                     child: ListTile(
                       title: Text(
                         category['name'],

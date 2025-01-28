@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
+
 class AccoutScreen extends StatefulWidget {
   const AccoutScreen({Key? key}) : super(key: key);
 
@@ -58,11 +59,10 @@ class _AccoutScreenState extends State<AccoutScreen> {
     String? userId = prefs.getString('id');
     if (userId != null) {
       final response = await http.put(
-        Uri.parse('http://192.168.1.213:2000/user/$userId'),      
+        Uri.parse('https://backend-findjob.onrender.com/user/$userId'),
         headers: {
           'Content-Type': 'application/json',
         },
-        
         body: json.encode({
           'name': nameController.text,
           'phone': phoneController.text,
@@ -75,10 +75,10 @@ class _AccoutScreenState extends State<AccoutScreen> {
         });
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Dữ liệu đã được lưu thành công')));
-        _loadUserData(); 
+        _loadUserData();
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Không thể lưu dữ liệu')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Không thể lưu dữ liệu')));
       }
     }
   }
@@ -121,9 +121,10 @@ class _AccoutScreenState extends State<AccoutScreen> {
               SizedBox(height: 20),
               CircleAvatar(
                 radius: 50,
-                backgroundImage: user?.profileImage != null && user!.profileImage.isNotEmpty
-                    ? NetworkImage(user!.profileImage)
-                    : AssetImage('assets/icons/nen.png') as ImageProvider,
+                backgroundImage:
+                    user?.profileImage != null && user!.profileImage.isNotEmpty
+                        ? NetworkImage(user!.profileImage)
+                        : AssetImage('assets/icons/nen.png') as ImageProvider,
               ),
               SizedBox(height: 16),
               Text(
@@ -146,34 +147,35 @@ class _AccoutScreenState extends State<AccoutScreen> {
                     Container(
                       width: double.infinity,
                       child: ElevatedButton(
-                  onPressed:_saveUserData,
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    backgroundColor: Colors.transparent,
-                  ),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                      gradient: PrimaryTheme.buttonPrimary,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
+                        onPressed: _saveUserData,
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          backgroundColor: Colors.transparent,
+                        ),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                            gradient: PrimaryTheme.buttonPrimary,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'Lưu',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
                       ),
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Lưu',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ),
                     )
-
                   ],
                 ),
               ),

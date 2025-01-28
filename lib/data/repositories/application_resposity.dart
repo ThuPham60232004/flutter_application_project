@@ -3,8 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_application_project/data/models/application.dart';
 
 class ApplicationRepository {
-  final String apiUrl = 'http://192.168.1.213:2000/application';
-  Future<Application?> createApplication(Map<String, dynamic> applicationData) async {
+  final String apiUrl = 'https://backend-findjob.onrender.com/application';
+  Future<Application?> createApplication(
+      Map<String, dynamic> applicationData) async {
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -23,7 +24,8 @@ class ApplicationRepository {
     }
   }
 
-  Future<Application?> updateApplicationById(String id, Map<String, dynamic> updateData) async {
+  Future<Application?> updateApplicationById(
+      String id, Map<String, dynamic> updateData) async {
     try {
       final response = await http.put(
         Uri.parse('$apiUrl/$id'),

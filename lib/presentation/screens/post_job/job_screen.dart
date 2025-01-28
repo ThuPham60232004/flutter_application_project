@@ -54,8 +54,8 @@ class _JobListPageState extends State<JobListPage> {
 
   Future<void> _fetchJobs(String userId) async {
     try {
-      final response = await http
-          .get(Uri.parse('http://192.168.1.213:2000/job/user/$userId'));
+      final response = await http.get(
+          Uri.parse('https://backend-findjob.onrender.com/job/user/$userId'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         if (data.isNotEmpty) {
@@ -86,8 +86,8 @@ class _JobListPageState extends State<JobListPage> {
 
   Future<void> _fetchCategories() async {
     try {
-      final response =
-          await http.get(Uri.parse('http://192.168.1.213:2000/category'));
+      final response = await http
+          .get(Uri.parse('https://backend-findjob.onrender.com/category'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
@@ -107,8 +107,8 @@ class _JobListPageState extends State<JobListPage> {
 
   Future<void> _fetchBenefits() async {
     try {
-      final response =
-          await http.get(Uri.parse('http://192.168.1.213:2000/benefit'));
+      final response = await http
+          .get(Uri.parse('https://backend-findjob.onrender.com/benefit'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
@@ -125,73 +125,73 @@ class _JobListPageState extends State<JobListPage> {
       });
     }
   }
-Future<void> _selectDeadline(BuildContext context) async {
-  DateTime? pickedDate = await showDatePicker(
-    context: context,
-    initialDate: selectedDeadline ?? DateTime.now(),
-    firstDate: DateTime(2000),
-    lastDate: DateTime(2101),
-  );
 
-  if (pickedDate != null && pickedDate != selectedDeadline) {
-    setState(() {
-      selectedDeadline = pickedDate;
-      deadlineController.text = "${pickedDate.toLocal()}".split(' ')[0];
-    });
-  }
-}
-
- Future<void> _submitJob() async {
-  if (!_formKey.currentState!.validate()) {
-    return;
-  }
-
-  setState(() {
-    isLoading = true;
-  });
-
-  final jobData = {
-    'title': jobTitle,
-    'description': jobDescription,
-    'company': companyId, 
-    'postedBy': userId,
-    'category': selectedCategory,
-    'benefits': selectedBenefits,
-    'salary': jobSalary != null ? double.tryParse(jobSalary!) : null,
-    'exp': jobExp,
-    'deadline': selectedDeadline?.toIso8601String(),
-    'type': selectedType,
-  };
-
-  try {
-    final response = await http.post(
-      Uri.parse('http://192.168.1.213:2000/job'),
-      body: json.encode(jobData),
-      headers: {'Content-Type': 'application/json'},
+  Future<void> _selectDeadline(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDeadline ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
     );
 
-    if (response.statusCode == 200) {
+    if (pickedDate != null && pickedDate != selectedDeadline) {
       setState(() {
-        isLoading = false;
-        isAddingJob = false;
-      });
-      _fetchJobs(userId!); 
-      print('Job added successfully'); 
-    } else {
-      setState(() {
-        isLoading = false;
-        errorMessage = 'Đã có lỗi xảy ra: ${response.statusCode}';
+        selectedDeadline = pickedDate;
+        deadlineController.text = "${pickedDate.toLocal()}".split(' ')[0];
       });
     }
-  } catch (e) {
-    setState(() {
-      isLoading = false;
-      errorMessage = 'Lỗi: $e';
-    });
-    print('Error occurred: $e'); 
   }
-}
 
+  Future<void> _submitJob() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    final jobData = {
+      'title': jobTitle,
+      'description': jobDescription,
+      'company': companyId,
+      'postedBy': userId,
+      'category': selectedCategory,
+      'benefits': selectedBenefits,
+      'salary': jobSalary != null ? double.tryParse(jobSalary!) : null,
+      'exp': jobExp,
+      'deadline': selectedDeadline?.toIso8601String(),
+      'type': selectedType,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://backend-findjob.onrender.com/job'),
+        body: json.encode(jobData),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+          isAddingJob = false;
+        });
+        _fetchJobs(userId!);
+        print('Job added successfully');
+      } else {
+        setState(() {
+          isLoading = false;
+          errorMessage = 'Đã có lỗi xảy ra: ${response.statusCode}';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        errorMessage = 'Lỗi: $e';
+      });
+      print('Error occurred: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -265,38 +265,41 @@ Future<void> _selectDeadline(BuildContext context) async {
                         onChanged: (value) => jobExp = value,
                       ),
                       const SizedBox(height: 15),
-                        DropdownButtonFormField<String>(
-                          value: selectedType,
-                          items: const [
-                            DropdownMenuItem(value: 'full_time', child: Text('Full Time')),
-                            DropdownMenuItem(value: 'part_time', child: Text('Part Time')),
-                            DropdownMenuItem(value: 'freelance', child: Text('Freelance')),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              selectedType = value;
-                            });
-                          },
-                          decoration: const InputDecoration(
-                            labelText: 'Job Type',
-                            border: OutlineInputBorder(),
+                      DropdownButtonFormField<String>(
+                        value: selectedType,
+                        items: const [
+                          DropdownMenuItem(
+                              value: 'full_time', child: Text('Full Time')),
+                          DropdownMenuItem(
+                              value: 'part_time', child: Text('Part Time')),
+                          DropdownMenuItem(
+                              value: 'freelance', child: Text('Freelance')),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            selectedType = value;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Job Type',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      TextField(
+                        controller: deadlineController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Deadline (YYYY-MM-DD)',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.calendar_today),
+                            onPressed: () => _selectDeadline(context),
                           ),
                         ),
-                       const SizedBox(height: 15),
-                        TextField(
-                          controller: deadlineController,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: 'Deadline (YYYY-MM-DD)',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            suffixIcon: IconButton(
-                              icon: const Icon(Icons.calendar_today),
-                              onPressed: () => _selectDeadline(context),
-                            ),
-                          ),
-                        ), 
+                      ),
                       Wrap(
                         children: benefits.map((benefit) {
                           return CheckboxListTile(
@@ -365,8 +368,6 @@ Future<void> _selectDeadline(BuildContext context) async {
                         );
                       },
                     ),
-                    
     );
   }
-  
 }
