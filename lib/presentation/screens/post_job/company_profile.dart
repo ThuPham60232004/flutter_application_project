@@ -138,6 +138,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Hồ Sơ Công Ty'),
+        
         actions: [
           IconButton(
             icon: Icon(isEditing ? Icons.check : Icons.edit),
@@ -152,6 +153,20 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
             },
           ),
         ],
+        flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFFB276EF), // Màu tím nhạt
+              Color(0xFF5A85F4), // Màu xanh dương
+            ],
+          ),
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())

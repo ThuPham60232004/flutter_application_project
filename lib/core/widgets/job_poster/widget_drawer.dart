@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_project/presentation/screens/client/home_screen.dart';
+import 'package:flutter_application_project/presentation/screens/post_job/home_p.dart';
 import 'package:flutter_application_project/presentation/screens/login_screen.dart';
 import 'package:flutter_application_project/presentation/screens/signup_screen.dart';
 import 'package:flutter_application_project/presentation/screens/account_screen.dart';
@@ -59,7 +59,7 @@ class _PosterDrawerState extends State<PosterDrawer> {
   @override
   Widget build(BuildContext context) {
     final menuItems = [
-      _buildMenuItem(Icons.home, 'Trang chủ', HomeScreen(), Colors.blue),
+      _buildMenuItem(Icons.home, 'Trang chủ', EmployerHomePage(), Colors.blue),
   _buildMenuItem(
       isLoggedIn ? Icons.logout : Icons.login,
       isLoggedIn ? 'Đăng xuất' : 'Đăng nhập',

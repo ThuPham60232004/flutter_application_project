@@ -12,6 +12,7 @@ import 'package:flutter_application_project/presentation/screens/admin/job_scree
 import 'package:flutter_application_project/presentation/screens/admin/company_page.dart';
 import 'package:flutter_application_project/presentation/screens/admin/application_page.dart';
 import 'package:flutter_application_project/presentation/screens/admin/user_page.dart';
+import 'package:flutter_application_project/presentation/screens/admin/home_a.dart';
 class AdminDrawer extends StatefulWidget {
   @override
   _AdminDrawerState createState() => _AdminDrawerState();
@@ -63,7 +64,7 @@ class _AdminDrawerState extends State<AdminDrawer> {
   @override
   Widget build(BuildContext context) {
     final menuItems = [
-      _buildMenuItem(Icons.home, 'Trang chủ', HomeScreen(), Colors.blue),
+      _buildMenuItem(Icons.home, 'Trang chủ', AdminDashboard(), Colors.blue),
   _buildMenuItem(
       isLoggedIn ? Icons.logout : Icons.login,
       isLoggedIn ? 'Đăng xuất' : 'Đăng nhập',

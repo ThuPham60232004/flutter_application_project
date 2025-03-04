@@ -153,9 +153,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+        flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFFB276EF), // Màu tím nhạt
+              Color(0xFF5A85F4), // Màu xanh dương
+            ],
+          ),
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())

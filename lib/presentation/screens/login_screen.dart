@@ -195,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
                   TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/signup');
+                        Navigator.pushNamed(context, '/jobpath');
                       },
                       child: const Text('Đăng ký')),
                 ],

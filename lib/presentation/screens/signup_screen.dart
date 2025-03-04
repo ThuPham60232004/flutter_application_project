@@ -83,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         themeMode: inheritedTheme!.themeMode,
         toggleTheme: inheritedTheme.toggleTheme,
       ),
-      body: SingleChildScrollView(
+      body: Center(child: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ],
         ),
-      ),
+      ),),
     );
   }
 }

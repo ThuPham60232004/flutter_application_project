@@ -74,7 +74,20 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: const Text('Profiles'),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
+        flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFFB276EF), // Màu tím nhạt
+              Color(0xFF5A85F4), // Màu xanh dương
+            ],
+          ),
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -204,7 +217,20 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
       appBar: AppBar(
         title: const Text('Profile'),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
+        flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFFB276EF), // Màu tím nhạt
+              Color(0xFF5A85F4), // Màu xanh dương
+            ],
+          ),
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
         actions: [
           IconButton(
             icon: Icon(

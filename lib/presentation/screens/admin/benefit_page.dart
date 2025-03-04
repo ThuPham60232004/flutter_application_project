@@ -160,6 +160,20 @@ class _BenefitPageState extends State<BenefitPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Quản lý Phúc lợi'),
+        flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFFB276EF), // Màu tím nhạt
+              Color(0xFF5A85F4), // Màu xanh dương
+            ],
+          ),
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())

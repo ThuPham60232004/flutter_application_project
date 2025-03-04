@@ -348,8 +348,20 @@ class _ApplicationPageState extends State<ApplicationPage> {
         title: Text('Application Management',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-        elevation: 2,
+flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFFB276EF), // Màu tím nhạt
+              Color(0xFF5A85F4), // Màu xanh dương
+            ],
+          ),
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

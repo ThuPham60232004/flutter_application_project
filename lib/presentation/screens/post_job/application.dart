@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
 
 class JobApplicationPage extends StatefulWidget {
   @override
@@ -70,6 +71,20 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
                 },
               )
             : null,
+        flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFFB276EF), // Màu tím nhạt
+              Color(0xFF5A85F4), // Màu xanh dương
+            ],
+          ),
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       ),
       body: userId == null
           ? const Center(child: CircularProgressIndicator())
@@ -138,20 +153,18 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
 
         final applications = snapshot.data!;
         return ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           itemCount: applications.length,
           itemBuilder: (context, index) {
             final application = applications[index];
+
             return Card(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              margin: EdgeInsets.all(10),
-              elevation: 5,
-              child: ListTile(
-                contentPadding: EdgeInsets.all(15),
-                title: Text(
-                    '${application['user']['name'] ?? 'Không có thông tin CV'}'),
-                subtitle: Text(
-                    'Email: ${application['user']['email'] ?? 'Không xác định'}'),
+                  borderRadius: BorderRadius.circular(12)),
+              elevation: 4,
+              margin: const EdgeInsets.only(bottom: 12),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(12),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -161,6 +174,78 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
                     ),
                   );
                 },
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        application['user']['name'] ?? 'Không có thông tin CV',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          const Icon(Icons.email,
+                              size: 18, color: Colors.blueGrey),
+                          const SizedBox(width: 6),
+                          Text(
+                            application['user']['email'] ?? 'Không xác định',
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.black54),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                            children: [
+                              const Icon(Icons.markunread_mailbox,
+                                  size: 18, color: Color.fromARGB(255, 0, 0, 0)),
+                              const SizedBox(width: 6),
+                              Text(
+                                'Thư giới thiệu: ${application['coverLetter'] ?? 'Không có thư'}',
+                                style: const TextStyle(
+                                    fontSize: 14, color: Colors.black87),
+                              ),
+                            ],
+                          ),
+                      
+                      const SizedBox(height: 6),
+                      if (application['cv'] != null)
+                        GestureDetector(
+                          onTap: () {
+                            final cvUrl =
+                                'https://backend-findjob.onrender.com/${application['cv']}';
+                            launchUrl(Uri.parse(cvUrl));
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(Icons.picture_as_pdf,
+                                  size: 18, color: Colors.red),
+                              const SizedBox(width: 6),
+                              Text(
+                                'Xem CV',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Color.fromARGB(255, 243, 33, 33),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      else
+                        const Text(
+                          'Không có CV',
+                          style: TextStyle(fontSize: 14, color: Colors.black54),
+                        ),
+                      
+                    ],
+                  ),
+                ),
               ),
             );
           },

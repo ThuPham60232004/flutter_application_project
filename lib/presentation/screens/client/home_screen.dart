@@ -205,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
           width: 50,
           height: 2,
           child: DecoratedBox(
-            decoration: BoxDecoration(color: Color.fromARGB(255, 89, 148, 185)),
+            decoration: BoxDecoration(color: Color.fromARGB(255, 33, 58, 243)),
           ),
         ),
         SizedBox(height: 3.0),
@@ -213,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
           width: 80,
           height: 2,
           child: DecoratedBox(
-            decoration: BoxDecoration(color: Color.fromARGB(255, 89, 148, 185)),
+            decoration: BoxDecoration(color: Color.fromARGB(255, 33, 58, 243)),
           ),
         ),
       ],
@@ -227,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
           width: 20,
           height: 2,
           child: DecoratedBox(
-            decoration: BoxDecoration(color: Color.fromARGB(255, 89, 148, 185)),
+            decoration: BoxDecoration(color: Color.fromARGB(255, 33, 58, 243)),
           ),
         ),
         SizedBox(width: 8),
@@ -465,7 +465,7 @@ class FadeItem extends StatelessWidget {
                   height: 103,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 33, 236, 243),
+                      color: Color.fromARGB(255, 33, 58, 243),
                     ),
                   ),
                 ),

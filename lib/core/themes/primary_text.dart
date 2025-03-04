@@ -34,4 +34,19 @@ class PrimaryText {
         ),
     );
   }
+  static const LinearGradient primaryGradient2 = LinearGradient(
+    colors: [Color.fromARGB(255, 183, 134, 243), Color.fromARGB(255, 104, 126, 208)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  static TextStyle primaryTextStyle2({double fontSize = 16, FontWeight fontWeight = FontWeight.bold}) {
+    return TextStyle(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      foreground: Paint()
+        ..shader = primaryGradient2.createShader(
+          Rect.fromLTWH(0, 0, 500, 70), 
+        ),
+    );
+  }
 }

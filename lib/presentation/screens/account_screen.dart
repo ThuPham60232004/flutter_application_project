@@ -214,7 +214,7 @@ class _AccoutScreenState extends State<AccoutScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: TextField(
                       controller: controller,
-                      readOnly: !isEditing, // Make editable when editing
+                      readOnly: !isEditing, 
                       decoration: InputDecoration(
                         hintText: 'Nhập $label',
                         border: InputBorder.none,

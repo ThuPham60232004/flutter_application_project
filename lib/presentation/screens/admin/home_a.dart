@@ -1,34 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/widgets/admin/widget_appbar.dart';
 import 'package:flutter_application_project/core/widgets/admin/widget_drawer.dart';
-void main() {
-  runApp(const AdminDashboardApp());
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_application_project/app.dart';
+import 'package:flutter_application_project/presentation/screens/signup_screen.dart';
+import 'package:flutter_application_project/presentation/screens/account_screen.dart';
+import 'package:flutter_application_project/presentation/screens/contact_screen.dart';
+import 'package:flutter_application_project/presentation/screens/admin/category_screen.dart';
+import 'package:flutter_application_project/presentation/screens/admin/benefit_page.dart';
+import 'package:flutter_application_project/presentation/screens/admin/profile_screen.dart';
+
+class AdminDashboard extends StatefulWidget {
+  @override
+  _AdminDashboardState createState() => _AdminDashboardState();
 }
 
-class AdminDashboardApp extends StatelessWidget {
-  const AdminDashboardApp({super.key});
+class _AdminDashboardState extends State<AdminDashboard> {
+  int usersCount = 0;
+  int companiesCount = 0;
+  int jobsCount = 0;
+  int applicationsCount = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AdminDashboard(),
-    );
+  void initState() {
+    super.initState();
+    fetchStats();
   }
-}
 
-class AdminDashboard extends StatelessWidget {
-  final List<Map<String, dynamic>> stats = [
-    {'title': 'Interview Schedules', 'value': '1568', 'growth': '25%', 'icon': Icons.calendar_today},
-    {'title': 'Applied Jobs', 'value': '284', 'growth': '5%', 'icon': Icons.work_outline},
-    {'title': 'Task Bids Won', 'value': '136', 'growth': '12%', 'icon': Icons.check_circle_outline},
-    {'title': 'Application Sent', 'value': '985', 'growth': '5%', 'icon': Icons.send},
-    {'title': 'Profile Viewed', 'value': '165', 'growth': '15%', 'icon': Icons.person_outline},
-    {'title': 'New Messages', 'value': '2356', 'growth': '-2%', 'icon': Icons.message},
-    {'title': 'Articles Added', 'value': '254', 'growth': '2%', 'icon': Icons.article},
-    {'title': 'CV Added', 'value': '548', 'growth': '48%', 'icon': Icons.person_add},
-  ];
+  Future<void> fetchStats() async {
+    try {
+      final responses = await Future.wait([
+        http.get(Uri.parse('https://backend-findjob.onrender.com/user/count')),
+        http.get(
+            Uri.parse('https://backend-findjob.onrender.com/company/count')),
+        http.get(Uri.parse('https://backend-findjob.onrender.com/job/count')),
+        http.get(Uri.parse(
+            'https://backend-findjob.onrender.com/application/count')),
+      ]);
+
+      if (responses.every((response) => response.statusCode == 200)) {
+        setState(() {
+          usersCount = json.decode(responses[0].body)['totalUsers'] ?? 0;
+          companiesCount = json.decode(responses[1].body)['count'] ?? 0;
+          jobsCount = json.decode(responses[2].body)['count'] ?? 0;
+          applicationsCount = json.decode(responses[3].body)['count'] ?? 0;
+        });
+      } else {
+        throw Exception('Failed to load stats');
+      }
+    } catch (e) {
+      print('Error fetching stats: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,117 +68,170 @@ class AdminDashboard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 2,
-                ),
-                itemCount: stats.length,
-                itemBuilder: (context, index) {
-                  return StatCard(
-                    title: stats[index]['title'],
-                    value: stats[index]['value'],
-                    growth: stats[index]['growth'],
-                    icon: stats[index]['icon'],
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: const Text(
-                'Vacancy Stats',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Center(
-                  child: Text('Graph Placeholder', style: TextStyle(color: Colors.blueGrey)),
-                ),
-              ),
-            ),
+            _buildHeader(),
+            SizedBox(height: 20),
+            _buildStatisticsGrid(),
+            SizedBox(height: 20),
+            _buildCategoryTitle("Danh mục"),
+            SizedBox(height: 10),
+            _buildCategoriesGrid(),
+            SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
-}
 
-class StatCard extends StatelessWidget {
-  final String title;
-  final String value;
-  final String growth;
-  final IconData icon;
-
-  const StatCard({
-    required this.title,
-    required this.value,
-    required this.growth,
-    required this.icon,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  @override
-Widget build(BuildContext context) {
-  return Container(
-    padding: const EdgeInsets.all(13.0),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(12),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
-          spreadRadius: 2,
-          blurRadius: 5,
-          offset: const Offset(0, 2),
+  // 🟣 Header
+  Widget _buildHeader() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.purple, Colors.deepPurple],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(45),
+          bottomRight: Radius.circular(45),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 20),
+          Text("Xin chào!",
+              style: TextStyle(color: Colors.white, fontSize: 18)),
+          Text(
+            "Phạm Thị Anh Thư",
+            style: TextStyle(
+                color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 20),
+          _buildSearchBar(),
+        ],
+      ),
+    );
+  }
+
+  // 🔍 Thanh tìm kiếm
+  Widget _buildSearchBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)
+        ],
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: "Tìm kiếm công việc ......",
+          border: InputBorder.none,
+          icon: Icon(Icons.search, color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  // 📊 Thống kê số liệu
+  Widget _buildStatisticsGrid() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: GridView.count(
+        crossAxisCount: 2,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        children: [
+          _buildStatCard(usersCount.toString(), "Người dùng", Colors.purple),
+          _buildStatCard(jobsCount.toString(), "Công việc", Colors.blue),
+          _buildStatCard(companiesCount.toString(), "Công ty", Colors.green),
+          _buildStatCard(applicationsCount.toString(), "Đơn ứng tuyển",
+              Colors.purpleAccent),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard(String number, String title, Color color) {
+    return Container(
+      decoration:
+          BoxDecoration(color: color, borderRadius: BorderRadius.circular(15)),
+      padding: EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(number,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold)),
+          SizedBox(height: 5),
+          Text(title, style: TextStyle(color: Colors.white, fontSize: 14)),
+        ],
+      ),
+    );
+  }
+
+  // 🏷 Tiêu đề danh mục
+  Widget _buildCategoryTitle(String title) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Text(title,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+    );
+  }
+
+ // 🏷 Thiết kế danh mục tối giản
+Widget _buildCategoriesGrid() {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 20),
+    child: GridView.count(
+      crossAxisCount: 3,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      crossAxisSpacing: 15,
+      mainAxisSpacing: 15,
+      children: [
+        _buildMenuItem(Icons.person_add, 'Đăng ký', SignUpScreen()),
+        _buildMenuItem(Icons.contact_mail, 'Liên hệ', ContactScreen()),
+        _buildMenuItem(Icons.account_circle, 'Tài khoản', AccoutScreen()),
+        _buildMenuItem(Icons.category, 'Danh mục', CategoryScreen()),
+        _buildMenuItem(Icons.volunteer_activism, 'Phúc lợi', BenefitPage()),
+        _buildMenuItem(Icons.person, 'Hồ sơ', ProfilePage()),
       ],
     ),
-    child: Row(
-      children: [
-        CircleAvatar(
-          backgroundColor: Colors.blue.withOpacity(0.2),
-          child: Icon(icon, color: Colors.blue),
-        ),
-        const SizedBox(width: 10),
-        Expanded( 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                value,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ),
-            ],
+  );
+}
+
+Widget _buildMenuItem(IconData icon, String title, Widget page) {
+  return GestureDetector(
+    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => page)),
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.white, // Màu nền trắng để đồng nhất
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(2, 4)) // Bóng đổ nhẹ
+        ],
+      ),
+      padding: EdgeInsets.all(15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            backgroundColor: Colors.grey.shade200, // Nền icon nhẹ nhàng
+            radius: 25,
+            child: Icon(icon, color: Colors.black54, size: 28), // Icon màu trung tính
           ),
-        ),
-        Text(
-          growth,
-          style: TextStyle(
-            color: growth.startsWith('-') ? Colors.red : Colors.green,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
+          SizedBox(height: 8),
+          Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black87)),
+        ],
+      ),
     ),
   );
 }

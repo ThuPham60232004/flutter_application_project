@@ -14,4 +14,9 @@ class RouteNames {
   static const String home_a = '/home_a';
   static const String home_p = '/home_p';
   static const String job_manager = '/job_manager';
+  static const String hello = '/hello';
+  static const String jobpath = '/jobpath';
+  static const String jobseeker = '/jobseeker';
+  static const String confirm = '/confirm';
+  static const String companyregister = '/companyregister';
 }

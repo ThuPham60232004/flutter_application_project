@@ -65,21 +65,21 @@ class _MenuCareerState extends State<MenuCareer> {
                     ),
                   ),
                   SizedBox(height: 8.0),
-                  SizedBox(
+                  const SizedBox(
                     width: 150,
                     height: 2,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(174, 31, 133, 211)),
+                          color: Color.fromARGB(166, 64, 31, 211)),
                     ),
                   ),
                   SizedBox(height: 8.0),
-                  SizedBox(
+                  const SizedBox(
                     width: 180,
                     height: 2,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(174, 31, 133, 211)),
+                          color: Color.fromARGB(166, 64, 31, 211)),
                     ),
                   ),
                   SizedBox(height: 30),
