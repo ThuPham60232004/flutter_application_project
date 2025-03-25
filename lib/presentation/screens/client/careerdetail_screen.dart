@@ -70,36 +70,35 @@ class _CareerDetailState extends State<CareerDetail> {
         themeMode: inheritedTheme!.themeMode,
         toggleTheme: inheritedTheme.toggleTheme,
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : jobs.isEmpty
-              ? const Center(
-                  child: Text(
-                    'Không có công việc nào phù hợp',
-                    style: TextStyle(fontSize: 16, color: Colors.black54),
-                  ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${widget.categoryName}',
-                        style: PrimaryText.primaryTextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.w700,
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 600), // Giới hạn chiều rộng
+          padding: const EdgeInsets.all(16.0),
+          child: isLoading
+              ? const CircularProgressIndicator()
+              : jobs.isEmpty
+                  ? const Text(
+                      'Không có công việc nào phù hợp',
+                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.categoryName,
+                          style: PrimaryText.primaryTextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      Expanded(
-                        child: ListView.separated(
-                          itemCount: jobs.length,
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 10),
-                          itemBuilder: (context, index) {
-                            final job = jobs[index];
-                            if (job is Map<String, dynamic>) {
+                        const SizedBox(height: 16),
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: jobs.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 10),
+                            itemBuilder: (context, index) {
+                              final job = jobs[index] as Map<String, dynamic>;
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -124,16 +123,13 @@ class _CareerDetailState extends State<CareerDetail> {
                                       : 'Không rõ',
                                 ),
                               );
-                            } else {
-                              return const Text(
-                                  'Dữ liệu công việc không hợp lệ');
-                            }
-                          },
+                            },
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+                      ],
+                    ),
+        ),
+      ),
     );
   }
 }
@@ -161,6 +157,7 @@ class _JobCardDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: const BoxConstraints(maxWidth: 600),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -175,6 +172,7 @@ class _JobCardDesign extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 30.0,
@@ -196,6 +194,8 @@ class _JobCardDesign extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4.0),
                 Text(
@@ -205,6 +205,8 @@ class _JobCardDesign extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     color: Colors.grey,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 8.0),
                 Text(
@@ -217,25 +219,14 @@ class _JobCardDesign extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 12.0),
-                Row(
+                Wrap(
+                  spacing: 6,
                   children: [
-                    Text(
-                      jobExperience,
-                      style: const TextStyle(
-                          fontSize: 12.0, color: Colors.black54),
-                    ),
-                    const Text(" • ", style: TextStyle(color: Colors.black26)),
-                    Text(
-                      jobLocation,
-                      style: const TextStyle(
-                          fontSize: 12.0, color: Colors.black54),
-                    ),
-                    const Text(" • ", style: TextStyle(color: Colors.black26)),
-                    Text(
-                      jobSalary,
-                      style: const TextStyle(
-                          fontSize: 12.0, color: Colors.black54),
-                    ),
+                    _infoText(jobExperience),
+                    _dotSeparator(),
+                    _infoText(jobLocation),
+                    _dotSeparator(),
+                    _infoText(jobSalary),
                   ],
                 ),
               ],
@@ -244,5 +235,13 @@ class _JobCardDesign extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _dotSeparator() {
+    return const Text(" • ", style: TextStyle(color: Colors.black26));
+  }
+
+  Widget _infoText(String text) {
+    return Text(text, style: const TextStyle(fontSize: 12.0, color: Colors.black54));
   }
 }

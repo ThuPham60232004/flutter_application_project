@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'core/themes/app_theme.dart';
 import 'core/routes/app_routes.dart';
 import 'core/routes/route_names.dart';
-
+import 'core/network/http_overrides.dart';
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
 
