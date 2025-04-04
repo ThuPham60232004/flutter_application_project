@@ -93,12 +93,24 @@ class _JobSeekerScreenState extends State<JobSeekerScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Tạo tài khoản mới',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+               Center(
+              child: Image.asset(
+                'assets/images/logo.png',  
+                height: 150, 
+                width: 200,   
               ),
+            ),
+              Center(
+            child: Text(
+              'Tạo tài khoản',
+              style: TextStyle(
+                fontSize: 39 ,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,  
+              ),
+            ),
+          ),
               const SizedBox(height: 10),
-              const Text('Hoặc tiếp tục với địa chỉ email'),
               const SizedBox(height: 10),
               _buildTextField(
                   nameController, 'Tên của bạn', Icons.person_outline),

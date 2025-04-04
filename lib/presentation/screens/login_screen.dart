@@ -118,17 +118,32 @@ class _LoginScreenState extends State<LoginScreen> {
         themeMode: inheritedTheme!.themeMode,
         toggleTheme: inheritedTheme.toggleTheme,
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Đăng nhập',
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+            Center(
+              child: Image.asset(
+                'assets/images/logo.png',  
+                height: 150, 
+                width: 200,   
+              ),
+            ),
+            Center(
+            child: Text(
+              'Đăng nhập',
+              style: TextStyle(
+                fontSize: 39,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,  // Đổi màu chữ thành deepPurple
+              ),
+            ),
+          ),
               const SizedBox(height: 10),
-              const Text('Hoặc tiếp tục với địa chỉ email'),
               const SizedBox(height: 10),
               _buildTextField(
                   emailController, 'Email của bạn', Icons.email_outlined),
@@ -204,6 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+      )
     );
   }
 }

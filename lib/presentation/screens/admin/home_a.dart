@@ -147,11 +147,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
         children: [
-          _buildStatCard(usersCount.toString(), "Người dùng", Colors.purple),
-          _buildStatCard(jobsCount.toString(), "Công việc", Colors.blue),
-          _buildStatCard(companiesCount.toString(), "Công ty", Colors.green),
-          _buildStatCard(applicationsCount.toString(), "Đơn ứng tuyển",
-              Colors.purpleAccent),
+          _buildStatCard(usersCount.toString(), "Người dùng", Color(0xFF9B5DE5)),
+          _buildStatCard(jobsCount.toString(), "Công việc", Color(0xFFF15BB5)),
+          _buildStatCard(companiesCount.toString(), "Công ty", Color(0xFF00BBF9)), 
+          _buildStatCard(applicationsCount.toString(), "Đơn ứng tuyển", Color(0xFF00F5D4)), // Xanh ngọc
+
         ],
       ),
     );
