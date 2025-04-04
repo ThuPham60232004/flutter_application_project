@@ -116,32 +116,38 @@ class _CompanyPageState extends State<CompanyPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    company == null ? 'Add Company' : 'Edit Company',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  company == null ? 'Thêm Công Ty' : 'Chỉnh Sửa Công Ty',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple,  // Màu văn bản deepPurple
                   ),
+                  textAlign: TextAlign.center,  // Căn giữa văn bản
+                ),
+
                   SizedBox(height: 20),
                   TextFormField(
                     controller: nameController,
                     decoration: InputDecoration(
-                      labelText: 'Company Name',
+                      labelText: 'Tên Công Ty',
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) => value!.isEmpty ? 'Required' : null,
+                    validator: (value) => value!.isEmpty ? 'Cần nhập' : null,
                   ),
                   SizedBox(height: 15),
                   TextFormField(
                     controller: locationController,
                     decoration: InputDecoration(
-                      labelText: 'Location',
+                      labelText: 'Địa Chỉ',
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) => value!.isEmpty ? 'Required' : null,
+                    validator: (value) => value!.isEmpty ? 'Cần nhập' : null,
                   ),
                   SizedBox(height: 15),
                   TextFormField(
                     controller: descriptionController,
                     decoration: InputDecoration(
-                      labelText: 'Description',
+                      labelText: 'Mô Tả',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -157,7 +163,7 @@ class _CompanyPageState extends State<CompanyPage> {
                   DropdownButtonFormField<String>(
                     value: selectedManagerId,
                     decoration: InputDecoration(
-                      labelText: 'Managed By',
+                      labelText: 'Quản Lý Bởi',
                       border: OutlineInputBorder(),
                     ),
                     items: users.map((user) {
@@ -176,7 +182,7 @@ class _CompanyPageState extends State<CompanyPage> {
                   DropdownButtonFormField<String>(
                     value: selectedManagerId,
                     decoration: InputDecoration(
-                      labelText: 'Managed By',
+                      labelText: 'Quản Lý Bởi',
                       border: OutlineInputBorder(),
                     ),
                     items: users.map<DropdownMenuItem<String>>((user) {
@@ -195,7 +201,7 @@ class _CompanyPageState extends State<CompanyPage> {
                   TextFormField(
                     readOnly: true,
                     decoration: InputDecoration(
-                      labelText: 'Employees',
+                      labelText: 'Nhân Viên',
                       border: OutlineInputBorder(),
                       suffixIcon: Icon(Icons.arrow_drop_down),
                     ),
@@ -207,7 +213,7 @@ class _CompanyPageState extends State<CompanyPage> {
                             ...selectedEmployeeIds
                           ];
                           return AlertDialog(
-                            title: Text('Select Employees'),
+                            title: Text('Chọn Nhân Viên'),
                             content: StatefulBuilder(
                               builder: (context, setDialogState) {
                                 return SingleChildScrollView(
@@ -239,14 +245,14 @@ class _CompanyPageState extends State<CompanyPage> {
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                child: Text('Cancel'),
+                                child: Text('Hủy'),
                               ),
                               ElevatedButton(
                                 onPressed: () {
                                   Navigator.pop(
                                       context, tempSelectedEmployeeIds);
                                 },
-                                child: Text('Select'),
+                                child: Text('Chọn'),
                               ),
                             ],
                           );
@@ -278,9 +284,12 @@ class _CompanyPageState extends State<CompanyPage> {
                     onPressed: () => addOrUpdateCompany(company?['_id']),
                     child: Center(
                       child: Text(
-                        company == null ? 'Add Company' : 'Update Company',
+                        company == null ? 'Thêm Công Ty' : 'Cập Nhật Công Ty',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,  
+                        ),
                       ),
                     ),
                   ),
@@ -297,23 +306,23 @@ class _CompanyPageState extends State<CompanyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Company Management',
+        title: Text('Quản Lý Công Ty',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         centerTitle: true,
-flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Color(0xFFB276EF), // Màu tím nhạt
-              Color(0xFF5A85F4), // Màu xanh dương
-            ],
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFFB276EF), // Màu tím nhạt
+                Color(0xFF5A85F4), // Màu xanh dương
+              ],
+            ),
           ),
         ),
-      ),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -340,7 +349,7 @@ flexibleSpace: Container(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
-                            icon: Icon(Icons.edit, color: Colors.blueAccent),
+                            icon: Icon(Icons.edit, color: Colors.deepPurple),
                             onPressed: () => showForm(company),
                           ),
                           IconButton(
@@ -355,10 +364,13 @@ flexibleSpace: Container(
               ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blueAccent,
-        onPressed: () => showForm(),
-        child: Icon(Icons.add),
-      ),
+          backgroundColor: Colors.deepPurple, 
+          onPressed: () => showForm(),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,  
+          ),
+        ),
     );
   }
 }

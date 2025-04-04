@@ -23,9 +23,12 @@ class _FilterModalState extends State<FilterModal> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: Text(
-          "Filter",
-          style: TextStyle(color: Colors.black),
+        foregroundColor: Colors.deepPurple,
+        title: const Text(
+          'Bộ lọc',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         actions: [
@@ -41,7 +44,7 @@ class _FilterModalState extends State<FilterModal> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Level Selection
-            Text("Level", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text("Cấp độ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,7 +75,7 @@ class _FilterModalState extends State<FilterModal> {
             SizedBox(height: 20),
 
             // Salary Range
-            Text("Salary", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text("Lương", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,15 +93,15 @@ class _FilterModalState extends State<FilterModal> {
                   _salaryValue = value;
                 });
               },
-              activeColor: Colors.blueAccent,
+              activeColor: Colors.deepPurple,
               inactiveColor: Colors.grey.shade300,
             ),
             SizedBox(height: 20),
-            Text("Industry", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text("Ngành nghề", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
             TextField(
               decoration: InputDecoration(
-                hintText: "Search industry",
+                hintText: "Tìm kiếm ngành nghề",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.grey.shade300),
@@ -109,7 +112,7 @@ class _FilterModalState extends State<FilterModal> {
             Column(
               children: [
                 _CheckboxTile(
-                  label: "Technology",
+                  label: "Công nghệ",
                   value: _isTechnologySelected,
                   onChanged: (value) {
                     setState(() {
@@ -118,7 +121,7 @@ class _FilterModalState extends State<FilterModal> {
                   },
                 ),
                 _CheckboxTile(
-                  label: "Design",
+                  label: "Thiết kế",
                   value: _isDesignSelected,
                   onChanged: (value) {
                     setState(() {
@@ -139,7 +142,7 @@ class _FilterModalState extends State<FilterModal> {
             ),
             SizedBox(height: 20),
 
-            Text("City", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text("Thành phố", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
             Wrap(
               spacing: 10,
@@ -193,8 +196,8 @@ class _FilterModalState extends State<FilterModal> {
                     });
                   },
                   child: Text(
-                    "Reset filter",
-                    style: TextStyle(color: Colors.blueAccent),
+                    "Đặt lại bộ lọc",
+                    style: TextStyle(color: Colors.deepPurple),
                   ),
                 ),
                 ElevatedButton(
@@ -204,10 +207,10 @@ class _FilterModalState extends State<FilterModal> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    backgroundColor: Colors.blueAccent,
+                    backgroundColor: Colors.deepPurple,
                   ),
                   child: Text(
-                    "Apply",
+                    "Áp dụng",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -238,14 +241,14 @@ class _FilterButton extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.shade100 : Colors.white,
+          color: isSelected ? Colors.deepPurple.shade100 : Colors.white,
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.blueAccent : Colors.black,
+            color: isSelected ? Colors.deepPurple : Colors.black,
             fontWeight: FontWeight.w500,
           ),
         ),

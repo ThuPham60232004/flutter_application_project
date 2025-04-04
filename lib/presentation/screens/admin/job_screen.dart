@@ -62,54 +62,61 @@ class _JobListScreenState extends State<JobListScreen> {
     }
   }
 
-  void openAddJobForm() {
-    showDialog(
-      context: context,
-      builder: (context) => const AddJobFormDialog(),
-    ).then((_) => fetchJobs());
-  }
+ void openAddJobForm() {
+  showDialog(
+    context: context,
+    builder: (context) => const AddJobFormDialog(),
+  ).then((_) => fetchJobs());
+}
 
-  void openEditJobForm(String jobId) async {
-    try {
-      final response = await http
-          .get(Uri.parse('https://backend-findjob.onrender.com/job/$jobId'));
-      if (response.statusCode == 200) {
-        final job = json.decode(response.body);
-        showDialog(
-          context: context,
-          builder: (context) => EditJobFormDialog(job: job),
-        ).then((_) => fetchJobs());
-      } else {
-        throw Exception('Failed to fetch job data');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error fetching job data: $e')),
-      );
+void openEditJobForm(String jobId) async {
+  try {
+    final response = await http
+        .get(Uri.parse('https://backend-findjob.onrender.com/job/$jobId'));
+    if (response.statusCode == 200) {
+      final job = json.decode(response.body);
+      showDialog(
+        context: context,
+        builder: (context) => EditJobFormDialog(job: job),
+      ).then((_) => fetchJobs());
+    } else {
+      throw Exception('Failed to fetch job data');
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Error fetching job data: $e'),
+        backgroundColor: Colors.deepPurple, // Changed background color to deepPurple
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Job List'),
-        centerTitle: true,
-flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Color(0xFFB276EF), // Màu tím nhạt
-              Color(0xFF5A85F4), // Màu xanh dương
-            ],
-          ),
-        ),
+  title: const Text(
+    'Danh sách công việc',
+    style: TextStyle(fontWeight: FontWeight.bold), 
+  ),
+  centerTitle: true,
+  flexibleSpace: Container(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
+        colors: [
+          Color(0xFFB276EF), // Màu tím nhạt
+          Color(0xFF5A85F4), // Màu xanh dương
+        ],
       ),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      ),
+    ),
+  ),
+  backgroundColor: Colors.transparent,
+  elevation: 0,
+),
+
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
@@ -167,8 +174,13 @@ flexibleSpace: Container(
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: openAddJobForm,
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white, // Set the icon color to white
+        ),
+        backgroundColor: Colors.deepPurple, // Set the background color to deep purple
       ),
+
     );
   }
 }
@@ -295,11 +307,11 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      title: const Text('Add Job',
+      title: const Text('Thêm công việc',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
-            color: Colors.blue,
+            color: Colors.deepPurple,
           )),
       content: SingleChildScrollView(
         child: Column(
@@ -308,7 +320,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
             TextField(
               controller: titleController,
               decoration: InputDecoration(
-                labelText: 'Title',
+                labelText: 'Tên công việc',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -318,7 +330,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
             TextField(
               controller: descriptionController,
               decoration: InputDecoration(
-                labelText: 'Description',
+                labelText: 'Mô tả',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -329,7 +341,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
             TextField(
               controller: experienceController,
               decoration: InputDecoration(
-                labelText: 'Experience (Years)',
+                labelText: 'Kinh nghiệm  (Năm)',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -339,7 +351,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
             TextField(
               controller: locationController,
               decoration: InputDecoration(
-                labelText: 'Location',
+                labelText: 'Vị trí',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -349,7 +361,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
             TextField(
               controller: salaryController,
               decoration: InputDecoration(
-                labelText: 'Salary',
+                labelText: 'Lương',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -360,7 +372,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
               controller: deadlineController,
               readOnly: true,
               decoration: InputDecoration(
-                labelText: 'Deadline (YYYY-MM-DD)',
+                labelText: 'Ngày hết hạn (DD-MM-YYYY)',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -384,7 +396,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
                 });
               },
               decoration: const InputDecoration(
-                labelText: 'Job Type',
+                labelText: 'Loại công việc',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -403,7 +415,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
                 });
               },
               decoration: InputDecoration(
-                labelText: 'Company',
+                labelText: 'Công ty',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -424,7 +436,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
                 });
               },
               decoration: InputDecoration(
-                labelText: 'Category',
+                labelText: 'Danh mục',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -445,7 +457,7 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
                 });
               },
               decoration: InputDecoration(
-                labelText: 'User',
+                labelText: 'Người dùng',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -473,17 +485,20 @@ class _AddJobFormDialogState extends State<AddJobFormDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: const Text('Hủy'),
         ),
         ElevatedButton(
           onPressed: saveJob,
           style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.deepPurple,  
+          foregroundColor: Colors.white,     
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          child: const Text('Save'),
-        ),
+          child: const Text('Lưu'),
+        )
+
       ],
     );
   }
@@ -572,11 +587,11 @@ class _EditJobFormDialogState extends State<EditJobFormDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Edit Job',
+      title: const Text('Chỉnh sửa công việc',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
-            color: Colors.blue,
+            color: Colors.deepPurple,
           )),
       content: SingleChildScrollView(
         child: Column(
@@ -584,21 +599,21 @@ class _EditJobFormDialogState extends State<EditJobFormDialog> {
             TextField(
               controller: titleController,
               decoration: const InputDecoration(
-                labelText: 'Title',
+                labelText: 'Tên công việc',
               ),
             ),
             const SizedBox(height: 10),
             TextField(
               controller: descriptionController,
               decoration: const InputDecoration(
-                labelText: 'Description',
+                labelText: 'Mô tả ',
               ),
             ),
             const SizedBox(height: 10),
             TextField(
               controller: locationController,
               decoration: const InputDecoration(
-                labelText: 'Location',
+                labelText: 'Vị trí',
               ),
             ),
             const SizedBox(height: 10),
@@ -606,14 +621,14 @@ class _EditJobFormDialogState extends State<EditJobFormDialog> {
               controller: salaryController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                labelText: 'Salary',
+                labelText: 'Lương',
               ),
             ),
             const SizedBox(height: 10),
             TextField(
               controller: expController,
               decoration: const InputDecoration(
-                labelText: 'Experience (Years)',
+                labelText: 'Kinh nghiệm (Năm)',
               ),
             ),
             const SizedBox(height: 10),
@@ -621,7 +636,7 @@ class _EditJobFormDialogState extends State<EditJobFormDialog> {
               controller: deadlineController,
               readOnly: true,
               decoration: InputDecoration(
-                labelText: 'Deadline',
+                labelText: 'Ngày hết hạn',
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.calendar_today),
                   onPressed: () => _selectDeadline(context),
@@ -642,7 +657,7 @@ class _EditJobFormDialogState extends State<EditJobFormDialog> {
                 });
               },
               decoration: const InputDecoration(
-                labelText: 'Job Type',
+                labelText: 'Loại công việc',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -653,11 +668,11 @@ class _EditJobFormDialogState extends State<EditJobFormDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: const Text('Hủy'),
         ),
         TextButton(
           onPressed: updateJob,
-          child: const Text('Update'),
+          child: const Text('Cập nhật'),
         ),
       ],
     );

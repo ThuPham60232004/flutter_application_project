@@ -72,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profiles'),
+        title: const Text('Quản lý thông tin cá nhân'),
         centerTitle: true,
         flexibleSpace: Container(
         decoration: const BoxDecoration(
@@ -80,8 +80,8 @@ class _ProfilePageState extends State<ProfilePage> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Color(0xFFB276EF), // Màu tím nhạt
-              Color(0xFF5A85F4), // Màu xanh dương
+              Color(0xFFB276EF),
+              Color(0xFF5A85F4), 
             ],
           ),
         ),

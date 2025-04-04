@@ -108,16 +108,31 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Icon(Icons.person_add, color: Colors.white),
-            SizedBox(width: 10),
-            Text('Tạo Hồ Sơ'),
+      appBar: PreferredSize(
+  preferredSize: Size.fromHeight(kToolbarHeight),
+  child: AppBar(
+    title: Row(
+      children: [
+        Icon(Icons.person_add, color: Colors.white),
+        SizedBox(width: 10),
+        Text('Tạo Hồ Sơ'),
+      ],
+    ),
+    flexibleSpace: Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [
+            Color(0xFFB276EF),
+            Color(0xFF5A85F4),
           ],
         ),
-        backgroundColor: Colors.indigo,
       ),
+    ),
+  ),
+),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -219,7 +234,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    backgroundColor: Colors.indigoAccent,
+                    backgroundColor: Colors.deepPurpleAccent,
                   ),
                   child: Text(
                     'Tạo Hồ Sơ',
@@ -243,14 +258,14 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
           labelText: label,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           filled: true,
-          fillColor: Colors.indigo[50],
-          labelStyle: TextStyle(color: Colors.indigo),
+          fillColor: Colors.deepPurple[50],
+          labelStyle: TextStyle(color: Colors.deepPurple),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.indigo),
+            borderSide: BorderSide(color: Colors.deepPurple),
             borderRadius: BorderRadius.circular(12),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.indigoAccent, width: 2),
+            borderSide: BorderSide(color: Colors.deepPurpleAccent, width: 2),
             borderRadius: BorderRadius.circular(12),
           ),
         ),
@@ -266,7 +281,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       child: Text(
         title,
         style: TextStyle(
-            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.indigo),
+            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple),
       ),
     );
   }
@@ -285,7 +300,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          color: Colors.indigo[50],
+          color: Colors.deepPurple[50],
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -324,7 +339,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          backgroundColor: Colors.indigoAccent,
+          backgroundColor: Colors.deepPurpleAccent,
         ),
         child: Text('Thêm $label', style: TextStyle(color: Colors.white)),
       ),

@@ -88,60 +88,119 @@ class _CategoryScreenState extends State<CategoryScreen> {
     }
   }
 
-  void showCategoryDialog({String? id, String? name, String? description}) {
-    final nameController = TextEditingController(text: name);
-    final descriptionController = TextEditingController(text: description);
+void showCategoryDialog({String? id, String? name, String? description}) {
+  final nameController = TextEditingController(text: name);
+  final descriptionController = TextEditingController(text: description);
 
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          id == null ? "Thêm danh mục" : "Chỉnh sửa danh mục",
-          style: const TextStyle(fontWeight: FontWeight.bold),
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Rounded corners for the dialog
+      ),
+      title: Text(
+        id == null ? "Thêm danh mục" : "Chỉnh sửa danh mục",
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+          color: Colors.deepPurple,
         ),
-        content: Column(
+      ),
+      content: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: "Tên danh mục"),
+            // Tên danh mục (Làm rộng ra)
+            Container(
+              width: double.infinity, // Chiếm toàn bộ chiều ngang của AlertDialog
+              child: TextField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: "Tên danh mục",
+                  labelStyle: TextStyle(color: Colors.deepPurple),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10), // Điều chỉnh chiều ngang
+                ),
+              ),
             ),
-            TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(labelText: "Mô tả"),
+            const SizedBox(height: 15),
+            // Mô tả danh mục (Làm rộng ra)
+            Container(
+              width: double.infinity, // Chiếm toàn bộ chiều ngang của AlertDialog
+              child: TextField(
+                controller: descriptionController,
+                maxLines: 5,  // Cho phép mô tả dài ra
+                decoration: InputDecoration(
+                  labelText: "Mô tả",
+                  labelStyle: TextStyle(color: Colors.deepPurple),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Điều chỉnh chiều ngang
+                ),
+              ),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              "Hủy",
-              style: TextStyle(color: Colors.grey),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (id == null) {
-                addCategory(nameController.text, descriptionController.text);
-              } else {
-                updateCategory(
-                    id, nameController.text, descriptionController.text);
-              }
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text("Lưu", style: TextStyle(color: Colors.white)),
-          ),
-        ],
       ),
-    );
-  }
+      actions: [
+        // Hủy
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text(
+            "Hủy",
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        // Lưu
+        ElevatedButton(
+          onPressed: () {
+            if (id == null) {
+              addCategory(nameController.text, descriptionController.text);
+            } else {
+              updateCategory(
+                id,
+                nameController.text,
+                descriptionController.text,
+              );
+            }
+            Navigator.pop(context);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurple,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+          ),
+          child: const Text(
+            "Lưu",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +209,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       appBar: AppBar(
         title: const Text(
           "Quản lý danh mục",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         flexibleSpace: Container(
@@ -217,7 +276,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showCategoryDialog(),
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.deepPurple,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );

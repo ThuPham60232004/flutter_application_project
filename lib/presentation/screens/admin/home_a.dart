@@ -151,7 +151,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
           _buildStatCard(jobsCount.toString(), "Công việc", Color(0xFFF15BB5)),
           _buildStatCard(companiesCount.toString(), "Công ty", Color(0xFF00BBF9)), 
           _buildStatCard(applicationsCount.toString(), "Đơn ứng tuyển", Color(0xFF00F5D4)), // Xanh ngọc
-
         ],
       ),
     );
@@ -186,54 +185,53 @@ class _AdminDashboardState extends State<AdminDashboard> {
     );
   }
 
- // 🏷 Thiết kế danh mục tối giản
-Widget _buildCategoriesGrid() {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 20),
-    child: GridView.count(
-      crossAxisCount: 3,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      crossAxisSpacing: 15,
-      mainAxisSpacing: 15,
-      children: [
-        _buildMenuItem(Icons.person_add, 'Đăng ký', SignUpScreen()),
-        _buildMenuItem(Icons.contact_mail, 'Liên hệ', ContactScreen()),
-        _buildMenuItem(Icons.account_circle, 'Tài khoản', AccoutScreen()),
-        _buildMenuItem(Icons.category, 'Danh mục', CategoryScreen()),
-        _buildMenuItem(Icons.volunteer_activism, 'Phúc lợi', BenefitPage()),
-        _buildMenuItem(Icons.person, 'Hồ sơ', ProfilePage()),
-      ],
-    ),
-  );
-}
-
-Widget _buildMenuItem(IconData icon, String title, Widget page) {
-  return GestureDetector(
-    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => page)),
-    child: Container(
-      decoration: BoxDecoration(
-        color: Colors.white, // Màu nền trắng để đồng nhất
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(2, 4)) // Bóng đổ nhẹ
-        ],
-      ),
-      padding: EdgeInsets.all(15),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+  // 🏷 Thiết kế danh mục tối giản
+  Widget _buildCategoriesGrid() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: GridView.count(
+        crossAxisCount: 3,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        crossAxisSpacing: 15,
+        mainAxisSpacing: 15,
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.grey.shade200, // Nền icon nhẹ nhàng
-            radius: 25,
-            child: Icon(icon, color: Colors.black54, size: 28), // Icon màu trung tính
-          ),
-          SizedBox(height: 8),
-          Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black87)),
+          _buildMenuItem(Icons.person_add, 'Đăng ký', SignUpScreen()),
+          _buildMenuItem(Icons.contact_mail, 'Liên hệ', ContactScreen()),
+          _buildMenuItem(Icons.account_circle, 'Tài khoản', AccoutScreen()),
+          _buildMenuItem(Icons.category, 'Danh mục', CategoryScreen()),
+          _buildMenuItem(Icons.volunteer_activism, 'Phúc lợi', BenefitPage()),
+          _buildMenuItem(Icons.person, 'Hồ sơ', ProfilePage()),
         ],
       ),
-    ),
-  );
-}
+    );
+  }
 
+  Widget _buildMenuItem(IconData icon, String title, Widget page) {
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => page)),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white, // Màu nền trắng để đồng nhất
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(2, 4)) // Bóng đổ nhẹ
+          ],
+        ),
+        padding: EdgeInsets.all(15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.grey.shade200,
+              radius: 25,
+              child: Icon(icon, color: Colors.deepPurple, size: 28),
+            ),
+            SizedBox(height: 8),
+            Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black87)),
+          ],
+        ),
+      ),
+    );
+  }
 }

@@ -79,56 +79,137 @@ class _BenefitPageState extends State<BenefitPage> {
   }
 
   void _showBenefitForm({Map<String, dynamic>? benefit}) async {
-    final isEdit = benefit != null;
-    final nameController =
-        TextEditingController(text: isEdit ? benefit['name'] : '');
-    final descriptionController =
-        TextEditingController(text: isEdit ? benefit['description'] : '');
-    final iconController =
-        TextEditingController(text: isEdit ? benefit['icon'] : '');
+  final isEdit = benefit != null;
+  final nameController = TextEditingController(text: isEdit ? benefit['name'] : '');
+  final descriptionController = TextEditingController(text: isEdit ? benefit['description'] : '');
+  final iconController = TextEditingController(text: isEdit ? benefit['icon'] : '');
 
-    await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(isEdit ? 'Chỉnh sửa phúc lợi' : 'Thêm phúc lợi'),
-        content: Column(
+  await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Rounded corners for the dialog
+      ),
+      title: Text(
+        isEdit ? 'Chỉnh sửa phúc lợi' : 'Thêm phúc lợi',
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+          color: Colors.deepPurple,
+        ),
+      ),
+      content: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(labelText: 'Tên phúc lợi'),
+            // Tên phúc lợi (Làm rộng ra)
+            Container(
+              width: double.infinity, // Chiếm toàn bộ chiều ngang của AlertDialog
+              child: TextField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: 'Tên phúc lợi',
+                  labelStyle: TextStyle(color: Colors.deepPurple),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10), // Điều chỉnh chiều ngang
+                ),
+              ),
             ),
-            TextField(
-              controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Mô tả'),
+            const SizedBox(height: 15),
+            // Mô tả phúc lợi (Làm rộng ra)
+            Container(
+              width: double.infinity, // Chiếm toàn bộ chiều ngang của AlertDialog
+              child: TextField(
+                controller: descriptionController,
+                maxLines: 5,  // Cho phép mô tả dài ra
+                decoration: InputDecoration(
+                  labelText: 'Mô tả',
+                  labelStyle: TextStyle(color: Colors.deepPurple),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10), // Điều chỉnh chiều ngang
+                ),
+              ),
             ),
-            TextField(
-              controller: iconController,
-              decoration: InputDecoration(labelText: 'Icon'),
+            const SizedBox(height: 15),
+            // Icon (Làm rộng ra)
+            Container(
+              width: double.infinity, // Chiếm toàn bộ chiều ngang của AlertDialog
+              child: TextField(
+                controller: iconController,
+                decoration: InputDecoration(
+                  labelText: 'Icon',
+                  labelStyle: TextStyle(color: Colors.deepPurple),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10), // Điều chỉnh chiều ngang
+                ),
+              ),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('Hủy'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final benefitData = {
-                'name': nameController.text,
-                'description': descriptionController.text,
-                'icon': iconController.text,
-              };
-              Navigator.of(context).pop();
-              _saveBenefit(benefitData, id: isEdit ? benefit['_id'] : null);
-            },
-            child: Text('Lưu'),
-          ),
-        ],
       ),
-    );
-  }
+      actions: [
+        // Hủy
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text(
+            'Hủy',
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        // Lưu
+        ElevatedButton(
+          onPressed: () {
+            final benefitData = {
+              'name': nameController.text,
+              'description': descriptionController.text,
+              'icon': iconController.text,
+            };
+            Navigator.of(context).pop();
+            _saveBenefit(benefitData, id: isEdit ? benefit['_id'] : null);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurple,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+          ),
+          child: const Text(
+            'Lưu',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 
   IconData getIconForBenefit(String name) {
     switch (name.toLowerCase()) {
@@ -159,22 +240,30 @@ class _BenefitPageState extends State<BenefitPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quản lý Phúc lợi'),
-        flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Color(0xFFB276EF), // Màu tím nhạt
-              Color(0xFF5A85F4), // Màu xanh dương
-            ],
+          title: Text(
+            'Quản lý phúc lợi',
+            style: TextStyle(
+              fontWeight: FontWeight.bold, // In đậm chữ
+              fontSize: 18, // Điều chỉnh kích thước chữ nếu cần
+            ),
           ),
+          centerTitle: true, // Căn giữa tiêu đề
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color(0xFFB276EF), 
+                  Color(0xFF5A85F4), 
+                ],
+              ),
+            ),
+          ),
+          backgroundColor: Colors.transparent, 
+          elevation: 0, 
         ),
-      ),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      ),
+
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _benefits.isEmpty
@@ -191,26 +280,34 @@ class _BenefitPageState extends State<BenefitPage> {
                             Text(benefit['description'] ?? 'Không có mô tả'),
                         leading: Icon(getIconForBenefit(benefit['name'])),
                         trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () =>
-                                  _showBenefitForm(benefit: benefit),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () => _deleteBenefit(benefit['_id']),
-                            ),
-                          ],
-                        ),
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Colors.deepPurple, 
+                                ),
+                                onPressed: () => _showBenefitForm(benefit: benefit),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                 color: Colors.red, 
+                                onPressed: () => _deleteBenefit(benefit['_id']),
+                              ),
+                            ],
+                          ),
+
                       ),
                     );
                   },
                 ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showBenefitForm(),
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.white, // Màu trắng cho biểu tượng
+        ),
+        backgroundColor: Colors.deepPurple, // Màu nền của nút là deepPurple
       ),
     );
   }

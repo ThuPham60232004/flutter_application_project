@@ -93,7 +93,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
   Future<void> addOrUpdateApplication(String? id) async {
     if (_formKey.currentState!.validate()) {
       if (selectedFile == null) {
-        _showErrorDialog('Please select a CV before submitting.');
+        _showErrorDialog('Vui lòng chọn CV trước khi gửi.');
         return;
       }
 
@@ -101,7 +101,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
           selectedJobId == null ||
           selectedProfileId == null ||
           selectedStatus == null) {
-        _showErrorDialog('Please fill in all required fields.');
+        _showErrorDialog('Vui lòng điền đủ các trường bắt buộc.');
         return;
       }
 
@@ -113,7 +113,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
       try {
         final fileBytes = selectedFile?.bytes;
         if (fileBytes == null) {
-          _showErrorDialog('Unable to read CV data.');
+          _showErrorDialog('Không thể đọc dữ liệu CV.');
           return;
         }
 
@@ -134,14 +134,14 @@ class _ApplicationPageState extends State<ApplicationPage> {
         if (response.statusCode == 200 || response.statusCode == 201) {
           fetchApplications();
           Navigator.pop(context);
-          _showSuccessDialog("Application submitted successfully.");
+          _showSuccessDialog("Đơn ứng tuyển đã được gửi thành công.");
         } else {
           final responseData = await response.stream.bytesToString();
-          throw Exception('Error submitting application: $responseData');
+          throw Exception('Lỗi khi gửi đơn ứng tuyển: $responseData');
         }
       } catch (e) {
-        print("Error submitting application: $e");
-        _showErrorDialog('Error: $e');
+        print("Lỗi khi gửi đơn ứng tuyển: $e");
+        _showErrorDialog('Lỗi: $e');
       }
     }
   }
@@ -151,7 +151,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Error"),
+          title: Text("Lỗi"),
           content: Text(message),
           actions: [
             TextButton(
@@ -169,7 +169,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Success"),
+          title: Text("Thành công"),
           content: Text(message),
           actions: [
             TextButton(
@@ -216,16 +216,20 @@ class _ApplicationPageState extends State<ApplicationPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    application == null
-                        ? 'Add Application'
-                        : 'Edit Application',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
+                application == null
+                    ? 'Thêm Đơn Ứng Tuyển'
+                    : 'Chỉnh Sửa Đơn Ứng Tuyển',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple, 
+                ),
+              ),
                   SizedBox(height: 20),
                   DropdownButtonFormField<String>(
                     value: selectedUserId,
                     decoration: InputDecoration(
-                      labelText: 'User',
+                      labelText: 'Người dùng',
                       border: OutlineInputBorder(),
                     ),
                     items: users.map((user) {
@@ -244,7 +248,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
                   DropdownButtonFormField<String>(
                     value: selectedJobId,
                     decoration: InputDecoration(
-                      labelText: 'Job',
+                      labelText: 'Công việc',
                       border: OutlineInputBorder(),
                     ),
                     items: jobs.map((job) {
@@ -263,7 +267,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
                   DropdownButtonFormField<String>(
                     value: selectedProfileId,
                     decoration: InputDecoration(
-                      labelText: 'Profile',
+                      labelText: 'Hồ sơ',
                       border: OutlineInputBorder(),
                     ),
                     items: profiles.map((profile) {
@@ -282,7 +286,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
                   DropdownButtonFormField<String>(
                     value: selectedStatus,
                     decoration: InputDecoration(
-                      labelText: 'Status',
+                      labelText: 'Trạng thái',
                       border: OutlineInputBorder(),
                     ),
                     items: ['pending', 'accepted', 'rejected'].map((status) {
@@ -301,14 +305,14 @@ class _ApplicationPageState extends State<ApplicationPage> {
                   ElevatedButton(
                     onPressed: pickFile,
                     child: Text(selectedFile == null
-                        ? 'Select CV'
+                        ? 'Chọn CV'
                         : selectedFile!.name),
                   ),
                   SizedBox(height: 15),
                   TextFormField(
                     controller: coverLetterController,
                     decoration: InputDecoration(
-                      labelText: 'Cover Letter',
+                      labelText: 'Thư xin việc',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -323,14 +327,17 @@ class _ApplicationPageState extends State<ApplicationPage> {
                     onPressed: () =>
                         addOrUpdateApplication(application?['_id']),
                     child: Center(
-                      child: Text(
-                        application == null
-                            ? 'Add Application'
-                            : 'Update Application',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                    child: Text(
+                      application == null
+                          ? 'Thêm Đơn Ứng Tuyển'
+                          : 'Cập Nhật Đơn Ứng Tuyển',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepPurple, 
                       ),
                     ),
+                  ),
                   ),
                 ],
               ),
@@ -345,23 +352,23 @@ class _ApplicationPageState extends State<ApplicationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Application Management',
+        title: Text('Quản Lý Đơn Ứng Tuyển',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         centerTitle: true,
-flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Color(0xFFB276EF), // Màu tím nhạt
-              Color(0xFF5A85F4), // Màu xanh dương
-            ],
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFFB276EF), // Màu tím nhạt
+                Color(0xFF5A85F4), // Màu xanh dương
+              ],
+            ),
           ),
         ),
-      ),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -380,16 +387,16 @@ flexibleSpace: Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: ListTile(
                       title: Text(
-                        job['title'] ?? 'No Job Title',
+                        job['title'] ?? 'Không có tiêu đề công việc',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text(application['status'] ?? 'No Status'),
+                      subtitle: Text(application['status'] ?? 'Không có trạng thái'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
-                            icon: Icon(Icons.edit, color: Colors.blueAccent),
+                            icon: Icon(Icons.edit, color: Colors.deepPurple),
                             onPressed: () => showForm(application),
                           ),
                           IconButton(
@@ -405,9 +412,12 @@ flexibleSpace: Container(
               ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.deepPurple,
         onPressed: () => showForm(),
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,  
+        ),
       ),
     );
   }

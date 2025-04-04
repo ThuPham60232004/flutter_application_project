@@ -75,18 +75,18 @@ class _UserManagementPageState extends State<UserManagementPage> {
         if (response.statusCode == 200) {
           fetchUsers();
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('User added successfully!')),
+            SnackBar(content: Text('Đã thêm người dùng thành công!')),
           );
         } else {
-          print('Failed to add user: ${response.body}');
+          print('Thêm người dùng thất bại: ${response.body}');
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to add user: ${response.body}')),
+            SnackBar(content: Text('Thêm người dùng thất bại: ${response.body}')),
           );
         }
       } catch (e) {
-        print('Error: $e');
+        print('Lỗi: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An error occurred. Please try again.')),
+          SnackBar(content: Text('Đã có lỗi xảy ra. Vui lòng thử lại.')),
         );
       }
     }
@@ -146,7 +146,12 @@ class _UserManagementPageState extends State<UserManagementPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(user == null ? 'Add User' : 'Edit User'),
+          title: Text(
+          user == null ? 'Thêm Người Dùng' : 'Chỉnh Sửa Người Dùng',
+          style: TextStyle(
+            color: Colors.deepPurple, 
+          ),
+        ),
           content: Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -154,29 +159,29 @@ class _UserManagementPageState extends State<UserManagementPage> {
                 children: [
                   TextFormField(
                     initialValue: _formData['name'],
-                    decoration: InputDecoration(labelText: 'Name'),
+                    decoration: InputDecoration(labelText: 'Tên'),
                     onSaved: (value) => _formData['name'] = value!,
                     validator: (value) =>
-                        value!.isEmpty ? 'Enter a name' : null,
+                        value!.isEmpty ? 'Nhập tên' : null,
                   ),
                   TextFormField(
                     initialValue: _formData['email'],
                     decoration: InputDecoration(labelText: 'Email'),
                     onSaved: (value) => _formData['email'] = value!,
                     validator: (value) =>
-                        value!.isEmpty ? 'Enter an email' : null,
+                        value!.isEmpty ? 'Nhập email' : null,
                   ),
                   TextFormField(
                     initialValue: _formData['password'],
-                    decoration: InputDecoration(labelText: 'Password'),
+                    decoration: InputDecoration(labelText: 'Mật khẩu'),
                     onSaved: (value) => _formData['password'] = value!,
                     validator: (value) =>
-                        value!.isEmpty ? 'Enter a password' : null,
+                        value!.isEmpty ? 'Nhập mật khẩu' : null,
                     obscureText: true,
                   ),
                   TextFormField(
                     initialValue: _formData['phone'],
-                    decoration: InputDecoration(labelText: 'Phone'),
+                    decoration: InputDecoration(labelText: 'Số điện thoại'),
                     onSaved: (value) => _formData['phone'] = value ?? '',
                   ),
                   DropdownButtonFormField<String>(
@@ -189,7 +194,7 @@ class _UserManagementPageState extends State<UserManagementPage> {
                         .toList(),
                     onChanged: (value) =>
                         setState(() => _formData['role'] = value),
-                    decoration: InputDecoration(labelText: 'Role'),
+                    decoration: InputDecoration(labelText: 'Vai trò'),
                   ),
                   DropdownButtonFormField<String>(
                     value: _formData['status'],
@@ -201,11 +206,11 @@ class _UserManagementPageState extends State<UserManagementPage> {
                         .toList(),
                     onChanged: (value) =>
                         setState(() => _formData['status'] = value),
-                    decoration: InputDecoration(labelText: 'Status'),
+                    decoration: InputDecoration(labelText: 'Trạng thái'),
                   ),
                   SwitchListTile(
                     value: _formData['isVerified'] ?? false,
-                    title: Text('Verified'),
+                    title: Text('Đã xác thực'),
                     onChanged: (value) =>
                         setState(() => _formData['isVerified'] = value),
                   ),
@@ -223,12 +228,12 @@ class _UserManagementPageState extends State<UserManagementPage> {
                         _formData['company'] = value;
                       });
                     },
-                    decoration: InputDecoration(labelText: 'Company'),
+                    decoration: InputDecoration(labelText: 'Công ty'),
                   ),
                   ElevatedButton.icon(
                     onPressed: pickImage,
                     icon: Icon(Icons.image),
-                    label: Text('Upload Image'),
+                    label: Text('Tải Lên Hình Ảnh'),
                   ),
                   if (selectedImage != null)
                     Image.file(
@@ -243,7 +248,7 @@ class _UserManagementPageState extends State<UserManagementPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel'),
+              child: Text('Hủy'),
             ),
             FilledButton(
               onPressed: () {
@@ -254,7 +259,7 @@ class _UserManagementPageState extends State<UserManagementPage> {
                   updateUser(user['_id']);
                 }
               },
-              child: Text('Save'),
+              child: Text('Lưu'),
             ),
           ],
         );
@@ -274,21 +279,21 @@ class _UserManagementPageState extends State<UserManagementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Management'),
-flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Color(0xFFB276EF), // Màu tím nhạt
-              Color(0xFF5A85F4), // Màu xanh dương
-            ],
+        title: Text('Quản Lý Người Dùng'),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFFB276EF), // Màu tím nhạt
+                Color(0xFF5A85F4), // Màu xanh dương
+              ],
+            ),
           ),
         ),
-      ),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: ListView.builder(
         itemCount: users.length,
@@ -302,11 +307,17 @@ flexibleSpace: Container(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.deepPurple, 
+                    ),
                     onPressed: () => showUserForm(user: user),
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.red,  
+                    ),
                     onPressed: () => deleteUser(user['_id']),
                   ),
                 ],
@@ -317,8 +328,15 @@ flexibleSpace: Container(
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => showUserForm(),
-        label: Text('Add User'),
-        icon: Icon(Icons.add),
+        label: Text(
+          'Thêm Người Dùng',
+          style: TextStyle(color: Colors.white), 
+        ),
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,  
+        ),
+        backgroundColor: Colors.deepPurple,  
       ),
     );
   }

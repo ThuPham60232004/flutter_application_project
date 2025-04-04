@@ -104,14 +104,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text(
+          'Hồ sơ',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.deepPurple,
         actions: [
           IconButton(
             icon: Icon(
               isEditable ? Icons.save : Icons.edit,
-              color: Colors.white,
+              color: Colors.deepPurple,
             ),
             onPressed: () {
               if (isEditable) {

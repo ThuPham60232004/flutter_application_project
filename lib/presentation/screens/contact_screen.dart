@@ -139,27 +139,28 @@ Widget build(BuildContext context) {
 
 List<Widget> _buildFAQs() {
   final faqs = [
-    {
-      "question": "What is the name of your company",
-      "answer":
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequatur quae cumque perspiciatis aperiam accusantium facilis provident aspernatur nisi qui odio debitis dolorem, est eum eligendi vero ad necessitatibus nulla sit labore doloremque magnam?",
-    },
-    {
-      "question": "How much pay for 3 months?",
-      "answer":
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel ad laborum expedita. Nostrum iure atque enim quisquam minima distinctio omnis.",
-    },
-    {
-      "question": "Do I need to register?",
-      "answer":
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel ad laborum expedita.",
-    },
-    {
-      "question": "Who should I contact in case of support?",
-      "answer":
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel ad laborum expedita.",
-    },
-  ];
+  {
+    "question": "Tên công ty của bạn là gì?",
+    "answer":
+        "Tên công ty của chúng tôi là XYZ, chuyên cung cấp các dịch vụ chất lượng cao trong lĩnh vực công nghệ thông tin và phần mềm.",
+  },
+  {
+    "question": "Cần trả bao nhiêu cho 3 tháng?",
+    "answer":
+        "Chi phí cho 3 tháng sử dụng dịch vụ của chúng tôi là 3 triệu đồng, bao gồm tất cả các dịch vụ hỗ trợ và bảo trì.",
+  },
+  {
+    "question": "Tôi có cần đăng ký không?",
+    "answer":
+        "Có, bạn cần đăng ký để sử dụng dịch vụ của chúng tôi. Quá trình đăng ký rất đơn giản và nhanh chóng.",
+  },
+  {
+    "question": "Tôi nên liên hệ ai khi cần hỗ trợ?",
+    "answer":
+        "Khi cần hỗ trợ, bạn có thể liên hệ với bộ phận hỗ trợ khách hàng qua email support@xyz.com hoặc gọi vào số điện thoại 0123456789.",
+  },
+];
+
 
   return faqs.map((faq) {
     return buildQuestionSection(faq['question']!, faq['answer']!);
