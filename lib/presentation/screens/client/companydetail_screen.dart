@@ -83,7 +83,7 @@ class _CompanyDetailScreenState extends State<CompanyDetailScreen> {
             ),
             const SizedBox(height: 15),
             Text(
-              widget.company['Tên công ty'] ?? 'Unknown',
+              widget.company['nameCompany'] ?? 'Unknown',
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
             ),
@@ -95,7 +95,7 @@ class _CompanyDetailScreenState extends State<CompanyDetailScreen> {
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    widget.company['Vị Trí'] ?? 'Unknown',
+                    widget.company['location'] ?? 'Unknown',
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),

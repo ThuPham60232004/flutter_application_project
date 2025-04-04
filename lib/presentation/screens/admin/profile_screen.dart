@@ -215,7 +215,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Thông tin cá nhân'),
         centerTitle: true,
         flexibleSpace: Container(
         decoration: const BoxDecoration(

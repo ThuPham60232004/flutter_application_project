@@ -48,14 +48,14 @@ class EmployerHomePage extends StatelessWidget {
               SizedBox(height: 10),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
+                  backgroundColor: Colors.deepPurple,
                   padding: EdgeInsets.symmetric(horizontal: 44, vertical: 12),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
                 onPressed: () {},
                 child:
-                    Text("Đăng ký ngay", style: TextStyle(color: Colors.white)),
+                    Text("Đăng tin tuyển dụng ", style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
