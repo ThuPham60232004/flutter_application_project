@@ -2,9 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class ForgetPassScreen extends StatelessWidget {
+class ForgetPassScreen extends StatefulWidget {
   const ForgetPassScreen({Key? key}) : super(key: key);
+
+  @override
+  _ForgetPassScreenState createState() => _ForgetPassScreenState();
+}
+
+class _ForgetPassScreenState extends State<ForgetPassScreen> {
+  final TextEditingController _emailController = TextEditingController();
+
+  Future<void> _sendResetCode() async {
+    final email = _emailController.text;
+
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Vui lòng nhập email')));
+      return;
+    }
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://backend-findjob.onrender.com/user/forgotPassword/'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'email': email}),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mã đặt lại mật khẩu đã được gửi')));
+        Navigator.pushNamed(context, '/resetpassscreen');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Có lỗi xảy ra')));
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Lỗi kết nối')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final inheritedTheme = AppInheritedTheme.of(context);
@@ -29,6 +65,7 @@ class ForgetPassScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               TextField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.email_outlined),
                   hintText: 'Email của bạn',
@@ -39,14 +76,14 @@ class ForgetPassScreen extends StatelessWidget {
               ),
               SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: _sendResetCode,
                 style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.zero, 
-                        minimumSize: const Size(80, 32),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
+                  padding: EdgeInsets.zero, 
+                  minimumSize: const Size(80, 32),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
                 child: Ink(
                   decoration: BoxDecoration(
                     gradient: PrimaryTheme.buttonPrimary,
