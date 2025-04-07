@@ -3,6 +3,7 @@ import 'package:flutter_application_project/data/repositories/auth_repository.da
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/themes/primary_theme.dart';
 import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
+
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -64,13 +65,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     IconData icon, {
     bool obscureText = false,
   }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        prefixIcon: Icon(icon),
-        hintText: hint,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          prefixIcon: Icon(icon),
+          hintText: hint,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
       ),
     );
   }

@@ -232,12 +232,14 @@ class _ApplicationPageState extends State<ApplicationPage> {
                       labelText: 'Người dùng',
                       border: OutlineInputBorder(),
                     ),
-                    items: users.map((user) {
-                      return DropdownMenuItem(
-                        value: user['_id'].toString(),
-                        child: Text(user['name'] ?? ''),
-                      );
-                    }).toList(),
+                    items: profiles.map((profile) {
+                    final userName = profile['user']?['name'] ?? 'Không rõ';
+                    return DropdownMenuItem(
+                      value: profile['_id'].toString(),
+                      child: Text(userName),
+                    );
+                  }).toList(),
+
                     onChanged: (value) {
                       setState(() {
                         selectedUserId = value;

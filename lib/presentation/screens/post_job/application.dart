@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
-
 class JobApplicationPage extends StatefulWidget {
   @override
   _JobApplicationPageState createState() => _JobApplicationPageState();
@@ -72,19 +71,19 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
               )
             : null,
         flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Color(0xFFB276EF), // Màu tím nhạt
-              Color(0xFF5A85F4), // Màu xanh dương
-            ],
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFFB276EF),
+                Color(0xFF5A85F4),
+              ],
+            ),
           ),
         ),
-      ),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: userId == null
           ? const Center(child: CircularProgressIndicator())
@@ -157,6 +156,7 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
           itemCount: applications.length,
           itemBuilder: (context, index) {
             final application = applications[index];
+            final user = application['user'] ?? {};
 
             return Card(
               shape: RoundedRectangleBorder(
@@ -180,7 +180,7 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        application['user']['name'] ?? 'Không có thông tin CV',
+                        user['name']?.toString() ?? 'Không có thông tin CV',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -194,7 +194,7 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
                               size: 18, color: Colors.blueGrey),
                           const SizedBox(width: 6),
                           Text(
-                            application['user']['email'] ?? 'Không xác định',
+                            user['email']?.toString() ?? 'Không xác định',
                             style: const TextStyle(
                                 fontSize: 14, color: Colors.black54),
                           ),
@@ -202,18 +202,17 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
                       ),
                       const SizedBox(height: 6),
                       Row(
-                            children: [
-                              const Icon(Icons.markunread_mailbox,
-                                  size: 18, color: Color.fromARGB(255, 0, 0, 0)),
-                              const SizedBox(width: 6),
-                              Text(
-                                'Thư giới thiệu: ${application['coverLetter'] ?? 'Không có thư'}',
-                                style: const TextStyle(
-                                    fontSize: 14, color: Colors.black87),
-                              ),
-                            ],
+                        children: [
+                          const Icon(Icons.markunread_mailbox,
+                              size: 18, color: Colors.black),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Thư giới thiệu: ${application['coverLetter']?.toString() ?? 'Không có thư'}',
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.black87),
                           ),
-                      
+                        ],
+                      ),
                       const SizedBox(height: 6),
                       if (application['cv'] != null)
                         GestureDetector(
@@ -227,9 +226,9 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
                               const Icon(Icons.picture_as_pdf,
                                   size: 18, color: Colors.red),
                               const SizedBox(width: 6),
-                              Text(
+                              const Text(
                                 'Xem CV',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   color: Color.fromARGB(255, 243, 33, 33),
                                 ),
@@ -242,7 +241,6 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
                           'Không có CV',
                           style: TextStyle(fontSize: 14, color: Colors.black54),
                         ),
-                      
                     ],
                   ),
                 ),
@@ -262,8 +260,8 @@ class ApplicationDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = application['user'];
-    final profile = application['profile'];
+    final user = application['user'] ?? {};
+    final profile = application['profile'] ?? {};
 
     return Scaffold(
       appBar: AppBar(
@@ -278,60 +276,67 @@ class ApplicationDetailPage extends StatelessWidget {
             children: [
               _buildSectionTitle('Thông tin người ứng tuyển'),
               _buildCard([
+                _buildInputField('Tên người ứng tuyển',
+                    user['name']?.toString() ?? 'Không có'),
                 _buildInputField(
-                    'Tên người ứng tuyển', user['name'].toString()),
-                _buildInputField('Email', user['email'].toString()),
-                _buildInputField('Số điện thoại', user['phone'].toString()),
-                _buildInputField('Trạng thái', user['status'].toString()),
+                    'Email', user['email']?.toString() ?? 'Không có'),
+                _buildInputField(
+                    'Số điện thoại', user['phone']?.toString() ?? 'Không có'),
+                _buildInputField(
+                    'Trạng thái', user['status']?.toString() ?? 'Không có'),
               ]),
               _buildSectionTitle('Hồ sơ cá nhân'),
               _buildCard([
-                _buildInputField('Chức danh', profile['title'].toString()),
-                _buildInputField('Tóm tắt', profile['summary'].toString()),
+                _buildInputField('Chức danh',
+                    profile['title']?.toString() ?? 'Không có'),
+                _buildInputField('Tóm tắt',
+                    profile['summary']?.toString() ?? 'Không có'),
               ]),
               _buildSectionTitle('Kinh nghiệm'),
-              ...profile['experiences'].map<Widget>((experience) {
+              ...List.from(profile['experiences'] ?? []).map<Widget>((exp) {
                 return _buildCard([
-                  _buildInputField(
-                      'Công ty', experience['companyName'].toString()),
-                  _buildInputField(
-                      'Chức vụ', experience['jobTitle'].toString()),
-                  _buildInputField(
-                      'Bắt đầu', experience['startDate']?.toString() ?? 'N/A'),
+                  _buildInputField('Công ty',
+                      exp['companyName']?.toString() ?? 'Không có'),
+                  _buildInputField('Chức vụ',
+                      exp['jobTitle']?.toString() ?? 'Không có'),
+                  _buildInputField('Bắt đầu',
+                      exp['startDate']?.toString() ?? 'Không rõ'),
                 ]);
-              }).toList(),
+              }),
               _buildSectionTitle('Học vấn'),
-              ...profile['education'].map<Widget>((education) {
+              ...List.from(profile['education'] ?? []).map<Widget>((edu) {
                 return _buildCard([
+                  _buildInputField('Trường học',
+                      edu['schoolName']?.toString() ?? 'Không có'),
                   _buildInputField(
-                      'Trường học', education['schoolName'].toString()),
-                  _buildInputField('Bằng cấp', education['degree'].toString()),
-                  _buildInputField(
-                      'Ngành học', education['fieldOfStudy'].toString()),
+                      'Bằng cấp', edu['degree']?.toString() ?? 'Không có'),
+                  _buildInputField('Ngành học',
+                      edu['fieldOfStudy']?.toString() ?? 'Không có'),
                 ]);
-              }).toList(),
+              }),
               _buildSectionTitle('Kỹ năng'),
-              ...profile['skills'].map<Widget>((skill) {
+              ...List.from(profile['skills'] ?? []).map<Widget>((skill) {
                 return _buildCard([
-                  _buildInputField('Kỹ năng', skill['name'].toString()),
-                  _buildInputField(
-                      'Mức độ', skill['proficiencyLevel'].toString()),
+                  _buildInputField('Kỹ năng',
+                      skill['name']?.toString() ?? 'Không có'),
+                  _buildInputField('Mức độ',
+                      skill['proficiencyLevel']?.toString() ?? 'Không có'),
                 ]);
-              }).toList(),
+              }),
               _buildSectionTitle('Chứng chỉ'),
-              ...profile['certifications'].map<Widget>((cert) {
+              ...List.from(profile['certifications'] ?? []).map<Widget>((cert) {
                 return _buildCard([
-                  _buildInputField('Tên chứng chỉ', cert['name'].toString()),
-                  _buildInputField('Cấp bởi', cert['issuedBy'].toString()),
+                  _buildInputField('Tên chứng chỉ',
+                      cert['name']?.toString() ?? 'Không có'),
+                  _buildInputField(
+                      'Cấp bởi', cert['issuedBy']?.toString() ?? 'Không có'),
                 ]);
-              }).toList(),
+              }),
               _buildSectionTitle('Hồ sơ đính kèm'),
               _buildCard([
-                _buildInputField('CV', application['cv'].toString()),
-                _buildInputField(
-                    'Thư xin việc',
-                    application['coverLetter']?.toString() ??
-                        'Không có thư xin việc'),
+                _buildInputField('CV', application['cv']?.toString() ?? 'Không có'),
+                _buildInputField('Thư xin việc',
+                    application['coverLetter']?.toString() ?? 'Không có'),
               ]),
             ],
           ),

@@ -111,22 +111,32 @@ class _ProfilePageState extends State<ProfilePage> {
             return const Center(child: Text('No profiles found'));
           } else {
             return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final profile = snapshot.data![index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: profile['profileImage'] != null
-                        ? FileImage(File(profile['profileImage']))
-                        : const AssetImage('assets/icons/nen.png'),
-                  ),
-                  title: Text(profile['user']['name'] as String? ?? 'No Name'),
-                  subtitle:
-                      Text(profile['user']['email'] as String? ?? 'No Email'),
-                  onTap: () => navigateToDetail(profile),
-                );
-              },
-            );
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              final profile = snapshot.data![index];
+              final user = profile['user'];
+
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: profile['profileImage'] != null
+                      ? FileImage(File(profile['profileImage']))
+                      : const AssetImage('assets/icons/nen.png') as ImageProvider,
+                ),
+                title: Text(user?['name'] ?? 'No Name'),
+                subtitle: Text(user?['email'] ?? 'No Email'),
+                onTap: () {
+                  if (user != null && user['_id'] != null) {
+                    navigateToDetail(profile);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('User data is incomplete')),
+                    );
+                  }
+                },
+              );
+            },
+          );
+
           }
         },
       ),

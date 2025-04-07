@@ -82,7 +82,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
     );
   }
 
-  // 🟣 Header
   Widget _buildHeader() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
@@ -104,7 +103,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           Text("Xin chào!",
               style: TextStyle(color: Colors.white, fontSize: 18)),
           Text(
-            "Phạm Thị Anh Thư",
+            "Việt Thắng",
             style: TextStyle(
                 color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
           ),
