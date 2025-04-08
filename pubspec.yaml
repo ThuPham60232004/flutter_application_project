@@ -31,10 +31,12 @@ dependencies:
   url_launcher: ^6.3.1
   open_filex: ^4.6.0
   shimmer: ^3.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.13.1   # ✅ Đã thêm
 
 flutter:
   uses-material-design: true
@@ -44,3 +46,8 @@ flutter:
     - assets/icons/
     - assets/images/image.png
     - assets/images/logo.png
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"

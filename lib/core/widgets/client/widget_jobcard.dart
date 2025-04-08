@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_application_project/presentation/screens/client/detailjob_screen.dart';
+import 'package:intl/intl.dart';
+
 
 class JobCard extends StatefulWidget {
   const JobCard({Key? key}) : super(key: key);
@@ -100,20 +102,15 @@ class _JobCardState extends State<JobCard> {
                                       ),
                                     );
                                   },
-                                  child: _JobCardDesign(
+                                 child: _JobCardDesign(
                                     logoUrl: job['company']?['logo'] ?? '',
-                                    jobTitle:
-                                        job['title'] ?? 'Không có tiêu đề',
-                                    companyName: job['company']
-                                            ?['nameCompany'] ??
-                                        'Không có công ty',
-                                    jobDescription:
-                                        job['description'] ?? 'Không có mô tả',
-                                    jobExperience:
-                                        job['exp'] ?? 'Không yêu cầu',
+                                    jobTitle: job['title'] ?? 'Không có tiêu đề',
+                                    companyName: job['company']?['nameCompany'] ?? 'Không có công ty',
+                                    jobDescription: job['description'] ?? 'Không có mô tả',
+                                    jobExperience: job['exp'] ?? 'Không yêu cầu',
                                     jobLocation: job['location'] ?? 'Remote',
                                     jobSalary: job['salary'] != null
-                                        ? '${job['salary']} VND'
+                                        ? NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(job['salary'])
                                         : 'Không rõ',
                                   ),
                                 ),

@@ -6,6 +6,8 @@ import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 import 'package:flutter_application_project/core/themes/primary_text.dart';
 import 'package:flutter_application_project/presentation/screens/client/detailjob_screen.dart';
+import 'package:intl/intl.dart';
+
 
 class CareerDetail extends StatefulWidget {
   final String categoryName;
@@ -112,14 +114,12 @@ class _CareerDetailState extends State<CareerDetail> {
                                 child: _JobCardDesign(
                                   logoUrl: job['company']?['logo'] ?? '',
                                   jobTitle: job['title'] ?? 'Không có tiêu đề',
-                                  companyName: job['company']?['nameCompany'] ??
-                                      'Không có công ty',
-                                  jobDescription:
-                                      job['description'] ?? 'Không có mô tả',
+                                  companyName: job['company']?['nameCompany'] ?? 'Không có công ty',
+                                  jobDescription: job['description'] ?? 'Không có mô tả',
                                   jobExperience: job['exp'] ?? 'Không yêu cầu',
                                   jobLocation: job['location'] ?? 'Remote',
                                   jobSalary: job['salary'] != null
-                                      ? '${job['salary']} VND'
+                                      ? '${NumberFormat.currency(locale: 'vi_VN', symbol: '', decimalDigits: 0).format(job['salary'])} VND'
                                       : 'Không rõ',
                                 ),
                               );

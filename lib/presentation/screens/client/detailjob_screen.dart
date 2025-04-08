@@ -4,6 +4,8 @@ import 'package:flutter_application_project/core/widgets/client/widget_footer.da
 import 'package:flutter_application_project/app.dart';
 import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 import 'package:flutter_application_project/presentation/modal/detailjob_modal.dart';
+import 'package:intl/intl.dart';
+
 class DetailJobScreen extends StatefulWidget {
   final Map<String, dynamic> job;
 
@@ -393,11 +395,13 @@ Widget _buildJobDetails() {
                 label: 'Kinh nghiệm',
                 value: widget.job['exp'] ?? 'Không rõ',
               ),
-              _buildJobDetailItem(
-                icon: Icons.attach_money,
-                iconColor: Colors.green,
-                label: 'Mức lương',
-                value: widget.job['salary'] != null ? '${widget.job['salary']} VND' : 'Không rõ',
+                _buildJobDetailItem(
+                  icon: Icons.attach_money,
+                  iconColor: Colors.green,
+                  label: 'Mức lương',
+                  value: widget.job['salary'] != null
+                      ? '${NumberFormat.currency(locale: 'vi_VN', symbol: '', decimalDigits: 0).format(widget.job['salary'])} VND'
+                      : 'Không rõ',
               ),
               _buildJobDetailItem(
                 icon: Icons.business_center,

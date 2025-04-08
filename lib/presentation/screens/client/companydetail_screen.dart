@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter_application_project/presentation/screens/client/detailjob_screen.dart';
 import 'package:flutter_application_project/core/widgets/client/widget_appbar.dart';
 import 'package:flutter_application_project/app.dart';
+import 'package:intl/intl.dart';
+
 class CompanyDetailScreen extends StatefulWidget {
   final dynamic company;
 
@@ -187,7 +189,12 @@ class _JobCardDesign extends StatelessWidget {
                 const SizedBox(width: 8),
                 _buildJobTag(Icons.location_on, job['location'] ?? 'Remote'),
                 const SizedBox(width: 8),
-                _buildJobTag(Icons.monetization_on, job['salary'] != null ? '${job['salary']} VND' : 'Unknown'),
+                _buildJobTag(
+                  Icons.monetization_on,
+                  job['salary'] != null
+                      ? '${NumberFormat.currency(locale: 'vi_VN', symbol: '', decimalDigits: 0).format(job['salary'])} VND'
+                      : 'Unknown',
+                ),
               ],
             ),
           ],
